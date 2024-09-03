@@ -87,7 +87,7 @@ const config: Config = {
         'md': ['var(--font-text-md)', 'var(--line-height-text-md)'],
         'sm': ['var(--font-text-sm)', 'var(--line-height-text-sm)'],
         'xs': ['var(--font-text-xs)', 'var(--line-height-text-xs)'],
-      },ㅎ
+      },
       fontWeight: {
         '4xl-medium': 'var(--font-weight-text-4xl-medium)',
         '3xl-bold': 'var(--font-weight-text-3xl-bold)',
