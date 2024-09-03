@@ -8,10 +8,10 @@ import FormField from 'components/signup/FormField';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import googleLogo from 'app/assets/icons/googleLogo.svg';
-import kakaotalkLogo from 'app/assets/icons/kakaotalkLogo.svg';
-import visibility_on from 'app/assets/icons/visibility_on.svg';
-import visibility_off from 'app/assets/icons/visibility_off.svg';
+import googleLogo from 'assets/icons/googleLogo.svg';
+import kakaotalkLogo from 'assets/icons/kakaotalkLogo.svg';
+import visibility_on from 'assets/icons/visibility_on.svg';
+import visibility_off from 'assets/icons/visibility_off.svg';
 
 type SignupFormData = {
   nickname: string;
