@@ -1,0 +1,111 @@
+.text-4xl {
+  @apply text-[40px] leading-[48px] font-medium;
+}
+
+.text-3xl-bold {
+  @apply text-[32px] leading-[38px] font-bold;
+}
+
+.text-3xl-semibold {
+  @apply text-[32px] leading-[38px] font-semibold;
+}
+
+.text-2xl-bold {
+  @apply text-[24px] leading-[28px] font-bold;
+}
+
+.text-2xl-semibold {
+  @apply text-[24px] leading-[28px] font-semibold;
+}
+
+.text-2xl-medium {
+  @apply text-[24px] leading-[28px] font-medium;
+}
+
+.text-2xl-regular {
+  @apply text-[24px] leading-[28px] font-normal; /* or font-regular */
+}
+
+.text-xl-bold {
+  @apply text-[20px] leading-[24px] font-bold;
+}
+
+.text-xl-semibold {
+  @apply text-[20px] leading-[24px] font-semibold;
+}
+
+.text-xl-medium {
+  @apply text-[20px] leading-[24px] font-medium;
+}
+
+.text-xl-regular {
+  @apply text-[20px] leading-[24px] font-normal; /* or font-regular */
+}
+
+.text-2lg-bold {
+  @apply text-[18px] leading-[21px] font-bold;
+}
+
+.text-2lg-semibold {
+  @apply text-[18px] leading-[21px] font-semibold;
+}
+
+.text-2lg-medium {
+  @apply text-[18px] leading-[21px] font-medium;
+}
+
+.text-2lg-regular {
+  @apply text-[18px] leading-[21px] font-normal; /* or font-regular */
+}
+
+.text-lg-bold {
+  @apply text-[16px] leading-[19px] font-bold;
+}
+
+.text-lg-semibold {
+  @apply text-[16px] leading-[19px] font-semibold;
+}
+
+.text-lg-medium {
+  @apply text-[16px] leading-[19px] font-medium;
+}
+
+.text-lg-regular {
+  @apply text-[16px] leading-[19px] font-normal; /* or font-regular */
+}
+
+.text-md-bold {
+  @apply text-[14px] leading-[17px] font-bold;
+}
+
+.text-md-semibold {
+  @apply text-[14px] leading-[17px] font-semibold;
+}
+
+.text-md-medium {
+  @apply text-[14px] leading-[17px] font-medium;
+}
+
+.text-md-regular {
+  @apply text-[14px] leading-[17px] font-normal; /* or font-regular */
+}
+
+.text-sm-semibold {
+  @apply text-[13px] leading-[16px] font-semibold;
+}
+
+.text-sm-medium {
+  @apply text-[13px] leading-[16px] font-medium;
+}
+
+.text-xs-semibold {
+  @apply text-[12px] leading-[14px] font-semibold;
+}
+
+.text-xs-medium {
+  @apply text-[12px] leading-[14px] font-medium;
+}
+
+.text-xs-regular {
+  @apply text-[12px] leading-[14px] font-normal; /* or font-regular */
+}
