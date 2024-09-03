@@ -1,5 +1,5 @@
-import React from "react";
-import "./styles/globals.css";
+import React from 'react';
+import './styles/globals.css';
 
 export default function RootLayout({
   children,
@@ -10,7 +10,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          <nav >내비게이션 바</nav>
+          <nav>내비게이션 바</nav>
         </header>
         <main>{children}</main>
         <footer>푸터</footer>

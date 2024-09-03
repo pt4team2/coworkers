@@ -1,7 +1,10 @@
-import "app/styles/globals.css";
+import React from 'react';
+import './styles/globals.css';
 
 export default function Page() {
-  return <>
-  <p>최상단</p>
-  </>;
+  return (
+    <>
+      <p className="flex bg-brand-primary text-sm">최상단</p>
+    </>
+  );
 }
