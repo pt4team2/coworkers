@@ -1,111 +1,111 @@
 .text-4xl {
-  @apply text-[40px] leading-[48px] font-medium;
+  @apply text-[40px] font-medium leading-[48px];
 }
 
 .text-3xl-bold {
-  @apply text-[32px] leading-[38px] font-bold;
+  @apply text-[32px] font-bold leading-[38px];
 }
 
 .text-3xl-semibold {
-  @apply text-[32px] leading-[38px] font-semibold;
+  @apply text-[32px] font-semibold leading-[38px];
 }
 
 .text-2xl-bold {
-  @apply text-[24px] leading-[28px] font-bold;
+  @apply text-[24px] font-bold leading-[28px];
 }
 
 .text-2xl-semibold {
-  @apply text-[24px] leading-[28px] font-semibold;
+  @apply text-[24px] font-semibold leading-[28px];
 }
 
 .text-2xl-medium {
-  @apply text-[24px] leading-[28px] font-medium;
+  @apply text-[24px] font-medium leading-[28px];
 }
 
 .text-2xl-regular {
-  @apply text-[24px] leading-[28px] font-normal; /* or font-regular */
+  @apply text-[24px] font-normal leading-[28px]; /* or font-regular */
 }
 
 .text-xl-bold {
-  @apply text-[20px] leading-[24px] font-bold;
+  @apply text-[20px] font-bold leading-[24px];
 }
 
 .text-xl-semibold {
-  @apply text-[20px] leading-[24px] font-semibold;
+  @apply text-[20px] font-semibold leading-[24px];
 }
 
 .text-xl-medium {
-  @apply text-[20px] leading-[24px] font-medium;
+  @apply text-[20px] font-medium leading-[24px];
 }
 
 .text-xl-regular {
-  @apply text-[20px] leading-[24px] font-normal; /* or font-regular */
+  @apply text-[20px] font-normal leading-[24px]; /* or font-regular */
 }
 
 .text-2lg-bold {
-  @apply text-[18px] leading-[21px] font-bold;
+  @apply text-[18px] font-bold leading-[21px];
 }
 
 .text-2lg-semibold {
-  @apply text-[18px] leading-[21px] font-semibold;
+  @apply text-[18px] font-semibold leading-[21px];
 }
 
 .text-2lg-medium {
-  @apply text-[18px] leading-[21px] font-medium;
+  @apply text-[18px] font-medium leading-[21px];
 }
 
 .text-2lg-regular {
-  @apply text-[18px] leading-[21px] font-normal; /* or font-regular */
+  @apply text-[18px] font-normal leading-[21px]; /* or font-regular */
 }
 
 .text-lg-bold {
-  @apply text-[16px] leading-[19px] font-bold;
+  @apply text-[16px] font-bold leading-[19px];
 }
 
 .text-lg-semibold {
-  @apply text-[16px] leading-[19px] font-semibold;
+  @apply text-[16px] font-semibold leading-[19px];
 }
 
 .text-lg-medium {
-  @apply text-[16px] leading-[19px] font-medium;
+  @apply text-[16px] font-medium leading-[19px];
 }
 
 .text-lg-regular {
-  @apply text-[16px] leading-[19px] font-normal; /* or font-regular */
+  @apply text-[16px] font-normal leading-[19px]; /* or font-regular */
 }
 
 .text-md-bold {
-  @apply text-[14px] leading-[17px] font-bold;
+  @apply text-[14px] font-bold leading-[17px];
 }
 
 .text-md-semibold {
-  @apply text-[14px] leading-[17px] font-semibold;
+  @apply text-[14px] font-semibold leading-[17px];
 }
 
 .text-md-medium {
-  @apply text-[14px] leading-[17px] font-medium;
+  @apply text-[14px] font-medium leading-[17px];
 }
 
 .text-md-regular {
-  @apply text-[14px] leading-[17px] font-normal; /* or font-regular */
+  @apply text-[14px] font-normal leading-[17px]; /* or font-regular */
 }
 
 .text-sm-semibold {
-  @apply text-[13px] leading-[16px] font-semibold;
+  @apply text-[13px] font-semibold leading-[16px];
 }
 
 .text-sm-medium {
-  @apply text-[13px] leading-[16px] font-medium;
+  @apply text-[13px] font-medium leading-[16px];
 }
 
 .text-xs-semibold {
-  @apply text-[12px] leading-[14px] font-semibold;
+  @apply text-[12px] font-semibold leading-[14px];
 }
 
 .text-xs-medium {
-  @apply text-[12px] leading-[14px] font-medium;
+  @apply text-[12px] font-medium leading-[14px];
 }
 
 .text-xs-regular {
-  @apply text-[12px] leading-[14px] font-normal; /* or font-regular */
+  @apply text-[12px] font-normal leading-[14px]; /* or font-regular */
 }
