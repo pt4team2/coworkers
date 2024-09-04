@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import googleLogo from '../../../assets/icons/googleLogo.svg';
+// import googleLogo from '../../../assets/icons/googleLogo.svg';
 import kakaotalkLogo from '../../../assets/icons/kakaotalkLogo.svg';
 import visibility_on from '../../../assets/icons/visibility_on.svg';
 import visibility_off from '../../../assets/icons/visibility_off.svg';
@@ -50,13 +51,27 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div
+      className={`mt-6 flex flex-col items-center md:mt-25-custom ${
+        hasErrors ? 'gap-6.75-custom' : 'gap-6.25-custom'
+      } md:gap-12.25-custom ${hasErrors ? 'lg:gap-10.5-custom' : 'lg:gap-12'}`}
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-85.75-custom flex-col gap-10 md:w-115-custom"
+      >
         <div>
-          <span>회원가입</span>
-          <div>
-            <div>
-              <label htmlFor="nickname">닉네임</label>
+          <p className="text-2xl-medium mb-6 text-center text-text-primary md:mb-20 lg:text-4xl">
+            회원가입
+          </p>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
+              <label
+                htmlFor="nickname"
+                className="text-lg-medium text-text-primary"
+              >
+                닉네임
+              </label>
               <FormField
                 id="nickname"
                 type="text"
@@ -65,8 +80,13 @@ export default function Signup() {
                 error={errors.nickname}
               />
             </div>
-            <div>
-              <label htmlFor="email">이메일</label>
+            <div className="flex flex-col gap-3">
+              <label
+                htmlFor="email"
+                className="text-lg-medium text-text-primary"
+              >
+                이메일
+              </label>
               <FormField
                 id="email"
                 type="email"
@@ -75,8 +95,13 @@ export default function Signup() {
                 error={errors.email}
               />
             </div>
-            <div>
-              <label htmlFor="password">비밀번호</label>
+            <div className="flex flex-col gap-3">
+              <label
+                htmlFor="password"
+                className="text-lg-medium text-text-primary"
+              >
+                비밀번호
+              </label>
               <FormField
                 id="password"
                 type={showPassword ? 'text' : 'password'}
@@ -87,8 +112,13 @@ export default function Signup() {
                 error={errors.password}
               />
             </div>
-            <div>
-              <label htmlFor="passwordConfirm">비밀번호 확인</label>
+            <div className="flex flex-col gap-3">
+              <label
+                htmlFor="passwordConfirm"
+                className="text-lg-medium text-text-primary"
+              >
+                비밀번호 확인
+              </label>
               <FormField
                 id="passwordConfirm"
                 type={showPasswordConfirm ? 'text' : 'password'}
@@ -103,19 +133,26 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <button type="submit" disabled={isSubmitting}>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="text-lg-semibold rounded-xl bg-brand-primary py-3.5 text-text-primary"
+        >
           회원가입
         </button>
       </form>
-      <div>
-        <div>
-          <div></div>
-          <span>OR</span>
-          <div></div>
+      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom">
+        <div className="flex w-full items-center text-text-primary">
+          <div className="h-px flex-grow bg-border-tertiary"></div>
+          <span className="text-lg-regular mx-4 text-text-inverse">OR</span>
+          <div className="h-px flex-grow bg-border-tertiary"></div>
+          {/* bg-slate-50 opacity-10 수정 필요 */}
         </div>
-        <div>
-          <span>간편 회원가입하기</span>
-          <div>
+        <div className="flex w-full items-center justify-between">
+          <span className="text-lg-medium text-text-inverse">
+            간편 회원가입하기
+          </span>
+          <div className="flex gap-4">
             <Link href="#">
               <Image
                 src={googleLogo}
