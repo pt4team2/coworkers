@@ -3,16 +3,15 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SIGNUP_SCHEMA } from '../../../utils/schema';
-import FormField from '../../../components/signup/FormField';
+import { SIGNUP_SCHEMA } from '@/utils/schema';
+import FormField from '@/components/signup/FormField';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import googleLogo from '../../../assets/icons/googleLogo.svg';
-// import googleLogo from '../../../assets/icons/googleLogo.svg';
-import kakaotalkLogo from '../../../assets/icons/kakaotalkLogo.svg';
-import visibility_on from '../../../assets/icons/visibility_on.svg';
-import visibility_off from '../../../assets/icons/visibility_off.svg';
+import googleLogo from '@/assets/icons/googleLogo.svg';
+import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
+import visibility_on from '@/assets/icons/visibility_on.svg';
+import visibility_off from '@/assets/icons/visibility_off.svg';
 
 type SignupFormData = {
   nickname: string;
