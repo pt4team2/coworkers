@@ -239,6 +239,10 @@ th {
     @apply text-[16px] font-semibold leading-[19px];
   }
 
+  .text-lg-medium-alt {
+    @apply text-[16px] font-medium leading-[24px];
+  }
+
   .text-lg-medium {
     @apply text-[16px] font-medium leading-[19px];
   }
@@ -253,6 +257,10 @@ th {
 
   .text-md-semibold {
     @apply text-[14px] font-semibold leading-[17px];
+  }
+
+  .text-md-medium-alt {
+    @apply text-[14px] font-medium leading-[24px];
   }
 
   .text-md-medium {
