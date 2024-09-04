@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '../styles/themes/fonts.css';
 
 :root {
   /* Brand Colors */
@@ -86,7 +87,8 @@ ul {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
-  background-color: #0f172a;
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 
 h1,

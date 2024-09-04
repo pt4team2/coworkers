@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/globals.css';
-import Header from '@/components/Header';
+import Header from '@/components/header/Header';
 
 export default function RootLayout({
   children,
@@ -13,8 +13,7 @@ export default function RootLayout({
         <header>
           <Header />
         </header>
-        <main>{children}</main>
-        <footer>푸터</footer>
+        <main className="max-w-[1200px] m-auto">{children}</main>
       </body>
     </html>
   );

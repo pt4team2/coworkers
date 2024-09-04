@@ -103,6 +103,11 @@ const config: Config = {
         'xs-medium': 'var(--font-weight-text-xs-medium)',
         'xs-regular': 'var(--font-weight-text-xs-regular)',
       },
+      screens: {
+        // sm: { max: '743px' },
+        md: { min: '744px', max: '1199px' },
+        lg: { min: '1200px' },
+      },
     },
   },
   plugins: [],
