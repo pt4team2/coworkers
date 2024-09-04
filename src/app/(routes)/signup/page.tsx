@@ -51,16 +51,16 @@ export default function Signup() {
 
   return (
     <div
-      className={`mt-6 flex flex-col items-center md:mt-25-custom ${
+      className={`mt-6 flex flex-col items-center ${
         hasErrors ? 'gap-6.75-custom' : 'gap-6.25-custom'
-      } md:gap-12.25-custom ${hasErrors ? 'lg:gap-10.5-custom' : 'lg:gap-12'}`}
+      } md:mt-25-custom md:gap-12.25-custom lg:mt-25-custom ${hasErrors ? 'lg:gap-10.5-custom' : 'lg:gap-12'}`}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-85.75-custom flex-col gap-10 md:w-115-custom"
+        className="flex w-85.75-custom flex-col gap-10 md:w-115-custom lg:w-115-custom"
       >
         <div>
-          <p className="text-2xl-medium mb-6 text-center text-text-primary md:mb-20 lg:text-4xl">
+          <p className="text-2xl-medium mb-6 text-center text-text-primary md:mb-20 lg:mb-20 lg:text-4xl">
             회원가입
           </p>
           <div className="flex flex-col gap-6">
@@ -140,12 +140,11 @@ export default function Signup() {
           회원가입
         </button>
       </form>
-      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom">
+      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom lg:w-115-custom">
         <div className="flex w-full items-center text-text-primary">
           <div className="h-px flex-grow bg-border-tertiary"></div>
-          <span className="text-lg-regular mx-4 text-text-inverse">OR</span>
+          <span className="text-lg-regular mx-6 text-text-inverse">OR</span>
           <div className="h-px flex-grow bg-border-tertiary"></div>
-          {/* bg-slate-50 opacity-10 수정 필요 */}
         </div>
         <div className="flex w-full items-center justify-between">
           <span className="text-lg-medium text-text-inverse">
