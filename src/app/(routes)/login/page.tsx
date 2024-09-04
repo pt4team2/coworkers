@@ -21,7 +21,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, isValid, errors },
   } = useForm<LoginFormData>({
     resolver: yupResolver(LOGIN_SCHEMA),
     mode: 'onChange',
@@ -42,7 +42,7 @@ export default function Login() {
 
   return (
     <div
-      className={`lg:mt-35-custom mt-6 flex flex-col items-center ${hasErrors ? 'md:mt-30-custom' : 'md:mt-25-custom'} ${hasErrors ? 'gap-6.5-custom md:gap-11.25-custom lg:gap-12.25-custom' : 'gap-6.25-custom md:gap-12.25-custom lg:gap-12'} `}
+      className={`mt-6 flex flex-col items-center lg:mt-35-custom ${hasErrors ? 'md:mt-30-custom' : 'md:mt-25-custom'} ${hasErrors ? 'gap-6.5-custom md:gap-11.25-custom lg:gap-12.25-custom' : 'gap-6.25-custom md:gap-12.25-custom lg:gap-12'} `}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -96,8 +96,10 @@ export default function Login() {
         <div className="flex flex-col gap-6">
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="text-lg-semibold rounded-xl bg-brand-primary py-3.5 text-text-primary"
+            disabled={isSubmitting || !isValid}
+            className={`text-lg-semibold rounded-xl bg-brand-primary py-3.5 text-text-primary ${
+              !isValid ? 'cursor-not-allowed bg-text-default opacity-50' : ''
+            }`}
           >
             로그인
           </button>
