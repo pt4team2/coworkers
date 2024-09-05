@@ -13,7 +13,9 @@ export default function RootLayout({
         <header>
           <Header />
         </header>
-        <main className="max-w-[1200px] m-auto">{children}</main>
+        <main className="m-auto max-w-[1200px] px-4 md:px-6 lg:px-0">
+          {children}
+        </main>
       </body>
     </html>
   );

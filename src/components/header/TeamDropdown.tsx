@@ -13,7 +13,7 @@ export default function TeamDropdown() {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative">
       <button
         onClick={toggleDropdown}
         className="text-lg-medium flex w-[97px] flex-row items-center justify-center gap-[11px]"
@@ -31,7 +31,7 @@ export default function TeamDropdown() {
               <img
                 src={membership.group.image}
                 alt="그룹 이미지"
-                className="mr-2 h-8 w-8 rounded-[6px]"
+                className="h-8 w-8 rounded-[6px]"
               />
               {membership.group.name}
               <Image className="ml-auto w-4" src={IcKebab} alt="케밥 아이콘" />

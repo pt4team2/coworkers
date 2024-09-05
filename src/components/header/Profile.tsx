@@ -6,7 +6,11 @@ import mockData from './mockData';
 export default function () {
   return (
     <div className="text-md-medium flex flex-row items-center gap-2">
-      <Image src={IcProfile} alt="사용자 프로필" />
+      <Image
+        className="w-6 md:w-4 lg:w-4"
+        src={IcProfile}
+        alt="사용자 프로필"
+      />
       <span className="hidden lg:block">{mockData.nickname}</span>
     </div>
   );
