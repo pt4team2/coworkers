@@ -128,6 +128,10 @@ const config: Config = {
         '30-custom': '120px',
         '35-custom': '140px',
       },
+      backgroundImage: {
+        'custom-gradient':
+          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
+      },
     },
   },
   plugins: [],
