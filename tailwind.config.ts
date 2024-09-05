@@ -117,6 +117,8 @@ const config: Config = {
         '10.5-custom': '42px',
         '6.75-custom': '27px',
         '6.5-custom': '26px',
+        '10.5-custom': '42px',
+        '6.75-custom': '27px',
         '6.25-custom': '25px',
       },
       padding: {

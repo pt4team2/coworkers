@@ -35,6 +35,7 @@ export const SIGNUP_SCHEMA = COMMON_SCHEMA.concat(
     passwordConfirm: yup
       .string()
       .required('비밀번호 확인을 입력해 주세요.')
+      .min(8, '비밀번호는 최소 8자 이상입니다.')
       .test(
         'password-match',
         '비밀번호가 일치하지 않습니다.',

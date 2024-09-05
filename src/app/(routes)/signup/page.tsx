@@ -24,7 +24,8 @@ export default function Signup() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, isValid, errors },
+
   } = useForm<SignupFormData>({
     resolver: yupResolver(SIGNUP_SCHEMA),
     mode: 'onChange',
@@ -134,8 +135,10 @@ export default function Signup() {
         </div>
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="text-lg-semibold rounded-xl bg-brand-primary py-3.5 text-text-primary"
+          disabled={isSubmitting || !isValid}
+          className={`text-lg-semibold rounded-xl bg-brand-primary py-3.5 text-text-primary ${
+            !isValid ? 'cursor-not-allowed bg-text-default opacity-50' : ''
+          }`}
         >
           회원가입
         </button>
