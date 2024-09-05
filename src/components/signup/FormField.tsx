@@ -30,7 +30,7 @@ const FormField = ({
           placeholder={placeholder}
           autoComplete="off"
           {...register(id)}
-          className={`placeholder:text-lg-regular h-12 w-85.75-custom rounded-xl border border-solid border-border-tertiary bg-background-secondary px-4 py-3.625-custom text-text-primary placeholder:text-text-default focus:outline-none md:w-115-custom lg:w-115-custom ${
+          className={`placeholder:text-md-regular md:placeholder:text-lg-regular lg:placeholder:text-lg-regular h-12 w-85.75-custom rounded-xl border border-solid border-border-tertiary bg-background-secondary px-4 py-3.625-custom text-text-primary placeholder:text-text-default focus:outline-none md:w-115-custom lg:w-115-custom ${
             error
               ? 'border-status-danger ring-1 ring-status-danger'
               : 'focus:border-status-brand focus:ring-1 focus:ring-status-brand'
