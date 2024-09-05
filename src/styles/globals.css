@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '../styles/themes/fonts.css';
 
 :root {
   /* Brand Colors */
@@ -37,8 +36,18 @@
 
   /* Border Colors */
   --color-border-primary: #f8fafc; /* Primary Border Color */
-  --color-border-secondary: #f8fafc 50%; /* Secondary Border Color with Opacity */
-  --color-border-tertiary: #f8fafc 50%; /* Tertiary Border Color with Opacity */
+  --color-border-secondary: rgba(
+    248,
+    250,
+    252,
+    0.5
+  ); /* Secondary Border Color with Opacity */
+  --color-border-tertiary: rgba(
+    248,
+    250,
+    252,
+    0.1
+  ); /* Tertiary Border Color with Opacity */
 
   /* Text Colors */
   --color-text-primary: #f8fafc; /* Primary Text Color */

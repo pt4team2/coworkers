@@ -104,9 +104,24 @@ const config: Config = {
         'xs-regular': 'var(--font-weight-text-xs-regular)',
       },
       screens: {
-        // sm: { max: '743px' },
         md: { min: '744px', max: '1199px' },
         lg: { min: '1200px' },
+      },
+      width: {
+        '115-custom': '460px',
+        '85.75-custom': '343px',
+      },
+      gap: {
+        '12.25-custom': '49px',
+        '10.5-custom': '42px',
+        '6.75-custom': '27px',
+        '6.25-custom': '25px',
+      },
+      padding: {
+        '3.625-custom': '14.5px',
+      },
+      margin: {
+        '25-custom': '100px',
       },
     },
   },
