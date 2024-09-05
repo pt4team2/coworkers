@@ -37,14 +37,19 @@ const FormField = ({
           } `}
         />
         {trailingIcon && (
-          <Image
-            src={trailingIcon}
-            width={24}
-            height={24}
-            onClick={onIconClick}
-            alt="비밀번호 표시 아이콘"
-            className="absolute right-4 top-1/2 -translate-y-1/2 transform cursor-pointer"
-          />
+          <>
+            <Image
+              src={trailingIcon}
+              width={24}
+              height={24}
+              onClick={onIconClick}
+              alt="비밀번호 표시 아이콘"
+              className="absolute right-4 top-1/2 z-10 -translate-y-1/2 transform cursor-pointer"
+            />
+            <div className="bg-custom-gradient w-9.5-custom absolute right-4 top-1/2 z-0 block h-6 -translate-y-1/2 transform md:hidden lg:hidden">
+              {' '}
+            </div>
+          </>
         )}
       </div>
       {error && (
