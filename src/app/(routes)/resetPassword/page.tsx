@@ -43,13 +43,25 @@ export default function ResetPassword() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div
+      className={`mt-6 flex flex-col items-center md:mt-25-custom lg:mt-35-custom ${hasErrors ? 'gap-6.5-custom md:gap-11.25-custom lg:gap-12.25-custom' : 'gap-6.25-custom md:gap-12.25-custom lg:gap-12'} `}
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-85.75-custom flex-col gap-10 md:w-115-custom lg:w-115-custom"
+      >
         <div>
-          <p>비밀번호 재설정</p>
-          <div>
-            <div>
-              <label htmlFor="password">새 비밀번호</label>
+          <p className="text-2xl-medium md:text-2xl-medium mb-6 text-center text-text-primary md:mb-20 lg:mb-20 lg:text-4xl">
+            비밀번호 재설정
+          </p>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
+              <label
+                htmlFor="password"
+                className="text-lg-medium text-text-primary"
+              >
+                새 비밀번호
+              </label>
               <FormField
                 id="newPassword"
                 type={showNewPassword ? 'text' : 'password'}
@@ -60,8 +72,13 @@ export default function ResetPassword() {
                 error={errors.newPassword}
               />
             </div>
-            <div>
-              <label htmlFor="password">비밀번호 확인</label>
+            <div className="flex flex-col gap-3">
+              <label
+                htmlFor="password"
+                className="text-lg-medium text-text-primary"
+              >
+                비밀번호 확인
+              </label>
               <FormField
                 id="newPasswordConfirm"
                 type={showNewPasswordConfirm ? 'text' : 'password'}
@@ -76,8 +93,14 @@ export default function ResetPassword() {
             </div>
           </div>
         </div>
-        <div>
-          <button type="submit" disabled={isSubmitting || !isValid}>
+        <div className="flex flex-col gap-6">
+          <button
+            type="submit"
+            disabled={isSubmitting || !isValid}
+            className={`text-lg-semibold rounded-xl bg-brand-primary py-3.5 text-text-primary ${
+              !isValid ? 'cursor-not-allowed bg-text-default opacity-50' : ''
+            }`}
+          >
             재설정
           </button>
         </div>
