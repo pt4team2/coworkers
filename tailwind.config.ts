@@ -110,6 +110,7 @@ const config: Config = {
       width: {
         '115-custom': '460px',
         '85.75-custom': '343px',
+        '9.5-custom': '38px',
       },
       gap: {
         '12.25-custom': '49px',
@@ -117,8 +118,6 @@ const config: Config = {
         '10.5-custom': '42px',
         '6.75-custom': '27px',
         '6.5-custom': '26px',
-        '10.5-custom': '42px',
-        '6.75-custom': '27px',
         '6.25-custom': '25px',
       },
       padding: {
