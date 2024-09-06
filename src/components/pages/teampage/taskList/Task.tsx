@@ -19,7 +19,7 @@ export default function Task({ tasklist }: { tasklist: any }) {
       <span className="text-md-medium">{tasklist.name}</span>
       <div className="ml-auto flex h-[25px] w-[58px] flex-row items-center justify-between rounded-[12px] bg-background-primary px-2 py-1">
         <ProgressBar value={progressPercent} />
-        <span className="text-md text-brand-primary">
+        <span className="text-md-regular text-brand-primary">
           {doneTaskCount}/{taskCount}
         </span>
       </div>

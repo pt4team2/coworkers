@@ -4,6 +4,7 @@ import { tasklistMockData } from '@/data/mockData';
 import ImgDone from '@/assets/images/img_done.svg';
 import ImgTodo from '@/assets/images/img_todo.svg';
 import Image from 'next/image';
+import ProgressBarMobile from './ProgressBarMobile';
 
 export default function TaskReport() {
   const allTasks = tasklistMockData.reduce<ITaskList[]>((acc, tasklist) => {
@@ -23,31 +24,47 @@ export default function TaskReport() {
   return (
     <div className="flex flex-col gap-4">
       <span className="text-lg-medium">리포트</span>
-      <div className="flex w-full flex-row items-center justify-between rounded-[12px] bg-background-secondary p-6">
-        <ProgressBar value={progressPercent} />
-        <div className="flex flex-col gap-[4px]">
-          <span className="text-md-medium">
-            오늘의
-            <br />
-            진행 상황
-          </span>
-          <span className="text-[40px] font-bold text-brand-secondary">
-            {progressPercent}%
-          </span>
+      <div className="flex w-full flex-row items-center justify-between rounded-[12px] bg-background-secondary p-3 md:p-6 lg:p-6">
+        {/*모바일*/}
+        <div className="md:invisible md:absolute lg:invisible lg:absolute">
+          <div className="relative flex items-center justify-center">
+            <ProgressBarMobile value={progressPercent} />
+            <div className="inset1/2 absolute flex w-[50px] flex-col items-center justify-center">
+              <span className="text-xs-medium text-center">오늘</span>
+              <span className="text-xl-bold text-brand-secondary">
+                {progressPercent}%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/*태블릿, 데스크탑*/}
+        <div className="hidden flex-row items-center gap-[48px] md:flex lg:flex">
+          <ProgressBar value={progressPercent} />
+          <div className="flex flex-col gap-[4px]">
+            <span className="text-md-medium">
+              오늘의
+              <br />
+              진행 상황
+            </span>
+            <span className="text-[40px] font-bold text-brand-secondary">
+              {progressPercent}%
+            </span>
+          </div>
         </div>
         {/* 오늘의 할일 */}
-        <div className="flex w-2/5 flex-col gap-4">
+        <div className="flex w-5/12 flex-col gap-4">
           <div
             className="flex justify-between rounded-[12px] p-4"
             style={{ backgroundColor: 'var(--color-background-tertiary)' }}
           >
             <div className="flex w-full flex-col">
-              <span>오늘의 할 일</span>
+              <span className="text-xs-medium">오늘의 할 일</span>
               <span className="text-[24px] font-bold text-brand-tertiary">
                 {totalTaskCount}개
               </span>
             </div>
-            <Image src={ImgTodo} alt="할 일 이미지" />
+            <Image width={40} height={40} src={ImgTodo} alt="할 일 이미지" />
           </div>
           {/* 한 일 */}
           <div
@@ -55,7 +72,7 @@ export default function TaskReport() {
             style={{ backgroundColor: 'var(--color-background-tertiary)' }}
           >
             <div className="flex w-full flex-col">
-              <span>한 일</span>
+              <span className="text-xs-medium">한 일</span>
               <span className="text-[24px] font-bold text-brand-tertiary">
                 {doneTaskCount}개
               </span>

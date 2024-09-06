@@ -1,8 +1,8 @@
 import { CircularProgressbar } from 'react-circular-progressbar';
 
-export default function ProgressBar({ value }: { value: number }) {
+export default function ProgressBarMobile({ value }: { value: number }) {
   return (
-    <div className="relative h-44 w-44">
+    <div className="relative h-36 w-36">
       <svg
         style={{
           position: 'absolute',
@@ -23,7 +23,7 @@ export default function ProgressBar({ value }: { value: number }) {
 
       <CircularProgressbar
         value={value}
-        strokeWidth={20}
+        strokeWidth={18}
         styles={{
           path: {
             stroke: `url(#gradient)`,
