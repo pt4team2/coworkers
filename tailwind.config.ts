@@ -113,14 +113,18 @@ const config: Config = {
       },
       gap: {
         '12.25-custom': '49px',
+        '11.25-custom': '45px',
         '10.5-custom': '42px',
         '6.75-custom': '27px',
+        '6.5-custom': '26px',
         '6.25-custom': '25px',
       },
       padding: {
         '3.625-custom': '14.5px',
       },
       margin: {
+        '35-custom': '140px',
+        '30-custom': '120px',
         '25-custom': '100px',
       },
     },

@@ -14,6 +14,7 @@ import { useSignUpFieldData } from '@/hooks/useFormFieldData';
 
 export default function SignUpPage() {
   const signUpFields = useSignUpFieldData();
+
   const {
     register,
     handleSubmit,

@@ -96,7 +96,8 @@ ul {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
-  background-color: #0f172a;
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 
 h1,
@@ -239,6 +240,10 @@ th {
     @apply text-[16px] font-semibold leading-[19px];
   }
 
+  .text-lg-medium-alt {
+    @apply text-[16px] font-medium leading-[24px];
+  }
+  
   .text-lg-medium {
     @apply text-[16px] font-medium leading-[19px];
   }
@@ -253,6 +258,10 @@ th {
 
   .text-md-semibold {
     @apply text-[14px] font-semibold leading-[17px];
+  }
+
+  .text-md-medium-alt {
+    @apply text-[14px] font-medium leading-[24px];
   }
 
   .text-md-medium {
