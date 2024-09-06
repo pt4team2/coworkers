@@ -16,6 +16,7 @@ const config: Config = {
         'brand-tertiary': 'var(--color-brand-tertiary)',
         'brand-gradient-start': 'var(--color-brand-gradient-start)',
         'brand-gradient-end': 'var(--color-brand-gradient-end)',
+        'brand-gradient': 'var(--color-brand-gradient)',
 
         // Point Colors
         'point-purple': 'var(--color-point-purple)',
@@ -117,8 +118,8 @@ const config: Config = {
         '10.5-custom': '42px',
         '6.75-custom': '27px',
         '6.5-custom': '26px',
-        '10.5-custom': '42px',
-        '6.75-custom': '27px',
+        // '10.5-custom': '42px',
+        // '6.75-custom': '27px',
         '6.25-custom': '25px',
       },
       padding: {

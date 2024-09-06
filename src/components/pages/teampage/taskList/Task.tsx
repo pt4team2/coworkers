@@ -1,6 +1,8 @@
-import { tasklistMockData } from '@/data/mockData';
+'use client';
+
 import IcKebab from '@/assets/icons/ic_kebab.svg';
 import Image from 'next/image';
+import ProgressBar from './ProgressBar';
 
 export default function Task({ tasklist }: { tasklist: any }) {
   const taskCount = tasklist.tasks.length;
@@ -11,11 +13,12 @@ export default function Task({ tasklist }: { tasklist: any }) {
     (task: any) => new Date(task.doneAt) < new Date(task.date),
   );
   const doneTaskCount = doneTasks.length;
-
+  const progressPercent = (doneTaskCount / taskCount) * 100;
   return (
     <div className="flex w-full items-center justify-between gap-1 rounded-[12px] bg-background-secondary px-6 py-[11.5px]">
       <span className="text-md-medium">{tasklist.name}</span>
-      <div className="ml-auto flex h-[25px] w-[58px] flex-row items-center justify-center rounded-[12px] bg-background-primary px-2 py-1">
+      <div className="ml-auto flex h-[25px] w-[58px] flex-row items-center justify-between rounded-[12px] bg-background-primary px-2 py-1">
+        <ProgressBar value={progressPercent} />
         <span className="text-md text-brand-primary">
           {doneTaskCount}/{taskCount}
         </span>

@@ -16,4 +16,29 @@ interface ITask {
     id: number;
   }
 
+  interface ITaskList {
+    doneBy: {
+      user: {
+        image: string;
+        nickname: string;
+        id: number;
+      };
+    };
+    writer: {
+      image: string;
+      nickname: string;
+      id: number;
+    };
+    displayIndex: number;
+    commentCount: number;
+    deletedAt: null | string;
+    recurringId: number;
+    frequency: string;
+    updatedAt: string;
+    doneAt: string;
+    date: string;
+    description: string;
+    name: string;
+    id: number;
+  }
   
