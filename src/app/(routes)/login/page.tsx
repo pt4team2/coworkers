@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
+import { Login } from '@/types/auth';
 import FormField from '@/components/signup/FormField';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,17 +13,12 @@ import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 import visibility_on from '@/assets/icons/visibility_on.svg';
 import visibility_off from '@/assets/icons/visibility_off.svg';
 
-type LoginFormData = {
-  email: string;
-  password: string;
-};
-
-export default function Login() {
+export default function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, isValid, errors },
-  } = useForm<LoginFormData>({
+  } = useForm<Login>({
     resolver: yupResolver(LOGIN_SCHEMA),
     mode: 'onChange',
   });
@@ -36,7 +32,7 @@ export default function Login() {
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = (data: Login) => {
     console.log(data);
   };
 
