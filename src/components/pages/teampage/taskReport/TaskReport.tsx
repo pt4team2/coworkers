@@ -47,20 +47,21 @@ export default function TaskReport() {
               <br />
               진행 상황
             </span>
-            <span className="bg-gradient-custom bg-clip-text text-[40px] font-bold text-transparent">
+            <span className="bg-gradient-custom bg-clip-text text-[40px] font-bold leading-[47.73px] text-transparent">
               {progressPercent}%
             </span>
           </div>
         </div>
+
         {/* 오늘의 할일 */}
         <div className="flex w-5/12 flex-col gap-4">
           <div
             className="flex justify-between rounded-[12px] p-4"
             style={{ backgroundColor: 'var(--color-background-tertiary)' }}
           >
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col gap-1">
               <span className="text-xs-medium">오늘의 할 일</span>
-              <span className="text-[24px] font-bold text-brand-tertiary">
+              <span className="text-[24px] font-bold leading-[28.64px] text-brand-tertiary">
                 {totalTaskCount}개
               </span>
             </div>
@@ -71,9 +72,9 @@ export default function TaskReport() {
             className="flex justify-between rounded-[12px] p-4"
             style={{ backgroundColor: 'var(--color-background-tertiary)' }}
           >
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col gap-1">
               <span className="text-xs-medium">한 일</span>
-              <span className="text-[24px] font-bold text-brand-tertiary">
+              <span className="text-[24px] font-bold leading-[28.64px] text-brand-tertiary">
                 {doneTaskCount}개
               </span>
             </div>

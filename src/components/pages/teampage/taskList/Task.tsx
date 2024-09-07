@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import IcKebab from '@/assets/icons/ic_kebab.svg';
 import Image from 'next/image';
 import ProgressBar from './ProgressBar';
+import IcDone from '@/assets/icons/ic_done.svg';
 
 export default function Task({ tasklist }: { tasklist: any }) {
   const taskCount = tasklist.tasks.length;
@@ -14,6 +15,15 @@ export default function Task({ tasklist }: { tasklist: any }) {
   );
   const doneTaskCount = doneTasks.length;
   const progressPercent = (doneTaskCount / taskCount) * 100;
+
+  const [isDone, setIsDone] = useState<boolean>();
+  useEffect(() => {
+    if (doneTaskCount / taskCount === 1) {
+      setIsDone(true);
+    } else {
+      setIsDone(false);
+    }
+  }, [doneTaskCount, taskCount]);
 
   const colors = [
     '#ffe687',
@@ -50,7 +60,11 @@ export default function Task({ tasklist }: { tasklist: any }) {
       <div className="flex w-full items-center justify-between gap-1 px-[8px] py-[7.5px]">
         <span className="text-md-medium">{tasklist.name}</span>
         <div className="ml-auto flex h-[25px] w-[58px] flex-row items-center justify-between rounded-[12px] bg-background-primary px-2 py-1">
-          <ProgressBar value={progressPercent} />
+          {isDone ? (
+            <Image src={IcDone} alt="완료" />
+          ) : (
+            <ProgressBar value={progressPercent} />
+          )}
           <span className="text-md-regular text-brand-primary">
             {doneTaskCount}/{taskCount}
           </span>

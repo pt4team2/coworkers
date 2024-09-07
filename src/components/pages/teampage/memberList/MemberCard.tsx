@@ -28,7 +28,9 @@ export default function MemberCard({ member }: MemberCardProps) {
             />
             <span className="text-md-medium">{member.userName}</span>
           </div>
-          <span className="text-xs-regular truncate">{member.userEmail}</span>
+          <span className="text-xs-regular truncate text-text-secondary">
+            {member.userEmail}
+          </span>
         </div>
         <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
       </div>
@@ -42,9 +44,9 @@ export default function MemberCard({ member }: MemberCardProps) {
             src={ImgMember}
             alt="멤버 프로필이미지"
           />
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center gap-[2px]">
             <span className="text-md-medium">{member.userName}</span>
-            <span className="text-xs-regular break-words">
+            <span className="text-xs-regular break-words text-text-secondary">
               {member.userEmail}
             </span>
           </div>
