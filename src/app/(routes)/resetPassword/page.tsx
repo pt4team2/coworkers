@@ -4,41 +4,38 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RESET_PASSWORD_SCHEMA } from '@/utils/schema';
+import { ResetPassword } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
 import visibility_on from '@/assets/icons/visibility_on.svg';
 import visibility_off from '@/assets/icons/visibility_off.svg';
 
-type ResetPasswordFormData = {
-  newPassword: string;
-  newPasswordConfirm: string;
-};
-
-export default function ResetPassword() {
+export default function ResetPasswordPage() {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, isValid, errors },
-  } = useForm<ResetPasswordFormData>({
+  } = useForm<ResetPassword>({
     resolver: yupResolver(RESET_PASSWORD_SCHEMA),
     mode: 'onChange',
   });
 
   // 비밀번호 표시
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const toggleNewPasswordVisibility = () => {
-    setShowNewPassword(!showNewPassword);
+  const [showpassword, setShowpassword] = useState(false);
+  const togglepasswordVisibility = () => {
+    setShowpassword(!showpassword);
   };
 
   // 비밀번호 확인 표시
-  const [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false);
-  const toggleNewPasswordConfirmVisibility = () => {
-    setShowNewPasswordConfirm(!showNewPasswordConfirm);
+  const [showpasswordConfirmation, setShowpasswordConfirmation] =
+    useState(false);
+  const togglepasswordConfirmationVisibility = () => {
+    setShowpasswordConfirmation(!showpasswordConfirmation);
   };
 
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
 
-  const onSubmit = (data: ResetPasswordFormData) => {
+  const onSubmit = (data: ResetPassword) => {
     console.log(data);
   };
 
@@ -63,13 +60,13 @@ export default function ResetPassword() {
                 새 비밀번호
               </label>
               <FormField
-                id="newPassword"
-                type={showNewPassword ? 'text' : 'password'}
+                id="password"
+                type={showpassword ? 'text' : 'password'}
                 placeholder="비밀번호 (숫자, 영문, 특수문자, 8자 이상)를 입력해주세요."
-                trailingIcon={showNewPassword ? visibility_off : visibility_on}
-                onIconClick={toggleNewPasswordVisibility}
+                trailingIcon={showpassword ? visibility_off : visibility_on}
+                onIconClick={togglepasswordVisibility}
                 register={register}
-                error={errors.newPassword}
+                error={errors.password}
               />
             </div>
             <div className="flex flex-col gap-3">
@@ -80,15 +77,15 @@ export default function ResetPassword() {
                 비밀번호 확인
               </label>
               <FormField
-                id="newPasswordConfirm"
-                type={showNewPasswordConfirm ? 'text' : 'password'}
+                id="passwordConfirmation"
+                type={showpasswordConfirmation ? 'text' : 'password'}
                 placeholder="새 비밀번호를 다시 한번 입력해주세요."
                 trailingIcon={
-                  showNewPasswordConfirm ? visibility_off : visibility_on
+                  showpasswordConfirmation ? visibility_off : visibility_on
                 }
-                onIconClick={toggleNewPasswordConfirmVisibility}
+                onIconClick={togglepasswordConfirmationVisibility}
                 register={register}
-                error={errors.newPasswordConfirm}
+                error={errors.passwordConfirmation}
               />
             </div>
           </div>
