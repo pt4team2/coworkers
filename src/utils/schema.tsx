@@ -48,3 +48,22 @@ export const SIGNUP_SCHEMA = COMMON_SCHEMA.concat(
       .matches(/^https?:\/\/.+/, '유효한 이미지 형식이 아닙니다.'),
   }),
 );
+
+// 비밀번호 재설정 스키마
+export const RESET_PASSWORD_SCHEMA = yup.object().shape({
+  newPassword: yup
+    .string()
+    .required('비밀번호를 입력해주세요.')
+    .min(8, '비밀번호는 최소 8자 이상입니다.')
+    .matches(
+      /^[a-zA-Z0-9!@#$%^*+=-]+$/,
+      '숫자, 영문, 특수문자로만 가능합니다.',
+    ),
+  newPasswordConfirm: yup
+    .string()
+    .required('비밀번호를 입력해주세요.')
+    .min(8, '비밀번호는 최소 8자 이상입니다.')
+    .test('password-match', '비밀번호가 일치하지 않습니다.', function (value) {
+      return value === this.parent.newPassword || !value;
+    }),
+});

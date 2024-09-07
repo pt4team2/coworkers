@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import IcProfile from 'src/assets/icons/ic_profile.svg';
-import mockData from './mockData';
+import { teamMockData } from '@/data/mockData';
 
 export default function () {
   return (
@@ -11,7 +11,7 @@ export default function () {
         src={IcProfile}
         alt="사용자 프로필"
       />
-      <span className="hidden lg:block">{mockData.nickname}</span>
+      <span className="hidden lg:block">{teamMockData.nickname}</span>
     </div>
   );
 }
