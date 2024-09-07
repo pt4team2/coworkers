@@ -7,7 +7,8 @@
     /* Brand Gradient */
     --color-brand-gradient-start: #10b981; /* Start of Gradient */
     --color-brand-gradient-end: #a3e635; /* End of Gradient */
-  
+    --color-brand-gradient: linear-gradient(90deg, #10b981 0%, #a3e635 100%);
+    
     /* Point Colors */
     --color-point-purple: #a855f7; /* Point Color Purple */
     --color-point-blue: #3b82f6; /* Point Color Blue */

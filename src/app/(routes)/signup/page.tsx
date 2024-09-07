@@ -4,49 +4,30 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SIGNUP_SCHEMA } from '@/utils/schema';
-import FormField from '@/components/signup/FormField';
+import { SignUp } from '@/types/auth';
+import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
-import visibility_on from '@/assets/icons/visibility_on.svg';
-import visibility_off from '@/assets/icons/visibility_off.svg';
+import { useSignUpFieldData } from '@/hooks/useFormFieldData';
 
-type SignupFormData = {
-  nickname: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-};
+export default function SignUpPage() {
+  const signUpFields = useSignUpFieldData();
 
-export default function Signup() {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, isValid, errors },
-
-  } = useForm<SignupFormData>({
+  } = useForm<SignUp>({
     resolver: yupResolver(SIGNUP_SCHEMA),
     mode: 'onChange',
   });
 
-  // 비밀번호 표시
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  // 비밀번호 확인 표시
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const togglePasswordConfirmVisibility = () => {
-    setShowPasswordConfirm(!showPasswordConfirm);
-  };
-
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
 
-  const onSubmit = (data: SignupFormData) => {
+  const onSubmit = (data: SignUp) => {
     console.log(data);
   };
 
@@ -65,72 +46,28 @@ export default function Signup() {
             회원가입
           </p>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <label
-                htmlFor="nickname"
-                className="text-lg-medium text-text-primary"
-              >
-                닉네임
-              </label>
-              <FormField
-                id="nickname"
-                type="text"
-                placeholder="닉네임을 입력해주세요."
-                register={register}
-                error={errors.nickname}
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                htmlFor="email"
-                className="text-lg-medium text-text-primary"
-              >
-                이메일
-              </label>
-              <FormField
-                id="email"
-                type="email"
-                placeholder="이메일을 입력해주세요."
-                register={register}
-                error={errors.email}
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                htmlFor="password"
-                className="text-lg-medium text-text-primary"
-              >
-                비밀번호
-              </label>
-              <FormField
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="비밀번호를 입력해주세요."
-                trailingIcon={showPassword ? visibility_off : visibility_on}
-                onIconClick={togglePasswordVisibility}
-                register={register}
-                error={errors.password}
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                htmlFor="passwordConfirm"
-                className="text-lg-medium text-text-primary"
-              >
-                비밀번호 확인
-              </label>
-              <FormField
-                id="passwordConfirm"
-                type={showPasswordConfirm ? 'text' : 'password'}
-                placeholder="비밀번호를 다시 한 번 입력해주세요."
-                trailingIcon={
-                  showPasswordConfirm ? visibility_off : visibility_on
-                }
-                onIconClick={togglePasswordConfirmVisibility}
-                register={register}
-                error={errors.passwordConfirm}
-              />
-            </div>
+            {signUpFields.map((field) => (
+              <div key={field.id} className="flex flex-col gap-3">
+                <label
+                  htmlFor={field.id}
+                  className="text-lg-medium text-text-primary"
+                >
+                  {field.id === 'nickname'
+                    ? '닉네임'
+                    : field.id === 'email'
+                      ? '이메일'
+                      : field.id === 'password'
+                        ? '비밀번호'
+                        : '비밀번호 확인'}
+                </label>
+                <FormField
+                  key={field.id}
+                  {...field}
+                  register={register}
+                  error={errors[field.id as keyof SignUp]}
+                />
+              </div>
+            ))}
           </div>
         </div>
         <button

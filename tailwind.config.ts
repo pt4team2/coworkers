@@ -16,6 +16,7 @@ const config: Config = {
         'brand-tertiary': 'var(--color-brand-tertiary)',
         'brand-gradient-start': 'var(--color-brand-gradient-start)',
         'brand-gradient-end': 'var(--color-brand-gradient-end)',
+        'brand-gradient': 'var(--color-brand-gradient)',
 
         // Point Colors
         'point-purple': 'var(--color-point-purple)',
@@ -63,6 +64,9 @@ const config: Config = {
         'icon-warning': 'var(--color-icon-warning)',
         'icon-brand': 'var(--color-icon-brand)',
         'icon-danger': 'var(--color-icon-danger)',
+      },
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(90deg, #10B981 0%, #A3E635 100%)',
       },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
@@ -124,9 +128,13 @@ const config: Config = {
         '3.625-custom': '14.5px',
       },
       margin: {
-        '25-custom': '100px',
-        '30-custom': '120px',
         '35-custom': '140px',
+        '30-custom': '120px',
+        '25-custom': '100px',
+      },
+      backgroundImage: {
+        'custom-gradient':
+          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
       },
       backgroundImage: {
         'custom-gradient':
