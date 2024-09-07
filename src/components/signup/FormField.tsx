@@ -1,16 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { UseFormRegister, FieldError } from 'react-hook-form';
-
-interface FormFieldProps {
-  id: string;
-  type: string;
-  placeholder: string;
-  register: UseFormRegister<any>;
-  error?: FieldError;
-  trailingIcon?: string;
-  onIconClick?: () => void;
-}
+import { FormFieldProps } from '@/types/auth';
 
 const FormField = ({
   id,
