@@ -13,7 +13,7 @@ import RepairIcon from '@/assets/icons/ic_repair.svg';
 export default function Landing() {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative w-full h-[680px] mb-8 overflow-hidden">
+      <div className="relative w-full h-[1080px] mb-8 overflow-hidden md:h-[940px]">
         <div className="absolute inset-0 w-full h-full">
           <Image
             src={LandingImage1}
@@ -23,7 +23,7 @@ export default function Landing() {
             quality={100}
           />
         </div>
-        <div className="absolute inset-x-0 top-[20%] transform -translate-y-1/2 text-center">
+        <div className="absolute inset-x-0 top-[144px] transform -translate-y-1/2 text-center md:top-[160px]">
           <div className="flex items-center justify-center mb-5 md:mb-2">
             <h1 className="text-[48px] leading-[58px] md:text-4xl">
               함께 만들어가는 투두 리스트
@@ -46,7 +46,7 @@ export default function Landing() {
         </div>
         <a
         href=""
-        className="absolute left-1/2 bottom-8 transform -translate-x-1/2 py-3 px-36 rounded-full bg-gradient-to-r from-[#10B981] to-[#A3E635] text-lg-semibold"
+        className="absolute left-1/2 bottom-[120px] transform -translate-x-1/2 py-3 px-36 rounded-full bg-gradient-to-r from-[#10B981] to-[#A3E635] text-lg-semibold"
         style={{
             whiteSpace: 'nowrap',
             minWidth: 'fit-content'
@@ -56,7 +56,7 @@ export default function Landing() {
         </a>
       </div>
 
-      <div className="relative mb-20 w-[996px] h-[419px] p-[1px] rounded-[40px] mt-[180px] bg-gradient-to-r from-[#10B981] to-[#CEF57E] md:w-[696px] md:h-[354px] md:mb-6 md:mt-[120px]">
+      <div className="relative mb-20 w-[996px] h-[419px] p-[1px] rounded-[40px] mt-[60px] bg-gradient-to-r from-[#10B981] to-[#CEF57E] md:w-[696px] md:h-[354px] md:mb-6 md:mt-0">
         <div className="relative p-6 rounded-[40px] w-full h-full bg-[rgba(15,23,42,1)] md:bg-[rgba(15,23,42,1)]"
             style={{
                 boxShadow: '0px 0px 12px 2px #FFFFFF40'
@@ -115,7 +115,7 @@ export default function Landing() {
         </div>
       </div>
 
-      <div className="relative p-6 rounded-[40px] mb-[230px] w-[996px] h-[419px] bg-slate-950 border-none md:w-[696px] md:h-[354px] md:mb-[176px]">
+      <div className="relative p-6 rounded-[40px] w-[996px] h-[419px] bg-slate-950 border-none md:w-[696px] md:h-[354px]">
         <div className="absolute left-[174px] bottom-[81px] md:left-[121px] md:bottom-[81px]">
           <Image
             src={MockupImage3}
@@ -139,8 +139,8 @@ export default function Landing() {
         </div>
       </div>
 
-      <div className="relative w-full flex flex-col items-center mb-20">
-        <div className="text-center mb-8">
+      <div className="relative w-full flex flex-col items-center">
+        <div className="text-center mb-8 mt-[230px] md:mt-[176px]">
           <h1 className="text-4xl mb-[24px]">
             지금 바로 시작해보세요
           </h1>
