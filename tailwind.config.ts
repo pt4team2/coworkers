@@ -114,6 +114,7 @@ const config: Config = {
       width: {
         '115-custom': '460px',
         '85.75-custom': '343px',
+        '9.5-custom': '38px',
       },
       gap: {
         '12.25-custom': '49px',
@@ -121,8 +122,6 @@ const config: Config = {
         '10.5-custom': '42px',
         '6.75-custom': '27px',
         '6.5-custom': '26px',
-        // '10.5-custom': '42px',
-        // '6.75-custom': '27px',
         '6.25-custom': '25px',
       },
       padding: {
@@ -132,6 +131,10 @@ const config: Config = {
         '25-custom': '100px',
         '30-custom': '120px',
         '35-custom': '140px',
+      },
+      backgroundImage: {
+        'custom-gradient':
+          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
       },
     },
   },
