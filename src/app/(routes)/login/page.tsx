@@ -10,10 +10,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
-import visibility_on from '@/assets/icons/visibility_on.svg';
-import visibility_off from '@/assets/icons/visibility_off.svg';
+import { useLoginFieldData } from '@/hooks/useFormFieldData';
 
 export default function LoginPage() {
+  const loginFields = useLoginFieldData();
+
   const {
     register,
     handleSubmit,
@@ -22,12 +23,6 @@ export default function LoginPage() {
     resolver: yupResolver(LOGIN_SCHEMA),
     mode: 'onChange',
   });
-
-  // 비밀번호 표시
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
@@ -49,38 +44,22 @@ export default function LoginPage() {
             로그인
           </p>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <label
-                htmlFor="email"
-                className="text-lg-medium text-text-primary"
-              >
-                이메일
-              </label>
-              <FormField
-                id="email"
-                type="email"
-                placeholder="이메일을 입력해주세요."
-                register={register}
-                error={errors.email}
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                htmlFor="password"
-                className="text-lg-medium text-text-primary"
-              >
-                비밀번호
-              </label>
-              <FormField
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="비밀번호를 입력해주세요."
-                trailingIcon={showPassword ? visibility_off : visibility_on}
-                onIconClick={togglePasswordVisibility}
-                register={register}
-                error={errors.password}
-              />
-            </div>
+            {loginFields.map((field) => (
+              <div key={field.id} className="flex flex-col gap-3">
+                <label
+                  htmlFor={field.id}
+                  className="text-lg-medium text-text-primary"
+                >
+                  {field.id === 'email' ? '이메일' : '비밀번호'}
+                </label>
+                <FormField
+                  key={field.id}
+                  {...field}
+                  register={register}
+                  error={errors[field.id as keyof Login]}
+                />
+              </div>
+            ))}
           </div>
           <Link
             href="#"
