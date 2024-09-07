@@ -65,6 +65,9 @@ const config: Config = {
         'icon-brand': 'var(--color-icon-brand)',
         'icon-danger': 'var(--color-icon-danger)',
       },
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(90deg, #10B981 0%, #A3E635 100%)',
+      },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
       },

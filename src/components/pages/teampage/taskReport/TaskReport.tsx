@@ -31,7 +31,7 @@ export default function TaskReport() {
             <ProgressBarMobile value={progressPercent} />
             <div className="inset1/2 absolute flex w-[50px] flex-col items-center justify-center">
               <span className="text-xs-medium text-center">오늘</span>
-              <span className="text-xl-bold text-brand-secondary">
+              <span className="bg-gradient-custom text-xl-bold bg-clip-text text-transparent">
                 {progressPercent}%
               </span>
             </div>
@@ -47,7 +47,7 @@ export default function TaskReport() {
               <br />
               진행 상황
             </span>
-            <span className="text-[40px] font-bold text-brand-secondary">
+            <span className="bg-gradient-custom bg-clip-text text-[40px] font-bold text-transparent">
               {progressPercent}%
             </span>
           </div>
