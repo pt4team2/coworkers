@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SIGNUP_SCHEMA } from '@/utils/schema';
 import { SignUp } from '@/types/auth';
-import FormField from '@/components/signup/FormField';
+import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';

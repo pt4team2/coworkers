@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RESET_PASSWORD_SCHEMA } from '@/utils/schema';
-import FormField from '@/components/signup/FormField';
+import FormField from '@/components/auth/FormField';
 import visibility_on from '@/assets/icons/visibility_on.svg';
 import visibility_off from '@/assets/icons/visibility_off.svg';
 
