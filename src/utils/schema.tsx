@@ -15,8 +15,8 @@ export const COMMON_SCHEMA = yup.object().shape({
     .required('비밀번호는 필수 입력입니다.')
     .min(8, '비밀번호는 최소 8자 이상입니다.')
     .matches(
-      /^[a-zA-Z0-9!@#$%^*+=-]+$/,
-      '숫자, 영문, 특수문자로만 가능합니다.',
+      /^[a-zA-Z0-9!@#$%^&*]+$/,
+      '숫자, 영문, 특수문자(!@#$%^&*)로만 가능합니다.',
     ),
 });
 
@@ -32,7 +32,7 @@ export const SIGNUP_SCHEMA = COMMON_SCHEMA.concat(
       .min(2, '최소 2자 이상 입력해 주세요.')
       .max(20, '닉네임은 최대 20자까지 가능합니다.')
       .matches(/^[가-힣a-zA-Z]+$/, '유효한 이름이 아닙니다.'),
-    passwordConfirmation: yup
+    passwordConfirm: yup
       .string()
       .required('비밀번호 확인을 입력해 주세요.')
       .min(8, '비밀번호는 최소 8자 이상입니다.')
@@ -43,27 +43,25 @@ export const SIGNUP_SCHEMA = COMMON_SCHEMA.concat(
           return value === this.parent.password || !value;
         },
       ),
-    image: yup
-      .string()
-      .matches(/^https?:\/\/.+/, '유효한 이미지 형식이 아닙니다.'),
   }),
 );
 
 // 비밀번호 재설정 스키마
 export const RESET_PASSWORD_SCHEMA = yup.object().shape({
-  newPassword: yup
+  password: yup
     .string()
     .required('비밀번호를 입력해주세요.')
     .min(8, '비밀번호는 최소 8자 이상입니다.')
     .matches(
-      /^[a-zA-Z0-9!@#$%^*+=-]+$/,
-      '숫자, 영문, 특수문자로만 가능합니다.',
+      /^[a-zA-Z0-9!@#$%^&*]+$/,
+      '숫자, 영문, 특수문자(!@#$%^&*)로만 가능합니다.',
     ),
-  newPasswordConfirm: yup
+  passwordConfirmation: yup
     .string()
     .required('비밀번호를 입력해주세요.')
     .min(8, '비밀번호는 최소 8자 이상입니다.')
     .test('password-match', '비밀번호가 일치하지 않습니다.', function (value) {
       return value === this.parent.newPassword || !value;
     }),
+  token: yup.string().required('유효하지 않은 토큰입니다.'),
 });
