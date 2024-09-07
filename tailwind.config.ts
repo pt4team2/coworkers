@@ -128,9 +128,9 @@ const config: Config = {
         '3.625-custom': '14.5px',
       },
       margin: {
-        '25-custom': '100px',
-        '30-custom': '120px',
         '35-custom': '140px',
+        '30-custom': '120px',
+        '25-custom': '100px',
       },
       backgroundImage: {
         'custom-gradient':
