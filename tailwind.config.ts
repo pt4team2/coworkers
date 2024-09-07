@@ -16,6 +16,7 @@ const config: Config = {
         'brand-tertiary': 'var(--color-brand-tertiary)',
         'brand-gradient-start': 'var(--color-brand-gradient-start)',
         'brand-gradient-end': 'var(--color-brand-gradient-end)',
+        'brand-gradient': 'var(--color-brand-gradient)',
 
         // Point Colors
         'point-purple': 'var(--color-point-purple)',
@@ -63,6 +64,9 @@ const config: Config = {
         'icon-warning': 'var(--color-icon-warning)',
         'icon-brand': 'var(--color-icon-brand)',
         'icon-danger': 'var(--color-icon-danger)',
+      },
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(90deg, #10B981 0%, #A3E635 100%)',
       },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
