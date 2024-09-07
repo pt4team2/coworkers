@@ -1,5 +1,5 @@
 'use client';
-
+import { useState, useEffect } from 'react';
 import IcKebab from '@/assets/icons/ic_kebab.svg';
 import Image from 'next/image';
 import ProgressBar from './ProgressBar';
@@ -14,16 +14,49 @@ export default function Task({ tasklist }: { tasklist: any }) {
   );
   const doneTaskCount = doneTasks.length;
   const progressPercent = (doneTaskCount / taskCount) * 100;
+
+  const colors = [
+    '#ffe687',
+    '#84B9c0',
+    '#c5d7f2',
+    '#e26559',
+    '#ffd57e',
+    '#8adfe3',
+    '#ecae7d',
+    '#fa897b',
+    '#ccabd8',
+    '#e36387',
+  ];
+
+  // 랜덤 색상 선택 함수
+  const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  };
+
+  // 배경색을 상태로 관리
+  const [bgColor, setBgColor] = useState<string>('');
+
+  useEffect(() => {
+    setBgColor(getRandomColor());
+  }, []);
+
   return (
-    <div className="flex w-full items-center justify-between gap-1 rounded-[12px] bg-background-secondary px-6 py-[11.5px]">
-      <span className="text-md-medium">{tasklist.name}</span>
-      <div className="ml-auto flex h-[25px] w-[58px] flex-row items-center justify-between rounded-[12px] bg-background-primary px-2 py-1">
-        <ProgressBar value={progressPercent} />
-        <span className="text-md-regular text-brand-primary">
-          {doneTaskCount}/{taskCount}
-        </span>
+    <div className="flex rounded-[12px] bg-background-secondary">
+      <div
+        className="w-3 rounded-l-[12px]"
+        style={{ backgroundColor: bgColor }}
+      ></div>
+      <div className="flex w-full items-center justify-between gap-1 px-[8px] py-[7.5px]">
+        <span className="text-md-medium">{tasklist.name}</span>
+        <div className="ml-auto flex h-[25px] w-[58px] flex-row items-center justify-between rounded-[12px] bg-background-primary px-2 py-1">
+          <ProgressBar value={progressPercent} />
+          <span className="text-md-regular text-brand-primary">
+            {doneTaskCount}/{taskCount}
+          </span>
+        </div>
+        <Image src={IcKebab} width={16} height={16} alt="케밥 아이콘" />
       </div>
-      <Image src={IcKebab} width={16} height={16} alt="케밥 아이콘" />
     </div>
   );
 }

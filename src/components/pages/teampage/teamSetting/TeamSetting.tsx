@@ -15,7 +15,7 @@ export default function TeamSetting() {
         src={backgroundImg}
         alt="백그라운드 이미지"
       />
-      <Image src={settingIcon} alt="설정 아이콘" />
+      <Image width={24} height={24} src={settingIcon} alt="설정 아이콘" />
     </div>
   );
 }
