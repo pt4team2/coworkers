@@ -86,7 +86,7 @@ export default function Landing() {
       </div>
 
       <div
-        className="relative p-6 rounded-[40px] border w-[343px] h-[467px] mb-6 lg:mb-20 lg:w-[996px] lg:h-[419px] lg:mt-[60px] md:w-[696px] md:h-[354px]"
+        className="relative p-6 rounded-[40px] border w-[343px] h-[467px] mb-6 lg:mb-20 lg:w-[996px] lg:h-[419px] md:w-[696px] md:h-[354px]"
         style={{
           background: 'var(--Background-Secondary, #1E293B)',
           border: '1px solid var(--Border-Primary, #F8FAFC1A)'
@@ -115,7 +115,7 @@ export default function Landing() {
         </div>
       </div>
 
-      <div className="relative p-6 rounded-[40px] bg-slate-950 border-none w-[343px] h-[467px] mb-6 lg:mb-20 lg:w-[996px] lg:h-[419px] lg:mt-[60px] md:w-[696px] md:h-[354px]">
+      <div className="relative p-6 rounded-[40px] bg-slate-950 border-none w-[343px] h-[467px] mb-6 lg:mb-20 lg:w-[996px] lg:h-[419px] md:w-[696px] md:h-[354px]">
         <div className="absolute left-[54px] bottom-[193px] lg:left-[174px] lg:bottom-[81px] md:left-[121px] md:bottom-[81px]">
           <Image
             src={MockupImage3}
