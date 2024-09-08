@@ -67,6 +67,8 @@ const config: Config = {
       },
       backgroundImage: {
         'gradient-custom': 'linear-gradient(90deg, #10B981 0%, #A3E635 100%)',
+        'custom-gradient':
+          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
       },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
@@ -131,14 +133,6 @@ const config: Config = {
         '35-custom': '140px',
         '30-custom': '120px',
         '25-custom': '100px',
-      },
-      backgroundImage: {
-        'custom-gradient':
-          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
-      },
-      backgroundImage: {
-        'custom-gradient':
-          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
       },
     },
   },
