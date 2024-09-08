@@ -1,5 +1,7 @@
 import React from 'react';
-import './styles/globals.css';
+import '../styles/globals.css';
+import Header from '@/components/header/Header';
+
 
 export default function RootLayout({
   children,
@@ -10,10 +12,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          <nav>내비게이션 바</nav>
+          <Header />
         </header>
-        <main>{children}</main>
-        <footer>푸터</footer>
+        <main className="m-auto max-w-[1200px] px-4 md:px-6 lg:px-0">
+          {children}
+        </main>
       </body>
     </html>
   );
