@@ -249,7 +249,7 @@ th {
   .text-lg-medium-alt {
     @apply text-[16px] font-medium leading-[24px];
   }
-
+  
   .text-lg-medium {
     @apply text-[16px] font-medium leading-[19px];
   }
