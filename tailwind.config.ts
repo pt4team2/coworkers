@@ -16,6 +16,7 @@ const config: Config = {
         'brand-tertiary': 'var(--color-brand-tertiary)',
         'brand-gradient-start': 'var(--color-brand-gradient-start)',
         'brand-gradient-end': 'var(--color-brand-gradient-end)',
+        'brand-gradient': 'var(--color-brand-gradient)',
 
         // Point Colors
         'point-purple': 'var(--color-point-purple)',
@@ -64,6 +65,9 @@ const config: Config = {
         'icon-brand': 'var(--color-icon-brand)',
         'icon-danger': 'var(--color-icon-danger)',
       },
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(90deg, #10B981 0%, #A3E635 100%)',
+      },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
       },
@@ -110,18 +114,27 @@ const config: Config = {
       width: {
         '115-custom': '460px',
         '85.75-custom': '343px',
+        '9.5-custom': '38px',
       },
       gap: {
         '12.25-custom': '49px',
+        '11.25-custom': '45px',
         '10.5-custom': '42px',
         '6.75-custom': '27px',
+        '6.5-custom': '26px',
         '6.25-custom': '25px',
       },
       padding: {
         '3.625-custom': '14.5px',
       },
       margin: {
+        '35-custom': '140px',
+        '30-custom': '120px',
         '25-custom': '100px',
+      },
+      backgroundImage: {
+        'custom-gradient':
+          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
       },
     },
   },
