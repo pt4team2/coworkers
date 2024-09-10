@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import MockupImage1 from '@/assets/landing/mockup_1.svg';
 import MockupImage2 from '@/assets/landing/mockup_2.svg';
@@ -25,16 +24,16 @@ export default function Landing() {
         </div>
         <div className="absolute inset-x-0 transform -translate-y-1/2 text-center top-[115px] lg:top-[144px] md:top-[160px]">
           <div className="flex items-center justify-center mb-1 lg:mb-5 md:mb-2">
-            <h1 className="text-2xl-medium lg:text-[48px] lg:leading-[58px] md:text-4xl">
+            <h1 className="text-2xl-medium lg:text-6xl-semibold md:text-4xl-semibold">
               함께 만들어가는 투두 리스트
             </h1>
-            <div className="lg:ml-6 md:ml-4">
+            <div className="ml-4 lg:ml-6 md:ml-4">
               <Image src={RepairIcon} alt="Repair 아이콘" width={28} height={28} 
               className="lg:w-[56px] lg:h-[56px] md:w-[48px] md:h-[48px]"/>
             </div>
           </div>
-          <h2
-            className="bg-clip-text text-transparent text-3xl-semibold lg:text-[64px] lg:font-semibold lg:leading-[76px] md:text-[48px] md:leading-[58px]"
+          <span
+            className="text-3xl-semibold lg:text-[64px] lg:font-semibold lg:leading-[76px] md:text-6xl-semibold"
             style={{
               background: 'linear-gradient(90deg, #10B981 0%, #CEF57E 100%)',
               WebkitBackgroundClip: 'text',
@@ -42,11 +41,11 @@ export default function Landing() {
             }}
           >
             Coworkers
-          </h2>
+          </span>
         </div>
         <a
         href="/"
-        className="absolute left-1/2 transform -translate-x-1/2 px-[143px] py-[13px] rounded-full bg-gradient-to-r from-[#10B981] to-[#A3E635] text-lg-semibold bottom-12 md:bottom-[120px] w-[343px] md:w-[373px]"
+        className="absolute left-1/2 transform -translate-x-1/2 px-[143px] py-[13px] rounded-full bg-gradient-to-r from-[#10B981] to-[#A3E635] text-lg-semibold bottom-12 md:bottom-[120px] w-[343px] md:w-[373px] h-[45px] md:h-[48px]"
         style={{
             whiteSpace: 'nowrap',
             minWidth: 'fit-content'
@@ -76,7 +75,7 @@ export default function Landing() {
                 alt="아이콘 이미지"
                 width={48}
                 height={48}
-                className="mb-4"
+                className="mb-3 lg:mb-4"
             />
             <p className="text-2lg-medium text-left bg-transparent lg:text-2xl-medium">
                 그룹으로<br />할 일을 관리해요
@@ -141,13 +140,13 @@ export default function Landing() {
 
       <div className="relative w-full flex flex-col items-center">
         <div className="text-center mt-[123px] lg:mt-[230px] md:mt-[176px]">
-          <h1 className="text-2xl-semibold mb:text-4xl mb-4 md:mb-6">
+          <h1 className="text-2xl-semibold md:text-4xl-semibold lg:text-4xl-semibold mb-4 md:mb-6 lg:">
             지금 바로 시작해보세요
           </h1>
-          <p className="text-lg-medium md:text-2xl-medium">
+          <p className="text-lg-medium md:text-2xl-medium lg:text-2xl-medium">
           팀원 모두와 같은 방향,
-          <span className="hidden md:inline"> 같은 속도로 나아가는 가장 쉬운 방법</span>
-          <span className="md:hidden"><br /> 같은 속도로 나아가는 가장 쉬운 방법</span>
+          <span className="hidden lg:inline md:inline"> 같은 속도로 나아가는 가장 쉬운 방법</span>
+          <span className="lg:hidden md:hidden"><br /> 같은 속도로 나아가는 가장 쉬운 방법</span>
           </p>
 
         </div>
