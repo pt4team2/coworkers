@@ -26,10 +26,10 @@ const mockArticle: Article = {
   id: 1,
   title: '자유게시판에 질문을 올릴 수 있어요',
   image: BoardImage,
-  createdAt: '2024-07-25',
-  updatedAt: '2024-07-25',
+  createdAt: '2024-09-10',
+  updatedAt: '2024-09-10',
   writer: {
-    name: '우지은',
+    name: '김김김',
   },
   content: '질문을 올려볼까요?',
   likeCount: 9999,
