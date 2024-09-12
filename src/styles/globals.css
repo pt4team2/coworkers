@@ -172,6 +172,12 @@ th {
   .text-balance {
     text-wrap: balance;
   }
+  .text-6xl-semibold {
+    @apply text-[48px] font-semibold leading-[58px];
+  }
+  .text-4xl-semibold {
+    @apply text-[40px] font-semibold leading-[48px];
+  }
   .text-4xl {
     @apply text-[40px] font-medium leading-[48px];
   }
