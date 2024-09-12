@@ -1,9 +1,9 @@
 import Image from 'next/image';
+import type { StaticImageData } from 'next/image';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import MedalIcon from '@/assets/icons/ic_medal.svg';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import BoardImage from '@/assets/images/img_boardtest.png';
-import type { StaticImageData } from 'next/image';
 
 interface Writer {
   name: string;
@@ -41,7 +41,7 @@ const BestArticleCard = () => {
 
   return (
     <div
-      className="relative w-[343px] h-auto p-[40px_16px_16px] gap-4 border rounded-[12px]"
+      className="relative w-full h-auto p-[40px_16px_16px] gap-4 border rounded-[12px] lg:w-[387px] lg:gap-5"
       style={{
         backgroundColor: 'var(--color-background-secondary)',
         borderColor: '#334155',
@@ -55,13 +55,13 @@ const BestArticleCard = () => {
       <div className="flex">
         <div className="flex-1 flex flex-col justify-between">
           <div
-            className="text-md-medium-alt"
+            className="text-md-medium-alt md:text-lg md:leading-7 md:font-medium lg:text-lg lg:leading-7 lg:font-medium"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             {board.title}
           </div>
           <div
-            className="text-xs-medium"
+            className="text-xs-medium md:text-md-medium lg:text-md-medium"
             style={{ color: 'var(--color-text-disabled)' }}
           >
             {new Date(board.createdAt).toLocaleDateString()}
@@ -89,13 +89,13 @@ const BestArticleCard = () => {
             width={32}
             height={32}
           />
-          <span className="text-xs-medium ml-3">{board.writer.name}</span>
+          <span className="text-xs-medium ml-3 md:text-md-medium lg:text-md-medium">{board.writer.name}</span>
         </div>
 
         <div className="flex items-center">
           <Image src={LikeIcon} alt="likeIcon" width={18} />
           <span
-            className="text-xs-regular ml-2"
+            className="text-xs-regular ml-2 md:text-md-regular lg:text-md-regular"
             style={{ color: 'var(--color-text-disabled)' }}
           >
             {board.likeCount}

@@ -1,57 +1,74 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import ToggleIcon from '@/assets/icons/ic_toggle.svg';
+import Dropdown from '@/components/pages/boards/dropdown/Dropdown';
+import BestArticleCard from '@/components/pages/boards/bestArticleCard/BestArticleCard';
+import ArticleCard from '@/components/pages/boards/articleCard/ArticleCard';
+import SearchForm from '@/components/pages/boards/searchForm/SearchForm';
+import RightArrowIcon from '@/assets/icons/ic_rightArrow.svg';
 
-interface DropdownProps {
-  onSelect: (sortOption: string) => void;
-}
+const BoardPage = () => {
+  const [cardCount, setCardCount] = useState(1);
 
-const Dropdown = ({ onSelect }: DropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('최신순');
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const handleResize = () => {
+    if (window.innerWidth >= 1200) {
+      setCardCount(3);
+    } else if (window.innerWidth >= 744) {
+      setCardCount(2);
+    } else {
+      setCardCount(1);
+    }
   };
 
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-    onSelect(option);
-  };
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const bestArticles = [1, 2, 3]; // 임시 카드 배열
 
   return (
-    <div className="relative inline-block text-left">
-      <button
-        onClick={toggleDropdown}
-        className={`inline-flex justify-between items-center w-[94px] h-[40px] md:w-[120px] md:h-[44px] lg:w-[120px] lg:h-[44px] px-2 py-2 rounded-[8px] shadow bg-[#1E293B] text-xs-regular 
-        ${isOpen ? 'bg-[#334155]' : 'hover:bg-[#334155]'} focus:outline-none`}>
-        {selectedOption}
-        <Image src={ToggleIcon} alt="토글 아이콘" width={24} height={24}/>
-      </button>
+    <div className="px-4 py-8 bg-[#0F172A] min-h-screen md:px-6 md:py-10 lg:py-10">
+      <h1 className="text-2lg-bold mb-6">자유게시판</h1>
+      <SearchForm onSearch={(term) => console.log(term)} placeholder="검색어를 입력해주세요" />
 
-      {isOpen && (
-        <div className="origin-top-right absolute right-0 w-[94px] md:w-[120px] lg:w-[120px] mt-[6px] md:mt-2 lg:mt-2 rounded-lg shadow-lg bg-[#1E293B] border border-[#334155] focus:outline-none">
-          <div role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <button
-              onClick={() => handleSelect('최신순')}
-              className="block h-[40px] w-full px-[8px] py-[11px] text-xs-regular hover:bg-gray-700 rounded-t-[8px] text-left"
-              role="menuitem">
-              최신순
-            </button>
-            <button
-              onClick={() => handleSelect('좋아요 많은순')}
-              className="block h-[40px] w-full px-[8px] py-[11px] text-xs-regular hover:bg-gray-700 rounded-b-[8px] text-left"
-              role="menuitem">
-              좋아요 많은순
-            </button>
+      <div className="mt-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-lg-medium">베스트 게시글</h2>
+        <button className="flex items-center">
+            <span className="text-[#94A3B8] text-xs-regular">더보기</span>
+            <Image src={RightArrowIcon} alt="오른쪽 화살 아이콘" width={16} height={16} className="ml-[2px]" />
+        </button>
+      </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {bestArticles.slice(0, cardCount).map((article, index) => (
+            <BestArticleCard key={index} />
+          ))}
+        </div>
+      </div>
+
+      <div className="border-t border-[#F8FAFC1A] my-8"></div>
+
+      <div>
+        <div className="flex justify-between items-center mb-4 relative">
+          <h2 className="text-white text-lg-regular">게시글</h2>
+          <div className="relative z-10">
+            <Dropdown onSelect={(option) => console.log(option)} />
           </div>
         </div>
-      )}
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 z-0">
+          <ArticleCard />
+          <ArticleCard />
+          <ArticleCard />
+          <ArticleCard />
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Dropdown;
+export default BoardPage;
