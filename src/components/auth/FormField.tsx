@@ -36,7 +36,7 @@ const FormField = ({
               alt="비밀번호 표시 아이콘"
               className="absolute right-4 top-1/2 z-10 -translate-y-1/2 transform cursor-pointer"
             />
-            <div className="bg-custom-gradient w-9.5-custom absolute right-4 top-1/2 z-0 block h-6 -translate-y-1/2 transform md:hidden lg:hidden">
+            <div className="bg-gradient-custom2 absolute right-4 top-1/2 z-0 block h-6 w-9.5-custom -translate-y-1/2 transform md:hidden lg:hidden">
               {' '}
             </div>
           </>

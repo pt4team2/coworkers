@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { FormStore } from '@/types/auth';
 
-export const useFormStore = create<FormStore>((set) => ({
+export const formStore = create<FormStore>((set) => ({
   showPassword: false,
   setShowPassword: () =>
     set((state) => ({ showPassword: !state.showPassword })),
