@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SIGNUP_SCHEMA } from '@/utils/schema';
 import { SignUp } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
-import { useSignUpFieldData } from '@/hooks/formFieldData';
+import { signUpFieldData } from '@/hooks/formFieldData';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { loginStore } from '@/store/loginStore';
 import { useSession } from 'next-auth/react';
@@ -17,7 +17,7 @@ import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 
 export default function SignUpPage() {
-  const signUpFields = useSignUpFieldData();
+  const signUpFields = signUpFieldData();
 
   // 세션 존재 시 홈 화면으로 리다이렉트
   const router = useRouter();
