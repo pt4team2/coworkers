@@ -33,6 +33,4 @@ export interface FormStore {
   setShowPassword: () => void;
   showPasswordConfirmation: boolean;
   setShowPasswordConfirmation: () => void;
-  // visibility_on: string;
-  // visibility_off: string;
 }
