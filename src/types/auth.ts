@@ -16,6 +16,13 @@ export interface SignUp extends CommonType {
 // 로그인
 export interface Login extends CommonType {}
 
+// 비밀번호 재설정
+export interface ResetPassword {
+  password: string;
+  passwordConfirmation: string;
+  token: string;
+}
+
 // FormField
 export interface FormFieldProps {
   id: string;
