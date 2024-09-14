@@ -1,4 +1,4 @@
-import { useFormStore } from '@/store/useFormStore';
+import { formStore } from '@/store/formStore';
 import visibility_on from '@/assets/icons/visibility_on.svg';
 import visibility_off from '@/assets/icons/visibility_off.svg';
 
@@ -8,7 +8,7 @@ export const useSignUpFieldData = () => {
     setShowPassword,
     showPasswordConfirmation,
     setShowPasswordConfirmation,
-  } = useFormStore();
+  } = formStore();
 
   function togglePasswordVisibility() {
     setShowPassword();
@@ -39,7 +39,7 @@ export const useSignUpFieldData = () => {
 };
 
 export const useLoginFieldData = () => {
-  const { showPassword, setShowPassword } = useFormStore();
+  const { showPassword, setShowPassword } = formStore();
 
   function togglePasswordVisibility() {
     setShowPassword();
@@ -53,6 +53,40 @@ export const useLoginFieldData = () => {
       placeholder: '비밀번호를 입력해주세요.',
       trailingIcon: showPassword ? visibility_off : visibility_on,
       onIconClick: togglePasswordVisibility,
+    },
+  ];
+};
+
+export const useResetPasswordFieldData = () => {
+  const {
+    showPassword,
+    setShowPassword,
+    showPasswordConfirmation,
+    setShowPasswordConfirmation,
+  } = useFormStore();
+
+  function togglePasswordVisibility() {
+    setShowPassword();
+  }
+
+  function togglePasswordConfirmationVisibility() {
+    setShowPasswordConfirmation();
+  }
+
+  return [
+    {
+      id: 'password',
+      type: showPassword ? 'text' : 'password',
+      placeholder: '비밀번호 (숫자, 영문, 특수문자, 8자 이상)를 입력해주세요.',
+      trailingIcon: showPassword ? visibility_off : visibility_on,
+      onIconClick: togglePasswordVisibility,
+    },
+    {
+      id: 'passwordConfirmation',
+      type: showPasswordConfirmation ? 'text' : 'password',
+      placeholder: '새 비밀번호를 다시 한번 입력해주세요.',
+      trailingIcon: showPasswordConfirmation ? visibility_off : visibility_on,
+      onIconClick: togglePasswordConfirmationVisibility,
     },
   ];
 };
