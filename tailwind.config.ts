@@ -130,6 +130,7 @@ const config: Config = {
       },
       padding: {
         '3.625-custom': '14.5px',
+        '5.25-custom': '21px',
       },
       margin: {
         '35-custom': '140px',

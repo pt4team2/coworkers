@@ -36,7 +36,8 @@ export default function List() {
       {tasklistMockData.flatMap((group) =>
         group.tasks.map((task) => <ListCard key={task.id} task={task} />),
       )}
-      <button className="rounded-40-custom bg-green-500 p-[14px_21px]">
+
+      <button className="px-5.25-custom rounded-full bg-green-500 py-3.5">
         + 할 일 추가
       </button>
     </div>
