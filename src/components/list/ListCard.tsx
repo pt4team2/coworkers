@@ -9,7 +9,7 @@ import VectorIcon from '@/assets/icons/ic-vector.svg';
 
 export default function ListCard() {
   return (
-    <div className="h-18.5-custom rounded-lg bg-background-secondary px-3.5 py-3">
+    <div className="mb-4 h-18.5-custom rounded-lg bg-background-secondary px-3.5 py-3">
       <div className="mb-2.5 flex justify-between">
         <div className="flex">
           <Checkbox />

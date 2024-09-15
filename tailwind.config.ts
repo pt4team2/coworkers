@@ -118,7 +118,7 @@ const config: Config = {
       },
       height: {
         '5.25-custom': '21px',
-        'h-6': '24px',
+        '6.25-custom': '25px',
         '18.5-custom': '74px',
       },
       gap: {
@@ -147,6 +147,7 @@ const config: Config = {
         '14px': '14px',
         '21px': '21px',
         '24px': '24px',
+        '27px': '27px',
       },
       lineHeight: {
         '5.25-custom': '21px',
