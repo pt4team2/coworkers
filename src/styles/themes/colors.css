@@ -1,57 +1,61 @@
 :root {
-  /* Brand Colors */
-  --color-brand-primary: #10b981; /* Brand Primary Color */
-  --color-brand-secondary: #34d399; /* Brand Secondary Color */
-  --color-brand-tertiary: #a3e635; /* Brand Tertiary Color */
 
-  /* Brand Gradient */
-  --color-brand-gradient-start: #10b981; /* Start of Gradient */
-  --color-brand-gradient-end: #a3e635; /* End of Gradient */
+    /* Brand Colors */
+    --color-brand-primary: #10b981; /* Brand Primary Color */
+    --color-brand-secondary: #34d399; /* Brand Secondary Color */
+    --color-brand-tertiary: #a3e635; /* Brand Tertiary Color */
+  
+    /* Brand Gradient */
+    --color-brand-gradient-start: #10b981; /* Start of Gradient */
+    --color-brand-gradient-end: #a3e635; /* End of Gradient */
+    --color-brand-gradient: linear-gradient(90deg, #10b981 0%, #a3e635 100%);
+    
+    /* Point Colors */
+    --color-point-purple: #a855f7; /* Point Color Purple */
+    --color-point-blue: #3b82f6; /* Point Color Blue */
+    --color-point-cyan: #06b6d4; /* Point Color Cyan */
+    --color-point-pink: #ec4899; /* Point Color Pink */
+    --color-point-rose: #f43f5e; /* Point Color Rose */
+    --color-point-orange: #f97316; /* Point Color Orange */
+    --color-point-yellow: #eab308; /* Point Color Yellow */
+  
+    /* Background Colors */
+    --color-background-primary: #0f172a; /* Primary Background Color */
+    --color-background-secondary: #1e293b; /* Secondary Background Color */
+    --color-background-tertiary: #334155; /* Tertiary Background Color */
+    --color-background-inverse: #ffffff; /* Inverse Background Color */
+  
+    /* Interaction Colors */
+    --color-interaction-normal: #94a3b8; /* Default Interaction Color */
+    --color-interaction-inactive: #94a3b8; /* Inactive State Color */
+    --color-interaction-hover: #059669; /* Hover State Color */
+    --color-interaction-pressed: #047857; /* Pressed State Color */
+    --color-interaction-focus: #10b981; /* Focused State Color */
+  
+    /* Border Colors */
+    --color-border-primary: #f8fafc; /* Primary Border Color */
+    --color-border-secondary: #f8fafc 50%; /* Secondary Border Color with Opacity */
+    --color-border-tertiary: #f8fafc 50%; /* Tertiary Border Color with Opacity */
+  
+    /* Text Colors */
+    --color-text-primary: #f8fafc; /* Primary Text Color */
+    --color-text-secondary: #cbd5e1; /* Secondary Text Color */
+    --color-text-tertiary: #e2e8f0; /* Tertiary Text Color */
+    --color-text-danger: #dc2626; /* Danger Text Color */
+    --color-text-default: #64748b; /* Default Text Color */
+    --color-text-inverse: #ffffff; /* Inverse Text Color */
+    --color-text-disabled: #94a3b8; /* Disabled Text Color */
+  
+    /* Status Colors */
+    --color-status-brand: #10b981; /* Brand Status Color */
+    --color-status-danger: #dc2626; /* Danger Status Color */
+  
+    /* Icon Colors */
+    --color-icon-primary: #64748b; /* Primary Icon Color */
+    --color-icon-inverse: #f8fafc; /* Inverse Icon Color */
+    --color-icon-warning: #f8fafc; /* Warning Icon Color */
+    --color-icon-brand: #10b981; /* Brand Icon Color */
+    --color-icon-danger: #dc2626; /* Danger Icon Color */
+  }
+  
 
-  /* Point Colors */
-  --color-point-purple: #a855f7; /* Point Color Purple */
-  --color-point-blue: #3b82f6; /* Point Color Blue */
-  --color-point-cyan: #06b6d4; /* Point Color Cyan */
-  --color-point-pink: #ec4899; /* Point Color Pink */
-  --color-point-rose: #f43f5e; /* Point Color Rose */
-  --color-point-orange: #f97316; /* Point Color Orange */
-  --color-point-yellow: #eab308; /* Point Color Yellow */
-
-  /* Background Colors */
-  --color-background-primary: #0f172a; /* Primary Background Color */
-  --color-background-secondary: #1e293b; /* Secondary Background Color */
-  --color-background-tertiary: #334155; /* Tertiary Background Color */
-  --color-background-inverse: #ffffff; /* Inverse Background Color */
-
-  /* Interaction Colors */
-  --color-interaction-normal: #94a3b8; /* Default Interaction Color */
-  --color-interaction-inactive: #94a3b8; /* Inactive State Color */
-  --color-interaction-hover: #059669; /* Hover State Color */
-  --color-interaction-pressed: #047857; /* Pressed State Color */
-  --color-interaction-focus: #10b981; /* Focused State Color */
-
-  /* Border Colors */
-  --color-border-primary: #f8fafc; /* Primary Border Color */
-  --color-border-secondary: #f8fafc 50%; /* Secondary Border Color with Opacity */
-  --color-border-tertiary: #f8fafc 50%; /* Tertiary Border Color with Opacity */
-
-  /* Text Colors */
-  --color-text-primary: #f8fafc; /* Primary Text Color */
-  --color-text-secondary: #cbd5e1; /* Secondary Text Color */
-  --color-text-tertiary: #e2e8f0; /* Tertiary Text Color */
-  --color-text-danger: #dc2626; /* Danger Text Color */
-  --color-text-default: #64748b; /* Default Text Color */
-  --color-text-inverse: #ffffff; /* Inverse Text Color */
-  --color-text-disabled: #94a3b8; /* Disabled Text Color */
-
-  /* Status Colors */
-  --color-status-brand: #10b981; /* Brand Status Color */
-  --color-status-danger: #dc2626; /* Danger Status Color */
-
-  /* Icon Colors */
-  --color-icon-primary: #64748b; /* Primary Icon Color */
-  --color-icon-inverse: #f8fafc; /* Inverse Icon Color */
-  --color-icon-warning: #f8fafc; /* Warning Icon Color */
-  --color-icon-brand: #10b981; /* Brand Icon Color */
-  --color-icon-danger: #dc2626; /* Danger Icon Color */
-}

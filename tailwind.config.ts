@@ -16,6 +16,7 @@ const config: Config = {
         'brand-tertiary': 'var(--color-brand-tertiary)',
         'brand-gradient-start': 'var(--color-brand-gradient-start)',
         'brand-gradient-end': 'var(--color-brand-gradient-end)',
+        'brand-gradient': 'var(--color-brand-gradient)',
 
         // Point Colors
         'point-purple': 'var(--color-point-purple)',
@@ -65,6 +66,11 @@ const config: Config = {
         'icon-brand': 'var(--color-icon-brand)',
         'icon-danger': 'var(--color-icon-danger)',
       },
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(90deg, #10B981 0%, #A3E635 100%)',
+        'custom-gradient':
+          'linear-gradient(270deg, #1E293B 0%, #1E293B 62.05%, rgba(30, 41, 59, 0) 127.63%)',
+      },
       fontFamily: {
         sans: ['Pretendard', 'sans-serif'],
       },
@@ -111,15 +117,6 @@ const config: Config = {
       width: {
         '115-custom': '460px',
         '85.75-custom': '343px',
-        'w-9': '36px',
-        'w-10': '40px',
-        'w-12': '48px',
-        '300.25-custom': '1201px',
-      },
-      height: {
-        '5.25-custom': '21px',
-        '6.25-custom': '25px',
-        '18.5-custom': '74px',
       },
       gap: {
         'gap-2.5': '10px',
@@ -135,24 +132,9 @@ const config: Config = {
         '3.625-custom': '14.5px',
       },
       margin: {
-        '25-custom': '100px',
-        '30-custom': '120px',
         '35-custom': '140px',
-        '21-custom': '84px',
-      },
-      borderRadius: {
-        '40-custom': '40px',
-      },
-      spacing: {
-        '14px': '14px',
-        '21px': '21px',
-        '24px': '24px',
-        '27px': '27px',
-      },
-      lineHeight: {
-        '5.25-custom': '21px',
-        '3.5-custom': '14px',
-        '6': '24px',
+        '30-custom': '120px',
+        '25-custom': '100px',
       },
     },
   },

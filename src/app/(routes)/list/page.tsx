@@ -5,11 +5,13 @@ import RightArrow from '@/assets/icons/ic_arrow_right.svg';
 import BtnCallender from '@/assets/icons/btn_calendar.svg';
 import ListCard from '@/components/list/ListCard';
 import FilterSelection from '@/components/list/FilterSelection';
+import { teamMockData, tasklistMockData } from '@/data/mockData';
+import TasksList from '@/components/pages/teampage/taskList/TasksList';
 
 export default function List() {
   return (
     <div className="lg:w-300.25-custom">
-      <span className="font-pretendard mb-27px lg: md-6 mt-6 block h-5.25-custom w-9 text-center text-lg font-bold leading-5.25-custom md:my-6 md:h-6 md:w-10 md:text-xl md:leading-6 lg:mb-6 lg:mt-10 lg:h-6 lg:w-12 lg:text-left">
+      <span className="font-pretendard mb-27px lg: md-6 h-5.25-custom leading-5.25-custom mt-6 block w-9 text-center text-lg font-bold md:my-6 md:h-6 md:w-10 md:text-xl md:leading-6 lg:mb-6 lg:mt-10 lg:h-6 lg:w-12 lg:text-left">
         할일
       </span>
       <div className="mb-4 flex justify-between md:mb-6 lg:mb-6">
@@ -31,7 +33,9 @@ export default function List() {
       </div>
       <FilterSelection />
 
-      <ListCard />
+      {tasklistMockData.flatMap((group) =>
+        group.tasks.map((task) => <ListCard key={task.id} task={task} />),
+      )}
       <button className="rounded-40-custom bg-green-500 p-[14px_21px]">
         + 할 일 추가
       </button>
