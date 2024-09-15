@@ -52,6 +52,7 @@ const config: Config = {
         'text-default': 'var(--color-text-default)',
         'text-inverse': 'var(--color-text-inverse)',
         'text-disabled': 'var(--color-text-disabled)',
+        'text-focus': '',
 
         // Status Colors
         'status-brand': 'var(--color-status-brand)',
@@ -110,15 +111,24 @@ const config: Config = {
       width: {
         '115-custom': '460px',
         '85.75-custom': '343px',
+        'w-9': '36px',
+        'w-10': '40px',
+        'w-12': '48px',
+        '300.25-custom': '1201px',
+      },
+      height: {
+        '5.25-custom': '21px',
+        'h-6': '24px',
+        '18.5-custom': '74px',
       },
       gap: {
+        'gap-2.5': '10px',
+        'gap-1.5': '6px',
         '12.25-custom': '49px',
         '11.25-custom': '45px',
         '10.5-custom': '42px',
         '6.75-custom': '27px',
         '6.5-custom': '26px',
-        '10.5-custom': '42px',
-        '6.75-custom': '27px',
         '6.25-custom': '25px',
       },
       padding: {
@@ -128,6 +138,20 @@ const config: Config = {
         '25-custom': '100px',
         '30-custom': '120px',
         '35-custom': '140px',
+        '21-custom': '84px',
+      },
+      borderRadius: {
+        '40-custom': '40px',
+      },
+      spacing: {
+        '14px': '14px',
+        '21px': '21px',
+        '24px': '24px',
+      },
+      lineHeight: {
+        '5.25-custom': '21px',
+        '3.5-custom': '14px',
+        '6': '24px',
       },
     },
   },

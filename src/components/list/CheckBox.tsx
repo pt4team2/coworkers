@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import Image from 'next/image';
@@ -13,16 +13,21 @@ const Checkbox: React.FC = () => {
   };
 
   return (
-    <div className="relative inline-block">
+    <div className="flex w-6 items-center justify-center">
       <input
         type="checkbox"
-        id="myCheckbox"
-        className="sr-only"
+        id="checkbox"
+        className="appearance-none"
         checked={checked}
         onChange={handleChange}
       />
-      <label htmlFor="myCheckbox" className="cursor-pointer block">
-          <Image src={checked? CheckedImage:UncheckedImage} alt='checkbox' height={18} width={18}/>
+      <label htmlFor="checkbox" className="cursor-pointer">
+        <Image
+          src={checked ? CheckedImage : UncheckedImage}
+          alt="checkbox"
+          height={18}
+          width={18}
+        />
       </label>
     </div>
   );

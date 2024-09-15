@@ -25,7 +25,6 @@ export default function Signup() {
     register,
     handleSubmit,
     formState: { isSubmitting, isValid, errors },
-
   } = useForm<SignupFormData>({
     resolver: yupResolver(SIGNUP_SCHEMA),
     mode: 'onChange',
