@@ -5,7 +5,7 @@ declare module 'next-auth' {
     user: {
       id: number;
       nickname: string;
-      email: string;
+      email?: string;
       image: string;
       teamId: string;
       createdAt: string;
@@ -13,5 +13,6 @@ declare module 'next-auth' {
     };
     accessToken: string;
     refreshToken: string;
+    expires: string;
   }
 }
