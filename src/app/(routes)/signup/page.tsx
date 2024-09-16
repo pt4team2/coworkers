@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SIGNUP_SCHEMA } from '@/utils/schema';
@@ -9,7 +9,7 @@ import FormField from '@/components/auth/FormField';
 import { signUpFieldData } from '@/hooks/formFieldData';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { loginStore } from '@/store/loginStore';
-import { useSession } from 'next-auth/react';
+import { getProviders, signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -65,6 +65,17 @@ export default function SignUpPage() {
       console.log('회원가입 실패: ', error);
     }
   };
+
+  // 카카오 로그인
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res: any = await getProviders();
+
+      setProviders(res);
+    })();
+  }, []);
 
   return (
     <div
@@ -134,7 +145,13 @@ export default function SignUpPage() {
                 alt="구글로 로그인하기"
               />
             </Link>
-            <Link href="#">
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault(); // 기본 동작 막기
+                signIn('kakao', { redirect: true, callbackUrl: '/' });
+              }}
+            >
               <Image
                 src={kakaotalkLogo}
                 width={42}
