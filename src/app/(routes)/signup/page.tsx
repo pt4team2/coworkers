@@ -1,23 +1,20 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SIGNUP_SCHEMA } from '@/utils/schema';
 import { SignUp } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
-import { useSignUpFieldData } from '@/hooks/formFieldData';
+import { signUpFieldData } from '@/hooks/formFieldData';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { loginStore } from '@/store/loginStore';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import googleLogo from '@/assets/icons/googleLogo.svg';
-import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
+import OAuthLogin from '@/components/auth/OAuthLogin';
 
 export default function SignUpPage() {
-  const signUpFields = useSignUpFieldData();
+  const signUpFields = signUpFieldData();
 
   // 세션 존재 시 홈 화면으로 리다이렉트
   const router = useRouter();
@@ -115,36 +112,7 @@ export default function SignUpPage() {
           회원가입
         </button>
       </form>
-      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom lg:w-115-custom">
-        <div className="flex w-full items-center text-text-primary">
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-          <span className="text-lg-regular mx-6 text-text-inverse">OR</span>
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-        </div>
-        <div className="flex w-full items-center justify-between">
-          <span className="text-lg-medium text-text-inverse">
-            간편 회원가입하기
-          </span>
-          <div className="flex gap-4">
-            <Link href="#">
-              <Image
-                src={googleLogo}
-                width={42}
-                height={42}
-                alt="구글로 로그인하기"
-              />
-            </Link>
-            <Link href="#">
-              <Image
-                src={kakaotalkLogo}
-                width={42}
-                height={42}
-                alt="카카오로 로그인하기"
-              />
-            </Link>
-          </div>
-        </div>
-      </div>
+      <OAuthLogin label="간편 회원가입하기" />
     </div>
   );
 }
