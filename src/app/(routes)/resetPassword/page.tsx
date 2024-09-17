@@ -6,10 +6,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { RESET_PASSWORD_SCHEMA } from '@/utils/schema';
 import { ResetPassword } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
-import { useResetPasswordFieldData } from '@/hooks/formFieldData';
+import { resetPasswordFieldData } from '@/hooks/formFieldData';
 
 export default function ResetPasswordPage() {
-  const resetPasswordFields = useResetPasswordFieldData();
+  const resetPasswordFields = resetPasswordFieldData();
 
   const {
     register,
