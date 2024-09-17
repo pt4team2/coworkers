@@ -31,7 +31,13 @@ export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
       <div className="flex w-full items-center justify-between">
         <span className="text-lg-medium text-text-inverse">{label}</span>
         <div className="flex gap-4">
-          <Link href="#">
+          <Link
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              signIn('google', { redirect: true, callbackUrl: '/' });
+            }}
+          >
             <Image
               src={googleLogo}
               width={42}
@@ -42,7 +48,7 @@ export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
           <Link
             href="#"
             onClick={(e) => {
-              e.preventDefault(); // 기본 동작 막기
+              e.preventDefault();
               signIn('kakao', { redirect: true, callbackUrl: '/' });
             }}
           >
