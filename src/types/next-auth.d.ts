@@ -12,7 +12,7 @@ declare module 'next-auth' {
       updatedAt: string;
     };
     accessToken: string;
-    refreshToken: string;
+    refreshToken: string | undefined;
     expires: string;
   }
 }
