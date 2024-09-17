@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import KakaoProvider from 'next-auth/providers/kakao';
+import GoogleProvider from 'next-auth/providers/google';
 
 const handler = NextAuth({
   debug: true,
@@ -45,6 +46,10 @@ const handler = NextAuth({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+    }),
   ],
   session: {
     strategy: 'jwt',
@@ -74,22 +79,23 @@ const handler = NextAuth({
     },
     async session({ session, token }) {
       if (token.sub) {
-        // 카카오 로그인인 경우
+        // 간편 로그인
         session = {
           user: {
             id: Number(token.sub),
             nickname: token.name as string,
-            createdAt: new Date(Number(token.iat) * 1000).toISOString(),
-            updatedAt: new Date(Number(token.exp) * 1000).toISOString(),
+            email: token.email as string,
             image: token.image as string,
             teamId: '7-2',
+            createdAt: new Date(Number(token.iat) * 1000).toISOString(),
+            updatedAt: new Date(Number(token.exp) * 1000).toISOString(),
           },
           accessToken: token.accessToken as string,
           refreshToken: token.refreshToken as string,
           expires: new Date(Number(token.expires) * 1000).toISOString(),
         };
       } else {
-        // 자체 로그인인 경우
+        // 자체 로그인
         session = token as any;
       }
       console.log('----------');
