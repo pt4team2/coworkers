@@ -9,12 +9,9 @@ import FormField from '@/components/auth/FormField';
 import { signUpFieldData } from '@/hooks/formFieldData';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { loginStore } from '@/store/loginStore';
-import { getProviders, signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import googleLogo from '@/assets/icons/googleLogo.svg';
-import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
+import OAuthLogin from '@/components/auth/OAuthLogin';
 
 export default function SignUpPage() {
   const signUpFields = signUpFieldData();
@@ -66,17 +63,6 @@ export default function SignUpPage() {
     }
   };
 
-  // 카카오 로그인
-  const [providers, setProviders] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const res: any = await getProviders();
-
-      setProviders(res);
-    })();
-  }, []);
-
   return (
     <div
       className={`mt-6 flex flex-col items-center ${
@@ -126,42 +112,7 @@ export default function SignUpPage() {
           회원가입
         </button>
       </form>
-      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom lg:w-115-custom">
-        <div className="flex w-full items-center text-text-primary">
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-          <span className="text-lg-regular mx-6 text-text-inverse">OR</span>
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-        </div>
-        <div className="flex w-full items-center justify-between">
-          <span className="text-lg-medium text-text-inverse">
-            간편 회원가입하기
-          </span>
-          <div className="flex gap-4">
-            <Link href="#">
-              <Image
-                src={googleLogo}
-                width={42}
-                height={42}
-                alt="구글로 로그인하기"
-              />
-            </Link>
-            <Link
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // 기본 동작 막기
-                signIn('kakao', { redirect: true, callbackUrl: '/' });
-              }}
-            >
-              <Image
-                src={kakaotalkLogo}
-                width={42}
-                height={42}
-                alt="카카오로 로그인하기"
-              />
-            </Link>
-          </div>
-        </div>
-      </div>
+      <OAuthLogin label="간편 회원가입하기" />
     </div>
   );
 }
