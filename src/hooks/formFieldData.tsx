@@ -1,14 +1,14 @@
-import { useFormStore } from '@/store/useFormStore';
+import { formStore } from '@/store/formStore';
 import visibility_on from '@/assets/icons/visibility_on.svg';
 import visibility_off from '@/assets/icons/visibility_off.svg';
 
-export const useSignUpFieldData = () => {
+export const signUpFieldData = () => {
   const {
     showPassword,
     setShowPassword,
     showPasswordConfirmation,
     setShowPasswordConfirmation,
-  } = useFormStore();
+  } = formStore();
 
   function togglePasswordVisibility() {
     setShowPassword();
@@ -38,8 +38,8 @@ export const useSignUpFieldData = () => {
   ];
 };
 
-export const useLoginFieldData = () => {
-  const { showPassword, setShowPassword } = useFormStore();
+export const loginFieldData = () => {
+  const { showPassword, setShowPassword } = formStore();
 
   function togglePasswordVisibility() {
     setShowPassword();
@@ -57,13 +57,13 @@ export const useLoginFieldData = () => {
   ];
 };
 
-export const useResetPasswordFieldData = () => {
+export const resetPasswordFieldData = () => {
   const {
     showPassword,
     setShowPassword,
     showPasswordConfirmation,
     setShowPasswordConfirmation,
-  } = useFormStore();
+  } = formStore();
 
   function togglePasswordVisibility() {
     setShowPassword();

@@ -10,10 +10,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
-import { useLoginFieldData } from '@/hooks/useFormFieldData';
+import { loginFieldData } from '@/hooks/formFieldData';
 
 export default function LoginPage() {
-  const loginFields = useLoginFieldData();
+  const loginFields = loginFieldData();
 
   const {
     register,

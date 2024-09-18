@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RESET_PASSWORD_SCHEMA } from '@/utils/schema';
 import { ResetPassword } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
-import { useResetPasswordFieldData } from '@/hooks/useFormFieldData';
+import { useResetPasswordFieldData } from '@/hooks/formFieldData';
 
 export default function ResetPasswordPage() {
   const resetPasswordFields = useResetPasswordFieldData();
