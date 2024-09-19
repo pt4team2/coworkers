@@ -6,14 +6,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
 import { Login } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
-import { loginFieldData } from '@/hooks/formFieldData';
-import { loginStore } from '@/store/loginStore';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
+import { loginFieldData } from '@/hooks/formFieldData';
+import { useModalStore } from '@/store/useModalStore';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import Modal from '@/components/modal/Modal';
+import { loginStore } from '@/store/loginStore';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
@@ -50,6 +53,8 @@ export default function LoginPage() {
     await signInUser();
   };
 
+  const { openModal } = useModalStore();
+
   return (
     <div
       className={`mt-6 flex flex-col items-center lg:mt-35-custom ${hasErrors ? 'md:mt-30-custom' : 'md:mt-25-custom'} ${hasErrors ? 'gap-6.5-custom md:gap-11.25-custom lg:gap-12.25-custom' : 'gap-6.25-custom md:gap-12.25-custom lg:gap-12'} `}
@@ -83,9 +88,22 @@ export default function LoginPage() {
           <Link
             href="#"
             className="text-md-medium-alt md:text-lg-medium-alt lg:text-lg-medium-alt mt-3 flex flex-col text-end text-brand-primary underline"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
           >
             비밀번호를 잊으셨나요?
           </Link>
+          <ModalWrapper>
+            <Modal
+              title="비밀번호 재설정"
+              description="비밀번호 재설정 링크를 보내드립니다."
+              input={true}
+              inputPlaceholder="이메일을 입력하세요."
+              closeBtn
+            />
+          </ModalWrapper>
         </div>
         <div className="flex flex-col gap-6">
           <button
