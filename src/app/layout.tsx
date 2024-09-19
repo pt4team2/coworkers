@@ -16,7 +16,7 @@ export default function RootLayout({
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang="en">
+      <html lang="ko">
         <body>
           <Providers>
             <header>
