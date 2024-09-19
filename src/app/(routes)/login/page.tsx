@@ -1,19 +1,32 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
 import { Login } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
+import { loginFieldData } from '@/hooks/formFieldData';
+import { loginStore } from '@/store/loginStore';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
-import { useLoginFieldData } from '@/hooks/useFormFieldData';
 
 export default function LoginPage() {
-  const loginFields = useLoginFieldData();
+  const loginFields = loginFieldData();
+
+  // 세션 존재 시 홈 화면으로 리다이렉트
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/');
+    }
+  }, [status, router]);
 
   const {
     register,
@@ -27,8 +40,14 @@ export default function LoginPage() {
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
 
-  const onSubmit = (data: Login) => {
-    console.log(data);
+  // 로그인
+  const { setEmail, setPassword, signInUser } = loginStore();
+
+  const onSubmit = async (data: Login) => {
+    setEmail(data.email);
+    setPassword(data.password);
+
+    await signInUser();
   };
 
   return (

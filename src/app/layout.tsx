@@ -5,6 +5,8 @@ import '../styles/globals.css';
 import Header from '@/components/header/Header';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
+import Providers from '@/components/auth/Providers';
+
 
 export default function RootLayout({
   children,
@@ -16,7 +18,14 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
       <html lang="en">
         <body>
-          <main>{children}</main>
+          <Providers>
+            <header>
+              <Header/>
+            </header>
+          <main className="m-auto max-w-[1200px] px-4 md:px-6 lg:px-0">
+            {children}
+          </main>
+          </Providers>
         </body>
       </html>
     </QueryClientProvider>
