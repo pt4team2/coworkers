@@ -68,3 +68,15 @@ export const RESET_PASSWORD_SCHEMA = yup.object().shape({
     }),
   token: yup.string().required('유효하지 않은 토큰입니다.'),
 });
+
+// 이메일 스키마
+export const EMAIL_SCHEMA = yup.object().shape({
+  email: yup
+    .string()
+    .required('이메일은 필수 입력입니다.')
+    .email('이메일 형식으로 작성해 주세요.')
+    .matches(
+      /^[A-Za-z0-9_-]{2,}@[A-Za-z0-9.-]+\.(?:[A-Za-z]{2}\.[A-Za-z]{2,}|[A-Za-z]{3,})$/,
+      '이메일 형식으로 작성해 주세요.',
+    ),
+});

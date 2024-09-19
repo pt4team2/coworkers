@@ -7,13 +7,20 @@ import { RESET_PASSWORD_SCHEMA } from '@/utils/schema';
 import { ResetPassword } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
 import { resetPasswordFieldData } from '@/hooks/formFieldData';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function ResetPasswordPage() {
   const resetPasswordFields = resetPasswordFieldData();
+  const params = useSearchParams();
+  const token = params.get('token');
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { isSubmitting, isValid, errors },
   } = useForm<ResetPassword>({
     resolver: yupResolver(RESET_PASSWORD_SCHEMA),
@@ -23,8 +30,27 @@ export default function ResetPasswordPage() {
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
 
-  const onSubmit = (data: ResetPassword) => {
-    console.log(data);
+  // 비밀번호 변경
+  if (token) {
+    setValue('token', token);
+  }
+
+  const onSubmit = async (data: ResetPassword) => {
+    try {
+      await authAxiosInstance.patch('/user/reset-password', {
+        password: data.password,
+        passwordConfirmation: data.passwordConfirmation,
+        token: data.token,
+      });
+      console.log(data.password);
+      console.log(data.passwordConfirmation);
+      console.log(token);
+
+      // 로그인 페이지로 리다이렉트
+      router.push('/login');
+    } catch (error) {
+      console.error('비밀번호 재설정 실패:', error);
+    }
   };
 
   return (
