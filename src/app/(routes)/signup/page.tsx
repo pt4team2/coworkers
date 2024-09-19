@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { signUpFieldData } from '@/hooks/formFieldData';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
+import { SignUp } from '@/types/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SIGNUP_SCHEMA } from '@/utils/schema';
-import { SignUp } from '@/types/auth';
-import FormField from '@/components/auth/FormField';
-import { signUpFieldData } from '@/hooks/formFieldData';
-import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { loginStore } from '@/store/loginStore';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
+import FormField from '@/components/auth/FormField';
 import OAuthLogin from '@/components/auth/OAuthLogin';
 
 export default function SignUpPage() {

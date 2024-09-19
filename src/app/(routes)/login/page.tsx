@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import { loginFieldData } from '@/hooks/formFieldData';
 import { useForm } from 'react-hook-form';
+import { Login } from '@/types/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
-import { Login } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
 import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
-import { loginFieldData } from '@/hooks/formFieldData';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
