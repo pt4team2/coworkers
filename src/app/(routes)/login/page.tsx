@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
@@ -11,9 +11,25 @@ import Image from 'next/image';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 import { loginFieldData } from '@/hooks/formFieldData';
+import { useModalStore } from '@/store/useModalStore';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import Modal from '@/components/modal/Modal';
+import { loginStore } from '@/store/loginStore';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
+
+  // 세션 존재 시 홈 화면으로 리다이렉트
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/');
+    }
+  }, [status, router]);
 
   const {
     register,
@@ -27,9 +43,17 @@ export default function LoginPage() {
   // error 메시지 여부 확인
   const hasErrors = Object.keys(errors).length > 0;
 
-  const onSubmit = (data: Login) => {
-    console.log(data);
+  // 로그인
+  const { setEmail, setPassword, signInUser } = loginStore();
+
+  const onSubmit = async (data: Login) => {
+    setEmail(data.email);
+    setPassword(data.password);
+
+    await signInUser();
   };
+
+  const { openModal } = useModalStore();
 
   return (
     <div
@@ -64,9 +88,22 @@ export default function LoginPage() {
           <Link
             href="#"
             className="text-md-medium-alt md:text-lg-medium-alt lg:text-lg-medium-alt mt-3 flex flex-col text-end text-brand-primary underline"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
           >
             비밀번호를 잊으셨나요?
           </Link>
+          <ModalWrapper>
+            <Modal
+              title="비밀번호 재설정"
+              description="비밀번호 재설정 링크를 보내드립니다."
+              input={true}
+              inputPlaceholder="이메일을 입력하세요."
+              closeBtn
+            />
+          </ModalWrapper>
         </div>
         <div className="flex flex-col gap-6">
           <button
