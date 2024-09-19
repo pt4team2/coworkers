@@ -23,6 +23,11 @@ export interface ResetPassword {
   token: string;
 }
 
+// 이메일
+export interface Email {
+  email: string;
+}
+
 // FormField
 export interface FormFieldProps {
   id: string;
@@ -32,6 +37,7 @@ export interface FormFieldProps {
   onIconClick?: () => void;
   register: UseFormRegister<any>;
   error?: FieldError;
+  className?: string;
 }
 
 // zustand store
