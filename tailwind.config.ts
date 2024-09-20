@@ -53,6 +53,7 @@ const config: Config = {
         'text-default': 'var(--color-text-default)',
         'text-inverse': 'var(--color-text-inverse)',
         'text-disabled': 'var(--color-text-disabled)',
+        'text-focus': '',
 
         // Status Colors
         'status-brand': 'var(--color-status-brand)',
@@ -117,9 +118,10 @@ const config: Config = {
         '115-custom': '460px',
         '70-custom': '280px',
         '85.75-custom': '343px',
-        '9.5-custom': '38px',
       },
       gap: {
+        'gap-2.5': '10px',
+        'gap-1.5': '6px',
         '12.25-custom': '49px',
         '11.25-custom': '45px',
         '10.5-custom': '42px',
@@ -129,6 +131,7 @@ const config: Config = {
       },
       padding: {
         '3.625-custom': '14.5px',
+        '5.25-custom': '21px',
       },
       margin: {
         '35-custom': '140px',
