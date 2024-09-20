@@ -116,6 +116,7 @@ const config: Config = {
       },
       width: {
         '115-custom': '460px',
+        '70-custom': '280px',
         '85.75-custom': '343px',
       },
       gap: {

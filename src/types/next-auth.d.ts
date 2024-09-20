@@ -5,13 +5,14 @@ declare module 'next-auth' {
     user: {
       id: number;
       nickname: string;
-      email: string;
-      image: string;
+      email?: string;
+      image: string | null;
       teamId: string;
       createdAt: string;
       updatedAt: string;
     };
     accessToken: string;
-    refreshToken: string;
+    refreshToken: string | undefined;
+    expires: string;
   }
 }
