@@ -2,9 +2,9 @@
 
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Login } from '@/types/auth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
-import { Login } from '@/types/auth';
 import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
 import Image from 'next/image';

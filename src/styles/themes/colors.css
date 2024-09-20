@@ -1,4 +1,5 @@
 :root {
+
     /* Brand Colors */
     --color-brand-primary: #10b981; /* Brand Primary Color */
     --color-brand-secondary: #34d399; /* Brand Secondary Color */
@@ -57,3 +58,4 @@
     --color-icon-danger: #dc2626; /* Danger Icon Color */
   }
   
+
