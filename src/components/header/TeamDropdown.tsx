@@ -8,6 +8,7 @@ import IcPlus from 'src/assets/icons/ic_plus.svg';
 import { teamMockData } from '@/data/mockData';
 import Image from 'next/image';
 import { IUser } from '@/types/user';
+import Link from 'next/link';
 
 interface TeamDropdownProps {
   user: IUser | null;
@@ -35,10 +36,10 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
     };
   }, []);
 
-  if (!user || !user.memberships){
+  if (!user || !user.memberships) {
     return null;
   }
-  
+
   return (
     <div className="relative z-20" ref={dropdownRef}>
       <button
@@ -52,7 +53,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
         <ul className="absolute left-0 top-10 mt-2 flex w-[218px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-4 text-sm shadow-lg">
           {user?.memberships.map((membership) => (
             <li
-              key={membership.group.name}
+              key={membership.group.id}
               className="text-lg-medium flex w-[186px] flex-row items-center justify-between gap-3 rounded-[8px] bg-background-secondary p-2 hover:bg-slate-700"
             >
               <img
