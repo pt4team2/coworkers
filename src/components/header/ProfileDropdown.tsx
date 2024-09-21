@@ -6,6 +6,7 @@ import IcArrow from '@/assets/icons/ic_toggleDown.svg';
 import Image from 'next/image';
 import IcProfile from '@/assets/icons/ic_profile.svg';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 export default function ProfileDropdown() {
   const { data: session, status } = useSession();
@@ -31,7 +32,7 @@ export default function ProfileDropdown() {
   }, []);
 
   return (
-    <div className="relative z-30">
+    <div className="relative z-30" ref={dropdownRef}>
       <button onClick={toggleDropdown}>
         <div className="flex flex-row items-center justify-center gap-[8px]">
           <Image
@@ -45,17 +46,19 @@ export default function ProfileDropdown() {
         </div>
       </button>
       {isOpen && (
-        <ul className="text-lg-regular absolute right-0 top-10 z-30 mt-2 flex h-[184px] w-[135px] flex-col justify-center gap-[8px] rounded-[12px] bg-background-secondary p-[14px] text-sm shadow-lg">
-          <li className="h-[47px] rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+        <ul className="text-lg-regular absolute right-0 top-10 z-30 mt-2 flex h-[184px] w-[135px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-[14px] text-sm shadow-lg">
+          <li className="rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
             마이 히스토리
           </li>
-          <li className="h-[47px] items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
-            계정 설정
-          </li>
-          <li className="h-[47px] items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+          <Link className="mg-0" href="/reset-password">
+            <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+              계정 설정
+            </li>
+          </Link>
+          <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
             팀 참여
           </li>
-          <li className="h-[47px] items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+          <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
             로그아웃
           </li>
         </ul>

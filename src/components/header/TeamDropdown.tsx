@@ -40,7 +40,7 @@ export default function TeamDropdown() {
         <Image src={IcArrow} alt="드롭다운 화살표" />
       </button>
       {isOpen && (
-        <ul className="absolute left-0 top-10 mt-2 flex w-[218px] flex-col justify-center gap-[8px] rounded-[12px] bg-background-secondary p-4 text-sm shadow-lg">
+        <ul className="absolute left-0 top-10 mt-2 flex w-[218px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-4 text-sm shadow-lg">
           {teamMockData.memberships.map((membership) => (
             <li
               key={membership.group.id}

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Profile from './Profile';
 import TeamDropdown from './TeamDropdown';
 import Link from 'next/link';
+
 export default function Header() {
   return (
     <div className="w-full bg-background-secondary">
@@ -14,14 +15,16 @@ export default function Header() {
           src={IcMenu}
           alt="메뉴 아이콘"
         />
-        <Image
-          src={ImgLogo}
-          className="mr-auto h-8 w-[102px] md:mr-0 lg:mr-0 lg:w-[158px]"
-          alt="로고이미지"
-        />
+        <Link href="/teampage/${id}">
+          <Image
+            src={ImgLogo}
+            className="mr-auto h-8 w-[102px] md:mr-0 lg:mr-0 lg:w-[158px]"
+            alt="로고이미지"
+          />
+        </Link>
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
           <TeamDropdown />
-          <Link href="#">
+          <Link href="/boards">
             <button className="flex items-center justify-center">
               {' '}
               자유게시판
