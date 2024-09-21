@@ -5,8 +5,13 @@ import Image from 'next/image';
 import Profile from './Profile';
 import TeamDropdown from './TeamDropdown';
 import Link from 'next/link';
+import useUser from '@/hooks/useUser';
+import { useSession } from 'next-auth/react';
 
 export default function Header() {
+  const { data: session } = useSession();
+  const { user } = useUser(session?.user.id);
+
   return (
     <div className="w-full bg-background-secondary">
       <div className="m-auto flex items-center justify-between gap-4 px-4 py-5 md:gap-8 md:px-6 lg:max-w-[1200px] lg:gap-10 lg:px-0">
@@ -23,7 +28,7 @@ export default function Header() {
           />
         </Link>
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
-          <TeamDropdown />
+          <TeamDropdown user={user} />
           <Link href="/boards">
             <button className="flex items-center justify-center">
               {' '}
