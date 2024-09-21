@@ -1,4 +1,4 @@
-import axios from '@/services/axios';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useMemberList(id: string) {
@@ -10,22 +10,22 @@ export default function useMemberList(id: string) {
     queryKey: ['getMemberList', id],
     queryFn: () => {
       if (id) {
-        return axios
-          .get(`/groups?id=${id}`)
+        return authAxiosInstance
+          .get(`/groups/${id}`)
           .then((res) => res.data)
           .then((data) => {
             console.log(data.members);
             return data.members;
           })
-          .catch((err)=>{
-            console.error("Failed to fetch memberlist:", err);
+          .catch((err) => {
+            console.error('Failed to fetch memberlist:', err);
             throw err;
           });
       } else {
         return [];
       }
     },
-    enabled:!!id,
+    enabled: !!id,
   });
   return { memberList: memberList || [], isLoading, error };
 }

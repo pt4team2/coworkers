@@ -5,6 +5,7 @@ import Image from 'next/image';
 import IcProfile from 'src/assets/icons/ic_profile.svg';
 // import { teamMockData } from '@/data/mockData';
 import { useSession } from 'next-auth/react';
+import ProfileDropdown from './ProfileDropdown';
 
 export default function () {
   const { data: session, status } = useSession();
@@ -18,13 +19,14 @@ export default function () {
   }
   return (
     <div className="text-md-medium flex flex-row items-center gap-2">
-      <Image
+      {/* <Image
         className="w-6 md:w-4 lg:w-4"
         src={IcProfile}
         alt="사용자 프로필"
-      />
+      /> */}
+      <ProfileDropdown />
       {/* <span className="hidden lg:block">{teamMockData.nickname}</span> */}
-      <span className="hidden lg:block">{session.user.nickname}</span>
+      {/* <span className="hidden lg:block">{session.user.nickname}</span> */}
     </div>
   );
 }
