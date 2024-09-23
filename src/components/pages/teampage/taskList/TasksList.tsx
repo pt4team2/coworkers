@@ -1,8 +1,10 @@
 import Task from './Task';
 import { IGroup, TaskList } from '@/types/Group';
+// import useTasks from '@/hooks/useTasks';
 
 interface TaskListProps {
   taskLists: IGroup;
+  groupId: any
 }
 
 export default function TasksList({ taskLists }: TaskListProps) {
