@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import IcArrow from 'src/assets/icons/ic_toggleDown.svg';
 import IcKebab from 'src/assets/icons/ic_kebab.svg';
 import IcPlus from 'src/assets/icons/ic_plus.svg';
@@ -10,10 +10,28 @@ import Image from 'next/image';
 
 export default function TeamDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative">
+    <div className="relative z-20" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-lg-medium flex w-[97px] flex-row items-center justify-center gap-[11px]"
