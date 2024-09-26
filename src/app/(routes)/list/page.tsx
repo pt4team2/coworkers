@@ -3,11 +3,13 @@ import Image from 'next/image';
 import LeftArrow from '@/assets/icons/ic_arrow_left.svg';
 import RightArrow from '@/assets/icons/ic_arrow_right.svg';
 import BtnCallender from '@/assets/icons/btn_calendar.svg';
+
 import ListCard from '@/components/pages/list/ListCard';
 import FilterSelection from '@/components/pages/list/FilterSelection';
 import { teamMockData, tasklistMockData } from '@/data/mockData';
 import TasksList from '@/components/pages/teampage/taskList/TasksList';
 import PopupOneButton from '@/components/Modal/PopupOneButton';
+
 
 export default function List() {
   return (
@@ -38,7 +40,9 @@ export default function List() {
         group.tasks.map((task) => <ListCard key={task.id} task={task} />),
       )}
 
+
       <button className="rounded-full bg-green-500 px-5.25-custom py-3.5">
+
         + 할 일 추가
       </button>
     </div>
