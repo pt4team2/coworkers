@@ -117,6 +117,7 @@ const config: Config = {
       width: {
         '115-custom': '460px',
         '85.75-custom': '343px',
+        '93.75-custom': '375px',
       },
       gap: {
         'gap-2.5': '10px',
@@ -136,6 +137,15 @@ const config: Config = {
         '35-custom': '140px',
         '30-custom': '120px',
         '25-custom': '100px',
+      },
+      height: {
+        '52.75-custom': '211px',
+        '48.75-custom': '195px',
+      },
+      borderRadius: {
+        '24px': '24px',
+        '12px': '12px',
+        '0px': '0px',
       },
     },
   },

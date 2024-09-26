@@ -15,6 +15,12 @@ export default function ListCard({ task }: ListCardProps) {
   if (!task) {
     return null;
   }
+  const date: Date = new Date(task.updatedAt);
+  const UpdateDate: string = date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
   return (
     <div className="h-18.5-custom mb-4 rounded-lg bg-background-secondary px-3.5 py-3">
       <div className="mb-2.5 flex justify-between">
@@ -46,7 +52,7 @@ export default function ListCard({ task }: ListCardProps) {
         <div className="flex gap-1.5">
           <Image src={Callender} alt="Callender" width={16} height={16} />
           <div className="font-pretendard leading-3.5-custom h-4 text-left text-xs font-normal text-text-default">
-            {task.updatedAt}
+            {UpdateDate}
           </div>
         </div>
         <Image src={VectorIcon} alt="VectorIcon" width={0} height={8} />
