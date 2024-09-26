@@ -21,7 +21,6 @@ const AddBoardPage = () => {
     // 데이터 처리 로직 추가 필요
   };
 
-  // 이미지 선택 시 미리보기
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -37,40 +36,49 @@ const AddBoardPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="w-[375px] px-4 py-10">
-        <h1 className="text-2lg-medium text-left">게시글 쓰기</h1>
+      <div className="w-full px-4 py-10">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2lg-medium md:text-xl-bold lg:text-xl-bold text-left">게시글 쓰기</h1>
+          <button
+            type="submit"
+            className="hidden w-[184px] h-12 py-[6px] text-md-semibold rounded-[12px] bg-brand-primary hover:bg-interaction-hover transition-colors md:inline lg:inline"
+          >
+            등록
+          </button>
+        </div>
+        
 
-        <div className="border-t border-gray-800 my-6"></div>
+        <div className="border-t border-gray-800 my-6 md:my-8 lg:my-10"></div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-8">
-            <label className="block text-md-medium mb-4">
+          <div className="mb-8 lg:mb-10">
+            <label className="block text-md-medium md:text-lg-medium lg:text-lg-medium mb-4">
               <span className="text-brand-tertiary mr-[6px]">*</span>제목
             </label>
             <input
               type="text"
               placeholder="제목을 입력해주세요."
-              className="w-full h-12 p-4 text-md-medium-alt rounded-[12px] border-[1px] border-[#F8FAFC1A] bg-background-secondary focus:outline-none"
+              className="w-full h-12 p-4 text-md-medium-alt md:text-lg-medium-alt lg:text-lg-medium-alt rounded-[12px] border-[1px] border-[#F8FAFC1A] bg-background-secondary focus:outline-none"
               {...register('title', { required: '제목을 입력해주세요.' })}
             />
             {errors.title && <p className="text-red-500 text-md-medium-alt mt-1">{errors.title.message}</p>}
           </div>
 
-          <div className="mb-8">
-            <label className="block text-md-medium mb-4">
+          <div className="mb-8 lg:mb-10">
+            <label className="block text-md-medium md:text-lg-medium lg:text-lg-medium mb-4">
               <span className="text-brand-tertiary mr-[6px]">*</span>내용
             </label>
             <textarea
               placeholder="내용을 입력해주세요."
-              className="w-full h-60 px-4 py-2 text-md-medium-alt rounded-[12px] border-[1px] border-[#F8FAFC1A] bg-background-secondary focus:outline-none resize-none"
+              className="w-full h-60 px-4 py-2 text-md-medium-alt md:text-lg-medium-alt lg:text-lg-medium-alt rounded-[12px] border-[1px] border-[#F8FAFC1A] bg-background-secondary focus:outline-none resize-none"
               {...register('content', { required: '내용을 입력해주세요.' })}
             />
             {errors.content && <p className="text-red-500 text-md-medium-alt mt-1">{errors.content.message}</p>}
           </div>
 
-          <div className="mb-10">
+          <div className="mb-10 lg:mb-0">
             <label className="block text-md-medium mb-4">이미지</label>
-            <div className="w-40 h-40 border-[1px] border-[#F8FAFC1A] rounded-[12px] flex items-center justify-center relative bg-background-secondary">
+            <div className="w-40 h-40 md:w-60 md:h-60 lg:w-60 lg:h-60 border-[1px] border-[#F8FAFC1A] rounded-[12px] flex items-center justify-center relative bg-background-secondary">
               {!imagePreview ? (
                 <label className="cursor-pointer">
                   <input
@@ -81,7 +89,7 @@ const AddBoardPage = () => {
                   />
                   <div className="flex flex-col items-center">
                     <Image src={PlusIcon} alt="이미지 등록" className="w-6 h-6 mb-3"/>
-                    <span className="text-gray-400 text-md-regular">이미지 등록</span>
+                    <span className="text-gray-400 text-md-regular md:text-lg-regular lg:text-lg-regular">이미지 등록</span>
                   </div>
                 </label>
               ) : (
@@ -96,7 +104,7 @@ const AddBoardPage = () => {
                     onClick={removeImage}
                     className="absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
                   >
-                    <Image src={XIcon} alt="이미지 삭제" className="w-10 h-10" />
+                    <Image src={XIcon} alt="이미지 삭제" className="w-10 h-10"/>
                   </button>
                 </div>
               )}
@@ -105,7 +113,7 @@ const AddBoardPage = () => {
 
           <button
             type="submit"
-            className="w-full h-12 py-[6px] text-md-semibold rounded-[12px] bg-brand-primary hover:bg-interaction-hover transition-colors"
+            className="w-full h-12 py-[6px] text-md-semibold rounded-[12px] bg-brand-primary hover:bg-interaction-hover transition-colors md:hidden lg:hidden"
           >
             등록
           </button>
