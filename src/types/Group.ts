@@ -9,9 +9,21 @@ interface TeamMember {
 }
 
 interface Task {
-  id: number;
+  doneBy: {
+    user: string;
+  };
+  writer: string;
+  displayIndex: number;
+  commentCount: number;
+  deletedAt: string | null;
+  recurringId: number;
+  frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+  updatedAt: string;
+  doneAt: string;
+  date: string;
+  description: string;
   name: string;
-  completed: boolean;
+  id: number;
 }
 
 // Task 리스트 타입 정의

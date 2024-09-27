@@ -19,13 +19,13 @@ export default function Page() {
   if (isLoading || !group) {
     return <div>Loading...</div>;
   }
-  console.log(group);
+  console.log(group.taskLists);
   return (
     <div className="flex flex-col gap-6 py-6">
       <TeamSetting group={group} />
       <div className="flex flex-col gap-12">
         <TasksList taskLists={group.taskLists} />
-        <TaskReport />
+        <TaskReport taskLists={group.taskLists} />
         <MemberList group={group} />
       </div>
     </div>
