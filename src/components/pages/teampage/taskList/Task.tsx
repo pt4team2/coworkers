@@ -4,6 +4,17 @@ import IcKebab from '@/assets/icons/ic_kebab.svg';
 import Image from 'next/image';
 import ProgressBar from './ProgressBar';
 import IcDone from '@/assets/icons/ic_done.svg';
+import useTasks from '@/hooks/useTasks';
+import { IGroup } from '@/types/Group';
+
+interface TaskListProps {
+  tasklist: IGroup;
+}
+
+interface TaskProps {
+  groupId: string;
+  id: number;
+}
 
 export default function Task({ tasklist }: { tasklist: any }) {
   const taskCount = tasklist.tasks.length;

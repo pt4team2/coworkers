@@ -20,7 +20,7 @@ interface TaskList {
 }
 
 // Team의 전체 구조 타입 정의
-interface Team {
+interface IGroup {
   teamId: string; // 팀 ID
   updatedAt: string; // 업데이트 일자
   createdAt: string; // 생성 일자
@@ -31,4 +31,4 @@ interface Team {
   taskLists: TaskList[]; // 할 일 리스트 배열 (TaskList 타입 사용)
 }
 
-export type { TeamMember, TaskList, Team };
+export type { TeamMember, TaskList, IGroup };
