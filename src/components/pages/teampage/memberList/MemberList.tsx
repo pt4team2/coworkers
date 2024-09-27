@@ -1,8 +1,12 @@
-import { groupData } from '@/data/groupData';
 import MemberCard from './MemberCard';
+import { IGroup } from '@/types/Group';
 
-export default function MemberList() {
-  const membersCount = groupData.members.length;
+interface GroupProps {
+  group: IGroup | undefined;
+}
+
+export default function MemberList({ group }: GroupProps) {
+  const membersCount = group ? group.members.length : 0;
   return (
     <div className="flex flex-col gap-[26px]">
       <div className="flex flex-row justify-between">
@@ -18,9 +22,10 @@ export default function MemberList() {
         </button>
       </div>
       <div className="grid w-full grid-flow-row grid-cols-2 place-items-stretch gap-4 md:grid-cols-3 lg:grid-cols-3">
-        {groupData.members.map((member) => (
-          <MemberCard member={member} key={member.userId} />
-        ))}
+        {group &&
+          group.members.map((member) => (
+            <MemberCard member={member} key={member.userId} />
+          ))}
       </div>
     </div>
   );
