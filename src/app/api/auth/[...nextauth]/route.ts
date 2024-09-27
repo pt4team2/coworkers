@@ -15,29 +15,20 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          // API 호출
           const result = await publicAxiosInstance.post('/auth/signIn', {
             email: credentials?.email,
             password: credentials?.password,
           });
 
-          // 응답 데이터 처리
           const user = await result.data;
 
-          // 사용자 인증 성공 처리
           if (user) {
-            console.log('-----------');
-            console.log(user);
             return user;
           } else {
-            console.log('-----------');
-            console.log(null);
             return null;
           }
         } catch (error) {
-          // 오류 처리
-          console.log('-----------');
-          console.error('Error during login:', error);
+          console.error(error);
           return null;
         }
       },
@@ -45,61 +36,67 @@ const handler = NextAuth({
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          grant_type: 'authorization_code',
+          redirect_uri: 'http://localhost:3000/api/auth/callback/kakao',
+          response_type: 'code',
+          scope: 'profile_nickname, profile_image',
+        },
+      },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          redirect_uri: 'http://localhost:3000/api/auth/callback/google',
+          response_type: 'code',
+        },
+      },
     }),
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24, // 세션 만료 시간: 24시간
+    maxAge: 60 * 60 * 3,
+    // updateAge: 60 * 60 * 3,
   },
   pages: {
     signIn: '/login',
   },
   callbacks: {
-    signIn: async () => {
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
+    async signIn() {
       return true;
     },
     async jwt({ token, user, account }) {
-      // OAuth 로그인인 경우
-      if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-        token.expires = account.expires_at;
+      const currentTime = Math.floor(Date.now() / 1000); // 현재 시간 (Unix 타임스탬프)
+
+      // 만료 시간이 없을 경우 설정
+      if (!token.expires) {
+        const expirationTimeUnix = currentTime + 60 * 60 * 3; // 3시간 후 만료 시간 설정
+        token.expires = expirationTimeUnix;
       }
 
+      // token.expires를 ISO 8601 형식으로 변환
+      const expirationTimeISO = new Date(token.expires * 1000).toISOString();
+      console.log('expirationTimeISO:', expirationTimeISO);
+
+      // 새로운 사용자 정보가 있다면 추가
       if (user) {
-        return { ...token, ...user };
+        token.user = user;
       }
-      console.log('----------');
-      console.log('토큰', token);
+
       return token;
     },
     async session({ session, token }) {
-      if (token.sub) {
-        // 간편 로그인
-        session = {
-          user: {
-            id: Number(token.sub),
-            nickname: token.name as string,
-            email: token.email as string,
-            image: token.image as string,
-            teamId: '7-2',
-            createdAt: new Date(Number(token.iat) * 1000).toISOString(),
-            updatedAt: new Date(Number(token.exp) * 1000).toISOString(),
-          },
-          accessToken: token.accessToken as string,
-          refreshToken: token.refreshToken as string,
-          expires: new Date(Number(token.expires) * 1000).toISOString(),
-        };
-      } else {
-        // 자체 로그인
-        session = token as any;
-      }
-      console.log('----------');
-      console.log('세션', session);
+      session.user = token.user as any;
+
+      session.expires = new Date(token.expires * 1000).toISOString(); // token.expires 값으로 세션 만료 시간 설정
+      console.log('session.expires:', session.expires); // 디버깅을 위한 출력
+
       return session;
     },
   },

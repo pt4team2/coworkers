@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getProviders, signIn } from 'next-auth/react';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 
@@ -11,11 +11,14 @@ interface OAuthLoginOptionsProps {
 
 export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
   // 카카오 로그인
-  const [providers, setProviders] = useState(null);
+  const [providers, setProviders] = useState<Record<
+    string,
+    ClientSafeProvider
+  > | null>(null);
 
   useEffect(() => {
     (async () => {
-      const res: any = await getProviders();
+      const res = await getProviders();
 
       setProviders(res);
     })();
@@ -49,7 +52,10 @@ export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              signIn('kakao', { redirect: true, callbackUrl: '/' });
+              signIn('kakao', {
+                redirect: true,
+                callbackUrl: '/',
+              });
             }}
           >
             <Image
