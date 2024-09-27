@@ -14,13 +14,17 @@ export default function Page() {
   const { groupId } = useParams();
   const { data: session } = useSession();
   const { user } = useUser(session?.user.id);
-  const { group } = useGroup(groupId);
+  const { group, isLoading, error } = useGroup(groupId);
 
+  if (isLoading || !group) {
+    return <div>Loading...</div>;
+  }
+  console.log(group);
   return (
     <div className="flex flex-col gap-6 py-6">
       <TeamSetting group={group} />
       <div className="flex flex-col gap-12">
-        <TasksList taskLists={group || {taskLists: []}} />
+        <TasksList taskLists={group.taskLists} />
         <TaskReport />
         <MemberList group={group} />
       </div>

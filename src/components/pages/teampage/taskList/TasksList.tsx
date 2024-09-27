@@ -3,8 +3,7 @@ import { IGroup, TaskList } from '@/types/Group';
 // import useTasks from '@/hooks/useTasks';
 
 interface TaskListProps {
-  taskLists: IGroup;
-  groupId: any
+  taskLists: TaskList[];
 }
 
 export default function TasksList({ taskLists }: TaskListProps) {
@@ -14,7 +13,7 @@ export default function TasksList({ taskLists }: TaskListProps) {
         <span className="text-lg-medium">할 일 목록</span>
         <span className="mr-auto text-lg text-text-default">
           {' '}
-          ({taskLists.taskLists.length}개)
+          ({taskLists.length}개)
         </span>
         <button className="text-md-regular text-brand-primary">
           + 새로운 목록 추가하기
@@ -22,7 +21,7 @@ export default function TasksList({ taskLists }: TaskListProps) {
       </div>
 
       <div className="flex flex-col gap-4">
-        {taskLists.taskLists.map((tasklist: any) => (
+        {taskLists.map((tasklist: any) => (
           <Task key={tasklist.id} tasklist={tasklist} />
         ))}
       </div>

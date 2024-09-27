@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 export default function ProfileDropdown() {
   const { data: session, status } = useSession();
+  console.log(session, status);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);

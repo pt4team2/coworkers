@@ -5,7 +5,7 @@ import ImgMember from '@/assets/images/img_memberProfile.svg';
 interface MemberCardProps {
   member: {
     role: string;
-    userImage: string;
+    userImage: string | null;
     userEmail: string;
     userName: string;
     groupId: number;
