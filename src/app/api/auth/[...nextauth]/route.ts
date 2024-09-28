@@ -20,7 +20,7 @@ const handler = NextAuth({
             password: credentials?.password,
           });
 
-          const user = await result.data;
+          const user = result.data;
 
           if (user) {
             return user;
@@ -58,7 +58,7 @@ const handler = NextAuth({
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 3,
+    maxAge: 60,
     // updateAge: 60 * 60 * 3,
   },
   pages: {
@@ -68,34 +68,80 @@ const handler = NextAuth({
     async redirect({ url, baseUrl }) {
       return baseUrl;
     },
-    async signIn() {
+    async signIn(params) {
+      console.log('---params---', params);
+
+      if (params.account?.provider === 'google') {
+        const idToken = params.account?.id_token;
+        console.log('---idToken---', idToken);
+
+        const state = '임시';
+
+        if (idToken && state) {
+          try {
+            const response = await publicAxiosInstance.post(
+              '/auth/signIn/GOOGLE',
+              {
+                state: state,
+                redirectUri: 'http://localhost:3000/api/auth/callback/google',
+                token: idToken,
+              },
+            );
+
+            console.log('API response:', response.data);
+            return true;
+          } catch (error) {
+            console.error('OAuth API error:', error);
+            return false;
+          }
+        } else {
+          console.log('Missing id_token or state');
+          return false;
+        }
+      }
       return true;
     },
     async jwt({ token, user, account }) {
-      const currentTime = Math.floor(Date.now() / 1000); // 현재 시간 (Unix 타임스탬프)
+      console.log('---account---', account);
+      console.log('---token---', token);
+      console.log('---user---', user);
 
-      // 만료 시간이 없을 경우 설정
-      if (!token.expires) {
-        const expirationTimeUnix = currentTime + 60 * 60 * 3; // 3시간 후 만료 시간 설정
-        token.expires = expirationTimeUnix;
-      }
-
-      // token.expires를 ISO 8601 형식으로 변환
-      const expirationTimeISO = new Date(token.expires * 1000).toISOString();
-      console.log('expirationTimeISO:', expirationTimeISO);
-
-      // 새로운 사용자 정보가 있다면 추가
+      // 초기 로그인 시에만 user가 존재
+      const currentTime = Math.floor(Date.now() / 1000);
       if (user) {
-        token.user = user;
-      }
+        token.user = user.user;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
 
-      return token;
+        return token;
+      } else if (currentTime < token.exp) {
+        console.log('---currentTime---', currentTime);
+        console.log('---token.exp---', token.exp);
+        return token;
+      } else {
+        try {
+          console.log('---token.refreshToken---', token.refreshToken);
+          const response = publicAxiosInstance.post('/auth/refresh-token', {
+            refreshToken: token.refreshToken,
+          });
+
+          const newTokens = await (await response).data;
+          console.log('---newTokens---', newTokens);
+
+          return {
+            ...token,
+            // accessToken: newTokens.accessToken,
+            // expiresAt: Math.floor(Date.now() / 1000 + newTokens.expires),
+            // refreshToken: newTokens.refreshToken || token.refreshToken,
+          };
+        } catch (error) {
+          console.error('Error refreshing access token', error);
+          return { ...token, error: 'refreshAccessTokenError' as const };
+        }
+      }
     },
     async session({ session, token }) {
-      session.user = token.user as any;
-
-      session.expires = new Date(token.expires * 1000).toISOString(); // token.expires 값으로 세션 만료 시간 설정
-      console.log('session.expires:', session.expires); // 디버깅을 위한 출력
+      session = token as any;
 
       return session;
     },
