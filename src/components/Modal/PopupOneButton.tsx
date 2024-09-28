@@ -15,7 +15,7 @@ const PopupOneButton: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
       <button className="absolute right-3 top-3">
         <Image src={CloseIcon} alt="CloseIcon" width={24} height={24} />
       </button>
-      <div className="mb-8 ml-12 mr-[47px] mt-12 flex w-[280px] flex-col items-center justify-center justify-between md:mb-8 md:ml-12 md:ml-[44px] md:mr-[60px] lg:mb-8 lg:ml-[44px] lg:mr-[60px] lg:mt-12">
+      <div className="mb-8 ml-12 mr-[47px] mt-12 flex w-[280px] flex-col items-center justify-center  md:mb-8 md:ml-12 md:ml-[44px] md:mr-[60px] lg:mb-8 lg:ml-[44px] lg:mr-[60px] lg:mt-12">
         <div className="flex h-[44px] w-[227px] flex-col justify-between">
           <div className="text-center text-[16px] font-medium leading-[19px] text-text-primary">
             멤버 초대

@@ -8,5 +8,6 @@ export default function Page() {
   // </>
   redirect('/teampage/891');
   return null;
-  /*TODO 유저 정보를 가져와서 소속된 팀들 중 가장 위에 있는 팀페이지를 로딩하도록 수정해야함*/
+  /*TODO 유저 정보를 가져와서 소속된 팀들 중 가장 위에 있는 팀페이지를 로딩하도록 수정해야함
+  */
 }

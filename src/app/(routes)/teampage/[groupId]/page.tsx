@@ -8,7 +8,6 @@ import MemberList from '@/components/pages/teampage/memberList/MemberList';
 import useUser from '@/hooks/useUser';
 import { useSession } from 'next-auth/react';
 import useGroup from '@/hooks/useGroup';
-// import useMemberships from '@/hooks/useMemberships';
 
 export default function Page() {
   const { groupId } = useParams();

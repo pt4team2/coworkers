@@ -16,7 +16,7 @@ const ModalProfile: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
       <button className="absolute right-3 top-3">
         <Image src={CloseIcon} alt="CloseIcon" width={24} height={24} />
       </button>
-      <div className="mx-auto mb-8 mt-12 flex w-[280px] flex-col items-center justify-center justify-between">
+      <div className="mx-auto mb-8 mt-12 flex w-[280px] flex-col items-center justify-center">
         <div className="flex h-[109px] w-[102px] flex-col items-center justify-between md:h-[115px] md:w-[103px] lg:h-[115px] lg:w-[103px]">
           <div className="relative h-[46px] w-[46px] md:h-[52px] md:w-[52px]">
             <Image
