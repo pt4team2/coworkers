@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  console.log('code---', code); // 4%2F0AQlEd8wx2idCoIQbqraO8ZZkOqYN7ZlSLiybG4EvsFl7n07iYwgpycArZjMbuNP_sH0hWQ
+  console.log('code---', code);
   console.log('state---', state);
 
   console.log('GET 함수 호출됨'); // 함수 진입 확인 로그

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import '../styles/globals.css';
-import Header from '@/components/header/Header';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Providers from '@/components/auth/Providers';
 
