@@ -13,6 +13,6 @@ declare module 'next-auth' {
     };
     accessToken: string;
     refreshToken: string | undefined;
-    expires: string;
+    expires?: string;
   }
 }

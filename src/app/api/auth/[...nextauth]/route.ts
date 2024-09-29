@@ -15,29 +15,20 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          // API 호출
           const result = await publicAxiosInstance.post('/auth/signIn', {
             email: credentials?.email,
             password: credentials?.password,
           });
 
-          // 응답 데이터 처리
-          const user = await result.data;
+          const user = result.data;
 
-          // 사용자 인증 성공 처리
           if (user) {
-            console.log('-----------');
-            console.log(user);
             return user;
           } else {
-            console.log('-----------');
-            console.log(null);
             return null;
           }
         } catch (error) {
-          // 오류 처리
-          console.log('-----------');
-          console.error('Error during login:', error);
+          console.error(error);
           return null;
         }
       },
@@ -45,61 +36,113 @@ const handler = NextAuth({
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          grant_type: 'authorization_code',
+          redirect_uri: 'http://localhost:3000/api/auth/callback/kakao',
+          response_type: 'code',
+          scope: 'profile_nickname, profile_image',
+        },
+      },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          redirect_uri: 'http://localhost:3000/api/auth/callback/google',
+          response_type: 'code',
+        },
+      },
     }),
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24, // 세션 만료 시간: 24시간
+    maxAge: 60,
+    // updateAge: 60 * 60 * 3,
   },
   pages: {
     signIn: '/login',
   },
   callbacks: {
-    signIn: async () => {
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
+    async signIn(params) {
+      console.log('---params---', params);
+
+      if (params.account?.provider === 'google') {
+        const idToken = params.account?.id_token;
+        console.log('---idToken---', idToken);
+
+        const state = '임시';
+
+        if (idToken && state) {
+          try {
+            const response = await publicAxiosInstance.post(
+              '/auth/signIn/GOOGLE',
+              {
+                state: state,
+                redirectUri: 'http://localhost:3000/api/auth/callback/google',
+                token: idToken,
+              },
+            );
+
+            console.log('API response:', response.data);
+            return true;
+          } catch (error) {
+            console.error('OAuth API error:', error);
+            return false;
+          }
+        } else {
+          console.log('Missing id_token or state');
+          return false;
+        }
+      }
       return true;
     },
     async jwt({ token, user, account }) {
-      // OAuth 로그인인 경우
-      if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-        token.expires = account.expires_at;
-      }
+      console.log('---account---', account);
+      console.log('---token---', token);
+      console.log('---user---', user);
 
+      // 초기 로그인 시에만 user가 존재
+      const currentTime = Math.floor(Date.now() / 1000);
       if (user) {
-        return { ...token, ...user };
+        token.user = user.user;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+
+        return token;
+      } else if (currentTime < token.exp) {
+        console.log('---currentTime---', currentTime);
+        console.log('---token.exp---', token.exp);
+        return token;
+      } else {
+        try {
+          console.log('---token.refreshToken---', token.refreshToken);
+          const response = publicAxiosInstance.post('/auth/refresh-token', {
+            refreshToken: token.refreshToken,
+          });
+
+          const newTokens = await (await response).data;
+          console.log('---newTokens---', newTokens);
+
+          return {
+            ...token,
+            // accessToken: newTokens.accessToken,
+            // expiresAt: Math.floor(Date.now() / 1000 + newTokens.expires),
+            // refreshToken: newTokens.refreshToken || token.refreshToken,
+          };
+        } catch (error) {
+          console.error('Error refreshing access token', error);
+          return { ...token, error: 'refreshAccessTokenError' as const };
+        }
       }
-      console.log('----------');
-      console.log('토큰', token);
-      return token;
     },
     async session({ session, token }) {
-      if (token.sub) {
-        // 간편 로그인
-        session = {
-          user: {
-            id: Number(token.sub),
-            nickname: token.name as string,
-            email: token.email as string,
-            image: token.image as string,
-            teamId: '7-2',
-            createdAt: new Date(Number(token.iat) * 1000).toISOString(),
-            updatedAt: new Date(Number(token.exp) * 1000).toISOString(),
-          },
-          accessToken: token.accessToken as string,
-          refreshToken: token.refreshToken as string,
-          expires: new Date(Number(token.expires) * 1000).toISOString(),
-        };
-      } else {
-        // 자체 로그인
-        session = token as any;
-      }
-      console.log('----------');
-      console.log('세션', session);
+      session = token as any;
+
       return session;
     },
   },
