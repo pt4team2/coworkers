@@ -5,6 +5,7 @@ import '../styles/globals.css';
 import Header from '@/components/header/Header';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Providers from '@/components/auth/Providers';
+import useUser from '@/hooks/useUser';
 
 export default function RootLayout({
   children,
