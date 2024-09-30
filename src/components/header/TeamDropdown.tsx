@@ -70,7 +70,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
                   alt="그룹 이미지"
                   width={32} // width와 height 지정
                   height={32}
-                  className="rounded-[6px] object-cover"
+                  className="h-8 w-8 rounded-[6px] object-cover"
                 />
                 <span className="text-lg-medium">{membership.group.name}</span>
                 {/* 케밥 아이콘 */}
