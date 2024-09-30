@@ -20,9 +20,7 @@ export default function TaskReport({ taskLists }: TaskListProps) {
   const totalTaskCount = allTasks.length;
 
   // 완료한 task 개수 계산하는 식
-  const doneTasks = allTasks.filter(
-    (task: Task) => new Date(task.doneAt) < new Date(task.date),
-  );
+  const doneTasks = allTasks.filter((task: Task) => task.doneAt !== null);
 
   const doneTaskCount = doneTasks.length;
   const progressPercent = Math.round((doneTaskCount / totalTaskCount) * 100);
