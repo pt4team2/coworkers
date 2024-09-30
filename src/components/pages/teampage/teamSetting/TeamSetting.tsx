@@ -49,7 +49,7 @@ export default function TeamSetting({ group }: GroupProps) {
           <Image width={24} height={24} src={settingIcon} alt="설정 아이콘" />
         </button>
         {isOpen && (
-          <ul className="text-lg-regular absolute right-0 top-10 z-30 mt-2 flex w-[120px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-2 text-sm shadow-lg">
+          <ul className="text-lg-regular absolute right-0 top-5 z-30 mt-2 flex w-[120px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-2 text-sm shadow-lg">
             <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
               수정하기
             </li>
