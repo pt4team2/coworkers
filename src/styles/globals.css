@@ -70,8 +70,9 @@
   --color-icon-danger: #dc2626; /* Danger Icon Color */
 }
 
-blockquote,
 body,
+a,
+blockquote,
 dd,
 dl,
 dt,
@@ -96,10 +97,11 @@ ul {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+}
+body {
   background-color: var(--color-background-primary);
   color: var(--color-text-primary);
 }
-
 h1,
 h2,
 h3,
@@ -119,27 +121,15 @@ input,
 select {
   margin: 0;
   border: none;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 html {
   box-sizing: border-box;
-  font-family:
-    'Pretendard Variable',
-    Pretendard,
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    Roboto,
-    'Helvetica Neue',
-    'Segoe UI',
-    'Apple SD Gothic Neo',
-    'Noto Sans KR',
-    'Malgun Gothic',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    sans-serif;
+  font-family: 'Pretendard Variable', 'Pretendard', '-apple-system',
+    'BlinkMacSystemFont', system-ui, 'Roboto', 'Helvetica Neue', 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 }
 
 *,
@@ -249,7 +239,7 @@ th {
   .text-lg-medium-alt {
     @apply text-[16px] font-medium leading-[24px];
   }
-  
+
   .text-lg-medium {
     @apply text-[16px] font-medium leading-[19px];
   }
