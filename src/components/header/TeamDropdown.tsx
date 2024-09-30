@@ -1,15 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import IcArrow from 'src/assets/icons/ic_toggleDown.svg'; // 제대로 된 경로 확인 필요
 import IcKebab from 'src/assets/icons/ic_kebab.svg';
 import IcPlus from 'src/assets/icons/ic_plus.svg';
 import { IUser } from '@/types/user';
-import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '../modal/ModalWrapper';
 import AddTeamModal from '../modal/AddTeamModal';
 import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
 
@@ -22,6 +20,19 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
   const { isModalOpen, openModal, closeModal } = useAddTeamModalStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const pathname = usePathname();
+  const selectedTeamId = useMemo(() => {
+    const pathArray = pathname.split('/');
+    return Number(pathArray[2]);
+  }, [pathname]);
+
+  const selectedGroup = useMemo(() => {
+    const group = user?.memberships.find(
+      (membership) => membership.group.id === selectedTeamId,
+    );
+    return group;
+  }, [user, selectedTeamId]);
 
   // 외부 클릭 감지하여 드롭다운 닫기
   useEffect(() => {
@@ -50,7 +61,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
         onClick={toggleDropdown}
         className="text-lg-medium flex w-[97px] flex-row items-center justify-center gap-[11px]"
       >
-        {user.memberships[0].group.name}
+        {selectedGroup?.group.name}
 
         {/* TODO: 현재 속하는 팀 명으로 교체시켜야 함 */}
         <Image src={IcArrow} alt="드롭다운 화살표" width={16} height={16} />
