@@ -20,8 +20,6 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
     (membership: IMembership) => membership.group.name,
   );
 
-  console.log(joinGroups);
-
   const {
     register,
     handleSubmit,
@@ -50,10 +48,6 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
         </button>
         <div className="flex w-[280px] flex-col">
           <p className="text-lg-medium text-center">팀 이름</p>
-          {/* <input
-            className="text-lg-regular mb-6 mt-4 h-12 w-full rounded-[12px] border border-solid border-border-primary border-opacity-10 bg-background-secondary px-[14.5px] py-[16px] text-text-primary active:border-none"
-            placeholder="팀 이름을 입력해주세요"
-          ></input> */}
           <input
             className={`h-44px ${isDuplicate ? 'border-text-danger' : 'border-border-primary'} mb-2 mt-4 w-full rounded-[12px] border border-solid bg-background-secondary px-[14.5px] py-[16px] focus:border-none`}
             placeholder="팀 이름을 입력해주세요."
