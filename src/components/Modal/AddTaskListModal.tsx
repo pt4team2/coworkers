@@ -2,17 +2,17 @@ import Image from 'next/image';
 import XIcon from '@/assets/icons/ic_x2.svg';
 import React from 'react';
 import ModalPortal from '../ModalPortal/ModalPortal';
-import { useModalStore } from '@/store/useModalStore';
+import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 
 interface AddTeamModalProps {
   onClose: () => void;
 }
 export default function AddTaskListModal({ onClose }: AddTeamModalProps) {
-  const { closeModal } = useModalStore();
+  const { closeModal } = useAddTaskListModalStore();
   return (
     <ModalPortal onClose={closeModal}>
       <div className="flex w-[384px] flex-col items-center rounded-[12px] bg-background-secondary px-4 pb-10 pt-4">
-        <button className="ml-auto mr-[9px]" onClick={onClose}>
+        <button className="ml-auto" onClick={onClose}>
           <Image width={24} height={24} src={XIcon} alt="엑스 버튼" />
         </button>
         <div className="flex w-[280px] flex-col">

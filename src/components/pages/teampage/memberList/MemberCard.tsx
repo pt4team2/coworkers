@@ -1,19 +1,23 @@
+'use client';
+
 import Image from 'next/image';
 import IcKebeb from '@/assets/icons/ic_kebab.svg';
 import ImgMember from '@/assets/images/img_memberProfile.svg';
+import { useProfileModalStore } from '@/store/useProfileModalStore';
+import ProfileModal from '@/components/modal/ProfileModal';
+import React, { useState } from 'react';
+import { TeamMember } from '@/types/Group';
 
 interface MemberCardProps {
-  member: {
-    role: string;
-    userImage: string | null;
-    userEmail: string;
-    userName: string;
-    groupId: number;
-    userId: number;
-  };
+  member: TeamMember;
 }
 
 export default function MemberCard({ member }: MemberCardProps) {
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   return (
     <div>
       {/* 모바일 */}
@@ -45,7 +49,10 @@ export default function MemberCard({ member }: MemberCardProps) {
             {member.userEmail}
           </span>
         </div>
-        <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
+        <button onClick={() => openModal()}>
+          <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
+        </button>
+        {isModalOpen && <ProfileModal onClose={closeModal} member={member} />}
       </div>
 
       {/* 태블릿, 데스크탑 */}
@@ -76,7 +83,10 @@ export default function MemberCard({ member }: MemberCardProps) {
             </span>
           </div>
         </div>
-        <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
+        <button onClick={() => openModal()}>
+          <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
+        </button>
+        {isModalOpen && <ProfileModal onClose={closeModal} member={member} />}
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import MemberCard from './MemberCard';
 import { IGroup } from '@/types/Group';
-import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/modal/ModalWrapper';
+import { useAddMemberModalStore } from '@/store/useAddMemberModalStore';
 import PopupOneButton from '@/components/modal/PopupOneButton';
 
 interface GroupProps {
@@ -9,7 +8,7 @@ interface GroupProps {
 }
 
 export default function MemberList({ group }: GroupProps) {
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const { isModalOpen, openModal, closeModal } = useAddMemberModalStore();
   const membersCount = group ? group.members.length : 0;
   return (
     <div className="flex flex-col gap-[26px]">
