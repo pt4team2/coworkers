@@ -5,6 +5,7 @@ import Image from 'next/image';
 import ModalPortal from '../ModalPortal/ModalPortal';
 import { IMembership } from '@/types/user';
 import { TeamMember } from '@/types/Group';
+import { useParams } from 'next/navigation';
 
 interface ModalProps {
   onClose: () => void;
@@ -12,6 +13,20 @@ interface ModalProps {
 }
 
 const ModalProfile = ({ onClose, member }: ModalProps) => {
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('클립보드에 복사되었습니다.');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCopyClick = () => {
+    const emailToCopy = member.userEmail;
+    copyToClipboard(emailToCopy);
+  };
+
   return (
     <ModalPortal onClose={onClose}>
       <div className="relative flex h-[261px] w-[375px] rounded-b-[0px] rounded-t-[12px] bg-background-secondary md:h-[266px] md:w-[344px] md:rounded-[24px] lg:h-[266px] lg:w-[344px] lg:rounded-[24px]">
@@ -38,7 +53,10 @@ const ModalProfile = ({ onClose, member }: ModalProps) => {
               </div>
             </div>
           </div>
-          <button className="text-lg-semibold mt-6 w-full rounded-[12px] bg-brand-primary px-[14px] py-[14px] leading-[19px] text-text-inverse">
+          <button
+            onClick={handleCopyClick}
+            className="text-lg-semibold mt-6 w-full rounded-[12px] bg-brand-primary px-[14px] py-[14px] leading-[19px] text-text-inverse"
+          >
             이메일 복사하기
           </button>
         </div>
@@ -46,5 +64,4 @@ const ModalProfile = ({ onClose, member }: ModalProps) => {
     </ModalPortal>
   );
 };
-
 export default ModalProfile;
