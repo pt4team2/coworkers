@@ -24,6 +24,8 @@ export default function RootLayout({
             <main className="m-auto max-w-[1200px] px-4 md:px-6 lg:px-0">
               {children}
             </main>
+            <div id="__next"></div>
+            <div id="_modal"></div>
           </Providers>
         </body>
       </html>

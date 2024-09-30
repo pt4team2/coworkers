@@ -98,11 +98,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
           </li>
         </ul>
       )}
-      {isModalOpen && (
-        <ModalWrapper>
-          <AddTeamModal onClose={closeModal} />
-        </ModalWrapper>
-      )}
+      {isModalOpen && <AddTeamModal onClose={closeModal} />}
     </div>
   );
 }

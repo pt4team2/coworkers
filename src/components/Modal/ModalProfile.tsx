@@ -3,13 +3,10 @@ import CloseIcon from '@/assets/icons/ic_x.svg';
 import ProfileIcon from '@/assets/icons/ic_profile.svg';
 import Image from 'next/image';
 interface ModalProps {
-  isOpen: boolean;
   onClose: () => void;
-  title?: string;
 }
 
-const ModalProfile: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
-  if (!isOpen) return null;
+const ModalProfile = ({ onClose }: ModalProps) => {
 
   return (
     <div className="relative flex h-[261px] w-[375px] rounded-b-[0px] rounded-t-[12px] bg-background-secondary md:h-[266px] md:w-[344px] md:rounded-[24px] lg:h-[266px] lg:w-[344px] lg:rounded-[24px]">

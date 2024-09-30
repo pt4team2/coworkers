@@ -1,7 +1,6 @@
 import Task from './Task';
 import { IGroup, TaskList } from '@/types/Group';
 import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/modal/ModalWrapper';
 import PopupOneButton from '@/components/modal/PopupOneButton';
 import AddTaskListModal from '@/components/modal/AddTaskListModal';
 import { ITaskList } from '@/types/Task';
@@ -26,16 +25,13 @@ export default function TasksList({ taskLists }: TaskListProps) {
         >
           + 새로운 목록 추가하기
         </button>
-        <ModalWrapper>
-          <AddTaskListModal onClose={closeModal} />
-        </ModalWrapper>
       </div>
-
       <div className="flex flex-col gap-4">
         {taskLists.map((tasklist: TaskList) => (
           <Task key={tasklist.id} tasklist={tasklist} />
         ))}
       </div>
+      {isModalOpen && <AddTaskListModal onClose={closeModal} />}
     </div>
   );
 }
