@@ -9,6 +9,7 @@ function ModalPortal({
   onClose: () => void;
   children: ReactNode;
 }) {
+    
   //modal div에 렌더링 되도록 함
   const selectedElement = document.getElementById('_modal');
   const [mounted, setMounted] = useState<boolean>(false);

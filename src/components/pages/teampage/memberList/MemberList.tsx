@@ -27,10 +27,14 @@ export default function MemberList({ group }: GroupProps) {
         >
           + 새로운 멤버 추가하기
         </button>
-
-        {/* <ModalWrapper>
-          <PopupOneButton title={'멤버 초대'} onClose={closeModal} />
-        </ModalWrapper> */}
+        {isModalOpen && (
+          <PopupOneButton
+            title={'멤버 초대'}
+            onClose={closeModal}
+            description={'그룹에 참여할 수 있는 링크를 복사합니다.'}
+            buttonContents={'링크 복사하기'}
+          />
+        )}
       </div>
 
       <div className="grid w-full grid-flow-row grid-cols-2 place-items-stretch gap-4 md:grid-cols-3 lg:grid-cols-3">

@@ -11,6 +11,7 @@ import { IUser } from '@/types/user';
 import { useModalStore } from '@/store/useModalStore';
 import ModalWrapper from '../modal/ModalWrapper';
 import AddTeamModal from '../modal/AddTeamModal';
+import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
 
 interface TeamDropdownProps {
   user: IUser | null;
@@ -18,7 +19,7 @@ interface TeamDropdownProps {
 
 export default function TeamDropdown({ user }: TeamDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const { isModalOpen, openModal, closeModal } = useAddTeamModalStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -88,9 +89,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
           <li className="mt-2 flex items-center justify-center gap-1.5 rounded-[8px] border border-slate-50 py-[14px] hover:bg-slate-700">
             <button
               className="m-0 flex flex-row items-center justify-center gap-[1.5px]"
-              onClick={() => {
-                openModal();
-              }}
+              onClick={openModal}
             >
               <Image src={IcPlus} alt="추가 버튼" width={16} height={16} />
               <span className="text-lg-medium">팀 추가하기</span>

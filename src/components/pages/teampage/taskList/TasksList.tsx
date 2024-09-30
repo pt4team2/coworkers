@@ -4,13 +4,14 @@ import { useModalStore } from '@/store/useModalStore';
 import PopupOneButton from '@/components/modal/PopupOneButton';
 import AddTaskListModal from '@/components/modal/AddTaskListModal';
 import { ITaskList } from '@/types/Task';
+import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 
 interface TaskListProps {
   taskLists: TaskList[];
 }
 
 export default function TasksList({ taskLists }: TaskListProps) {
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const { isModalOpen, openModal, closeModal } = useAddTaskListModalStore();
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2">
