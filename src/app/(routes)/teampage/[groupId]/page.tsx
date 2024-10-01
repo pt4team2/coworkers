@@ -8,12 +8,19 @@ import MemberList from '@/components/pages/teampage/memberList/MemberList';
 import useUser from '@/hooks/useUser';
 import { useSession } from 'next-auth/react';
 import useGroup from '@/hooks/useGroup';
+import { useEffect } from 'react';
 
 export default function Page() {
   const { groupId } = useParams();
   const { data: session } = useSession();
   const { user } = useUser(session?.user.id);
-  const { group, isLoading, error } = useGroup(groupId);
+  const { group, isLoading, error, refetch } = useGroup(groupId);
+
+  useEffect(() => {
+    if (group) {
+      refetch();
+    }
+  }, [group?.taskLists]);
 
   if (isLoading || !group) {
     return <div>Loading...</div>;
@@ -23,7 +30,7 @@ export default function Page() {
     <div className="flex flex-col gap-6 py-6">
       <TeamSetting user={user} group={group} />
       <div className="flex flex-col gap-12">
-        <TasksList taskLists={group.taskLists} groupId={group.id}/>
+        <TasksList taskLists={group.taskLists} groupId={group.id} />
         <TaskReport taskLists={group.taskLists} />
         <MemberList group={group} />
       </div>

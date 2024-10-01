@@ -29,6 +29,7 @@ export default function AddTaskListModal({
     onSuccess: () => {
       console.log('할일 목록 생성 성공');
       closeModal();
+      window.location.reload();
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -71,7 +72,7 @@ export default function AddTaskListModal({
 
             <button
               type="submit"
-              className="w-full text-lg-semibold h-12 rounded-[12px] bg-brand-primary"
+              className="text-lg-semibold h-12 w-full rounded-[12px] bg-brand-primary"
             >
               만들기
             </button>

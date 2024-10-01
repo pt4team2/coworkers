@@ -1,9 +1,6 @@
 import Task from './Task';
 import { IGroup, TaskList } from '@/types/Group';
-import { useModalStore } from '@/store/useModalStore';
-import PopupOneButton from '@/components/modal/PopupOneButton';
 import AddTaskListModal from '@/components/modal/AddTaskListModal';
-import { ITaskList } from '@/types/Task';
 import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 
 interface TaskListProps {
