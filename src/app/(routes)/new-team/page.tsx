@@ -6,7 +6,6 @@ import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
 import ImageInput from '@/components/pages/teamcreate/ImageInput';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
-import Toast from '@/components/toast/Toast';
 
 interface IFormData {
   name: string;

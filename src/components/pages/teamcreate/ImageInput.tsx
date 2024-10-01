@@ -11,7 +11,7 @@ interface ImageInputProps {
 }
 
 export default function ImageInput({ imageUrl, setImageUrl }: ImageInputProps) {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(imageUrl);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const imgRef = useRef<HTMLInputElement | null>(null);
 

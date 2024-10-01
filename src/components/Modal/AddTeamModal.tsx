@@ -23,13 +23,6 @@ interface IFormData {
 }
 
 export default function AddTeamModal({ onClose }: AddTeamModalProps) {
-  const { data: session } = useSession();
-  const { user }: { user: IUser } = useUser(session?.user.id);
-  const membership = useMemberships(user?.id);
-  const joinGroups = membership.memberships?.map(
-    (membership: IMembership) => membership.group.name,
-  );
-
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
   const { closeModal } = useAddTeamModalStore();
@@ -80,7 +73,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
           <p className="text-xl-semibold mb-6 text-center">새로운 팀</p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label className="text-md-medium">팀 이름</label>
+              <label className="text-md-medium block">팀 이름</label>
               <input
                 className={`h-44px ${isDuplicate ? 'border-text-danger' : 'border-border-primary'} mb-2 mt-4 w-full rounded-[12px] border border-solid bg-background-secondary px-[14.5px] py-[16px] focus:border-none`}
                 placeholder="팀 이름을 입력해주세요."
@@ -96,7 +89,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
               )}
             </div>
             <div>
-              <label className="text-md-medium mb-4">팀 이미지</label>
+              <label className="text-md-medium mb-4 mt-4 block">팀 이미지</label>
               <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} />
             </div>
             <button
