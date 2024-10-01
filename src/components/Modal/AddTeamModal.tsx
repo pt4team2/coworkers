@@ -38,7 +38,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
       console.log('팀 생성 완료');
       setImageUrl(null);
       closeModal();
-
+      window.location.reload();
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);

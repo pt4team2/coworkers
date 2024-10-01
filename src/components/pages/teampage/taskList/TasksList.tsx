@@ -2,6 +2,7 @@ import Task from './Task';
 import { IGroup, TaskList } from '@/types/Group';
 import AddTaskListModal from '@/components/modal/AddTaskListModal';
 import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
+import EmptyTaskList from './EmptyTaskList';
 
 interface TaskListProps {
   taskLists: TaskList[];
@@ -26,9 +27,13 @@ export default function TasksList({ taskLists, groupId }: TaskListProps) {
         </button>
       </div>
       <div className="flex flex-col gap-4">
-        {taskLists.map((tasklist: TaskList) => (
-          <Task key={tasklist.id} tasklist={tasklist} />
-        ))}
+        {taskLists && taskLists.length > 0 ? (
+          taskLists.map((tasklist: TaskList) => (
+            <Task key={tasklist.id} tasklist={tasklist} />
+          ))
+        ) : (
+          <EmptyTaskList />
+        )}
       </div>
       {isModalOpen && (
         <AddTaskListModal groupId={groupId} onClose={closeModal} />
