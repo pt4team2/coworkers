@@ -81,17 +81,6 @@ export default function ImageInput({ imageUrl, setImageUrl }: ImageInputProps) {
           onChange={handleFileChange} // 파일 변경 시 처리
         />
       </div>
-      {/* 
-      {isUploading && <p>업로드 중...</p>}
-
-      {imageUrl && (
-        <p>
-          업로드된 이미지 URL:{' '}
-          <a href={imageUrl} target="_blank" rel="noopener noreferrer">
-            {imageUrl}
-          </a>
-        </p>
-      )} */}
     </>
   );
 }

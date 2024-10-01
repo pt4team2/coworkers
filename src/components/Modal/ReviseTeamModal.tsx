@@ -14,6 +14,7 @@ import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 import XIcon from '@/assets/icons/ic_x2.svg';
 import Image from 'next/image';
 import { IGroup } from '@/types/user';
+import ImageInput from '@/components/pages/teamcreate/ImageInput';
 
 interface ReviseTeamModalProps {
   onClose: () => void;
@@ -60,10 +61,7 @@ export default function ReviseTeamModal({
 
   return (
     <ModalPortal onClose={closeModal}>
-      <div
-        className="flex flex-col rounded-[12px] bg-background-secondary p-8"
-        
-      >
+      <div className="flex flex-col rounded-[12px] bg-background-secondary p-8">
         <button className="ml-auto" onClick={onClose}>
           <Image width={24} height={24} src={XIcon} alt="엑스 버튼" />
         </button>
@@ -73,8 +71,10 @@ export default function ReviseTeamModal({
           </p>
           {/*폼 데이터 전송하기 / 이미지, 팀 이름*/}
           <form onSubmit={handleSubmit((data) => console.log(data))}>
-            <label className="text-lg-medium mb-3 block">팀 프로필</label>
-            <p className="mb-6">이미지 업로드</p>
+            <div className="mb-6">
+              <label className="text-lg-medium mb-3 block">팀 프로필</label>
+              <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} />
+            </div>
             <div className="mb-10">
               <label className="text-lg-medium mb-3 block">팀 이름</label>
               <input

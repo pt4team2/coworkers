@@ -10,7 +10,6 @@ export const uploadImage = async (file: File): Promise<string> => {
         'Content-Type': 'multipart/form-data', // 적절한 헤더 설정
       },
     });
-
     return response.data.url; // 서버에서 반환된 이미지 URL 반환
   } catch (error) {
     console.error('이미지 업로드 실패:', error);
