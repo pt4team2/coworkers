@@ -1,4 +1,5 @@
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { IGroup } from '@/types/Group';
 import { useQuery } from '@tanstack/react-query';
 
 {
@@ -32,16 +33,16 @@ import { useQuery } from '@tanstack/react-query';
   "taskLists": []
 } */
 }
+interface UseGroupReturn {
+  group: IGroup | undefined; // data가 undefined일 수 있으므로 명시적으로 정의
+  isLoading: boolean;
+  error: unknown;
+}
 
-export default function useGroup(groupId: string | string[]) {
-  const {
-    data: group,
-    isLoading,
-    error,
-  } = useQuery({
+export default function useGroup(groupId: string | string[]): UseGroupReturn {
+  const { data, isLoading, error } = useQuery<IGroup>({
     queryKey: ['getGroup', groupId],
     queryFn: () => {
-      if (groupId) {
         return authAxiosInstance
           .get(`/groups/${groupId}`)
           .then((res) => res.data)
@@ -53,11 +54,8 @@ export default function useGroup(groupId: string | string[]) {
             console.error('Failed to fetch groups', err);
             throw err;
           });
-      } else {
-        return null;
-      }
     },
     enabled: !!groupId,
   });
-  return { group, isLoading, error };
+  return { group: data, isLoading, error };
 }

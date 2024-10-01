@@ -20,11 +20,11 @@ export default function Header() {
           src={IcMenu}
           alt="메뉴 아이콘"
         />
-          <Image
-            src={ImgLogo}
-            className="mr-auto h-8 w-[102px] md:mr-0 lg:mr-0 lg:w-[158px]"
-            alt="로고이미지"
-          />
+        <Image
+          src={ImgLogo}
+          className="mr-auto h-8 w-[102px] md:mr-0 lg:mr-0 lg:w-[158px]"
+          alt="로고이미지"
+        />
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
           <TeamDropdown user={user} />
           <Link href="/boards">
@@ -35,7 +35,7 @@ export default function Header() {
           </Link>
         </div>
         <span>
-          <Profile />
+          <Profile user={user} />
         </span>
       </div>
     </div>
