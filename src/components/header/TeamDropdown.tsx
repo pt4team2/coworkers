@@ -59,7 +59,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
     <div className="relative z-20" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="text-lg-medium flex w-[97px] flex-row items-center justify-center gap-[11px]"
+        className="text-lg-medium flex flex-row items-center justify-center gap-[11px]"
       >
         {selectedGroup?.group.name || '팀 선택'}
 
