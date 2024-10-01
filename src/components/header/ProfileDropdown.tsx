@@ -4,6 +4,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import IcProfile from '@/assets/icons/ic_profile.svg';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
 
@@ -73,7 +74,15 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
             팀 참여
           </li>
           <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
-            로그아웃
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
+            >
+              로그아웃
+            </Link>
           </li>
         </ul>
       )}
