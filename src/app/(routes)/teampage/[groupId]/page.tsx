@@ -23,7 +23,7 @@ export default function Page() {
     <div className="flex flex-col gap-6 py-6">
       <TeamSetting user={user} group={group} />
       <div className="flex flex-col gap-12">
-        <TasksList taskLists={group.taskLists} />
+        <TasksList taskLists={group.taskLists} groupId={group.id}/>
         <TaskReport taskLists={group.taskLists} />
         <MemberList group={group} />
       </div>

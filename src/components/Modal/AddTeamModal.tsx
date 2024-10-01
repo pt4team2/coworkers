@@ -38,6 +38,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
       console.log('팀 생성 완료');
       setImageUrl(null);
       closeModal();
+
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -70,7 +71,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
           <Image width={24} height={24} src={XIcon} alt="엑스 버튼" />
         </button>
         <div className="flex w-[280px] flex-col">
-          <p className="text-xl-semibold mb-6 text-center">새로운 팀</p>
+          <p className="text-xl-semibold mb-6 w-full text-center">새로운 팀</p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label className="text-md-medium block">팀 이름</label>
@@ -89,7 +90,9 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
               )}
             </div>
             <div>
-              <label className="text-md-medium mb-4 mt-4 block">팀 이미지</label>
+              <label className="text-md-medium mb-4 mt-4 block">
+                팀 이미지
+              </label>
               <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} />
             </div>
             <button

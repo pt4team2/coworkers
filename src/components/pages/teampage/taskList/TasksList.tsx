@@ -8,9 +8,10 @@ import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 
 interface TaskListProps {
   taskLists: TaskList[];
+  groupId: number;
 }
 
-export default function TasksList({ taskLists }: TaskListProps) {
+export default function TasksList({ taskLists, groupId }: TaskListProps) {
   const { isModalOpen, openModal, closeModal } = useAddTaskListModalStore();
   return (
     <div className="flex flex-col gap-4">
@@ -32,7 +33,9 @@ export default function TasksList({ taskLists }: TaskListProps) {
           <Task key={tasklist.id} tasklist={tasklist} />
         ))}
       </div>
-      {isModalOpen && <AddTaskListModal onClose={closeModal} />}
+      {isModalOpen && (
+        <AddTaskListModal groupId={groupId} onClose={closeModal} />
+      )}
     </div>
   );
 }
