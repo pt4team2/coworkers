@@ -6,12 +6,26 @@ import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
 import ImageInput from '@/components/pages/teamcreate/ImageInput';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import useUser from '@/hooks/useUser';
+import useMemberships from '@/hooks/useMemberships';
+import { IMembership, IUser } from '@/types/user';
 
 interface IFormData {
   name: string;
   image: string;
 }
+
 export default function Page() {
+  const { data: session } = useSession();
+  const { user } = useUser(session?.user.id);
+
+  const memberhip = useMemberships(user?.id);
+  const joinGroups = memberhip.memberships?.map(
+    (membership: IMembership) => membership.group.id,
+  );
+  const router = useRouter();
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
   const {
     reset,
@@ -19,6 +33,12 @@ export default function Page() {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormData>();
+
+  //가입한 팀 중에 랜덤으로 Id 값 가져오기
+  const randomGroupId =
+    joinGroups && joinGroups.length > 0
+      ? joinGroups[Math.floor(Math.random() * joinGroups.length)]
+      : undefined;
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
@@ -34,6 +54,7 @@ export default function Page() {
       console.log('팀 생성 완료');
       reset();
       setImageUrl(null);
+      router.push(`/teampage/${randomGroupId}`);
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);

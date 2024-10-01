@@ -21,7 +21,7 @@ export default function Page() {
   console.log(group.taskLists);
   return (
     <div className="flex flex-col gap-6 py-6">
-      <TeamSetting group={group} />
+      <TeamSetting user={user} group={group} />
       <div className="flex flex-col gap-12">
         <TasksList taskLists={group.taskLists} />
         <TaskReport taskLists={group.taskLists} />
