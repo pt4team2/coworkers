@@ -32,6 +32,7 @@ export default function MemberList({ group }: GroupProps) {
             onClose={closeModal}
             description={'그룹에 참여할 수 있는 링크를 복사합니다.'}
             buttonContents={'링크 복사하기'}
+            groupId={group?.id}
           />
         )}
       </div>

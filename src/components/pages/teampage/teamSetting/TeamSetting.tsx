@@ -76,6 +76,7 @@ export default function TeamSetting({ group }: GroupProps) {
       {isReviseModalOpen && (
         <ReviseTeamModal onClose={closeModal} group={group} />
       )}
+
     </>
   );
 }
