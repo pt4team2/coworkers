@@ -12,7 +12,7 @@ const ModalDanger: React.FC<ModalProps> = ({ isOpen, onClose, title }) => {
 
   return (
     <div className="relative flex h-[245px] w-[375px] rounded-b-[0px] rounded-t-[12px] bg-background-secondary md:h-[245px] md:w-96 md:rounded-[12px] lg:h-[245px] lg:w-96 lg:rounded-[12px]">
-      <div className="mx-auto mb-8 mt-10 flex h-[173px] w-[280px] flex-col items-center justify-center justify-between">
+      <div className="mx-auto mb-8 mt-10 flex h-[173px] w-[280px] flex-col items-center justify-center">
         <div className="flex h-[101px] flex-col items-center justify-between">
           <div>
             <Image src={DangerIcon} alt="DangerIcon" width={24} height={24} />

@@ -2,14 +2,19 @@
 
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import IcArrow from '@/assets/icons/ic_toggleDown.svg';
 import Image from 'next/image';
 import IcProfile from '@/assets/icons/ic_profile.svg';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { IUser } from '@/types/user';
 
-export default function ProfileDropdown() {
-  const { data: session, status } = useSession();
+interface ProfileDropdownProps {
+  user: IUser;
+}
+export default function ProfileDropdown({ user }: ProfileDropdownProps) {
+  if (!user) {
+    return <div>유저 정보가 없습니다.</div>; // user가 null일 경우 예외 처리
+  }
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -35,13 +40,23 @@ export default function ProfileDropdown() {
     <div className="relative z-30" ref={dropdownRef}>
       <button onClick={toggleDropdown}>
         <div className="flex flex-row items-center justify-center gap-[8px]">
-          <Image
-            className="w-6 md:w-4 lg:w-4"
-            src={IcProfile}
-            alt="사용자 프로필"
-          />
+          {user?.image ? (
+            <Image
+              width={28}
+              height={28}
+              src={user?.image}
+              alt="이미지"
+              className="h-[28px] w-[28px] rounded-full object-cover"
+            />
+          ) : (
+            <Image
+              className="w-6 md:w-4 lg:w-4"
+              src={IcProfile}
+              alt="사용자 프로필"
+            />
+          )}
           <span className="text-md-medium hidden lg:block">
-            {session?.user.nickname}
+            {user.nickname}
           </span>
         </div>
       </button>
@@ -59,7 +74,15 @@ export default function ProfileDropdown() {
             팀 참여
           </li>
           <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
-            로그아웃
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
+            >
+              로그아웃
+            </Link>
           </li>
         </ul>
       )}
