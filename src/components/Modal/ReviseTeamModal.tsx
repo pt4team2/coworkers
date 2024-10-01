@@ -77,9 +77,7 @@ export default function ReviseTeamModal({
           <Image width={24} height={24} src={XIcon} alt="엑스 버튼" />
         </button>
         <div className="mx-auto flex w-[343px] flex-col md:w-[460px] lg:w-[460px]">
-          <p className="text-2xl-medium m-auto mb-6 md:mb-[50px] lg:mb-[50px] lg:text-4xl">
-            팀 수정하기
-          </p>
+          <p className="text-2xl-semibold mb-10 text-center">팀 수정하기</p>
           {/*폼 데이터 전송하기 / 이미지, 팀 이름*/}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-6">
@@ -108,7 +106,7 @@ export default function ReviseTeamModal({
             >
               수정하기
             </button>
-            <p className="text-md-regular text-text-secondary md:text-lg-regular lg:text-lg-regular m-auto text-center">
+            <p className="text-md-regular md:text-lg-regular lg:text-lg-regular m-auto text-center text-text-secondary">
               팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요.
             </p>
           </form>
