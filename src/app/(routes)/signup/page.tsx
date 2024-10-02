@@ -112,7 +112,7 @@ export default function SignUpPage() {
           회원가입
         </button>
       </form>
-      <OAuthLogin label="간편 회원가입하기" />
+      <OAuthLogin label="간편 회원가입하기" isItemsCenter={true} />
     </div>
   );
 }

@@ -7,9 +7,13 @@ import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 
 interface OAuthLoginOptionsProps {
   label: string;
+  isItemsCenter?: boolean;
 }
 
-export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
+export default function OAuthLoginOptions({
+  label,
+  isItemsCenter = false,
+}: OAuthLoginOptionsProps) {
   // 카카오 로그인
   const [providers, setProviders] = useState<Record<
     string,
@@ -31,7 +35,9 @@ export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
         <span className="text-lg-regular mx-6 text-text-inverse">OR</span>
         <div className="h-px flex-grow bg-border-tertiary"></div>
       </div>
-      <div className="flex w-full items-center justify-between">
+      <div
+        className={`flex w-full ${isItemsCenter ? 'items-center' : ''} justify-between`}
+      >
         <span className="text-lg-medium text-text-inverse">{label}</span>
         <div className="flex gap-4">
           <Link

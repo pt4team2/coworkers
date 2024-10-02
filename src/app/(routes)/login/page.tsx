@@ -17,6 +17,7 @@ import Modal from '@/components/Modal/Modal';
 import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import OAuthLoginOptions from '@/components/auth/OAuthLogin';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
@@ -123,36 +124,7 @@ export default function LoginPage() {
           </div>
         </div>
       </form>
-      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom lg:w-115-custom">
-        <div className="flex w-full items-center text-text-primary">
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-          <span className="text-lg-medium md:text-lg-regular lg:text-lg-regular mx-6 text-text-inverse">
-            OR
-          </span>
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-        </div>
-        <div className="flex w-full justify-between">
-          <span className="text-lg-medium text-white">간편 로그인하기</span>
-          <div className="flex gap-4">
-            <Link href="#">
-              <Image
-                src={googleLogo}
-                width={42}
-                height={42}
-                alt="구글로 로그인하기"
-              />
-            </Link>
-            <Link href="#">
-              <Image
-                src={kakaotalkLogo}
-                width={42}
-                height={42}
-                alt="카카오로 로그인하기"
-              />
-            </Link>
-          </div>
-        </div>
-      </div>
+      <OAuthLoginOptions label="간편 로그인하기" isItemsCenter={false} />
     </div>
   );
 }
