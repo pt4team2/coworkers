@@ -13,7 +13,7 @@ import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 import { loginFieldData } from '@/hooks/formFieldData';
 import { useModalStore } from '@/store/useModalStore';
 import ModalWrapper from '@/components/Modal/ModalWrapper';
-import Modal from '@/components/Modal/Modal';
+import Modal from '@/components/Modal/ResetPwdModal';
 import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
