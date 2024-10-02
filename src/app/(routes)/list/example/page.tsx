@@ -5,14 +5,15 @@ import PopupOneButton from '@/components/Modal/PopupOneButton';
 import ModalProfile from '@/components/Modal/ModalProfile';
 import ModalDanger from '@/components/Modal/ModalDanger';
 import ModalDangerLogout from '@/components/Modal/ModalDangerLogout';
+import ModalTwoButton from '@/components/Modal/ModalTwoButton';
+import ModalOneButton from '@/components/Modal/ModalOneButton';
+import ModalTwoButtonPassword from '@/components/Modal/ModalTwoButtonPassword';
+import ModalToDo from '@/components/Modal/ModalToDo';
 export default function Example() {
   const [isModalOpen, setIsModalOpen] = useState(true);
   return (
-    <div className="bg-white">
-      <ModalDangerLogout
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+    <div className="bg-background-inverse">
+      <ModalToDo isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }

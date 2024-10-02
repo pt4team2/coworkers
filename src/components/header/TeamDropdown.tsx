@@ -1,29 +1,57 @@
 'use client';
 
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import IcArrow from 'src/assets/icons/ic_toggleDown.svg';
 import IcKebab from 'src/assets/icons/ic_kebab.svg';
 import IcPlus from 'src/assets/icons/ic_plus.svg';
 import { teamMockData } from '@/data/mockData';
 import Image from 'next/image';
+import { IUser } from '@/types/user';
+import Link from 'next/link';
 
-export default function TeamDropdown() {
+interface TeamDropdownProps {
+  user: IUser | null;
+}
+
+export default function TeamDropdown({ user }: TeamDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  if (!user || !user.memberships) {
+    return null;
+  }
+
   return (
-    <div className="relative">
+    <div className="relative z-20" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-lg-medium flex w-[97px] flex-row items-center justify-center gap-[11px]"
       >
-        {teamMockData.memberships[0].group.name}{' '}
+        {user.memberships[0].group.name}{' '}
         <Image src={IcArrow} alt="드롭다운 화살표" />
       </button>
       {isOpen && (
-        <ul className="absolute left-0 top-10 mt-2 flex w-[218px] flex-col justify-center gap-[8px] rounded-[12px] bg-background-secondary p-4 text-sm shadow-lg">
-          {teamMockData.memberships.map((membership) => (
+        <ul className="absolute left-0 top-10 mt-2 flex w-[218px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-4 text-sm shadow-lg">
+          {user?.memberships.map((membership) => (
             <li
               key={membership.group.id}
               className="text-lg-medium flex w-[186px] flex-row items-center justify-between gap-3 rounded-[8px] bg-background-secondary p-2 hover:bg-slate-700"
