@@ -76,7 +76,7 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       return baseUrl;
     },
     async signIn(params) {
-      console.log('params', params);
+      // console.log('params', params);
 
       if (params.account?.provider === 'google') {
         if (!req?.url) {
@@ -123,8 +123,12 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       }
 
       const currentTime = Math.floor(Date.now() / 1000);
-      const accessTokenExpired = Math.floor(token.accessTokenExpires / 1000);
-      const timeRemaining = accessTokenExpired - 60 * 10 - currentTime; // 만료 10분 전까지 남은 시간 계산
+      let accessTokenExpired = Math.floor(token.accessTokenExpires / 1000);
+      const timeRemaining = accessTokenExpired - 60 * 10 - currentTime;
+
+      console.log('@@@currentTime', currentTime);
+      console.log('@@@accessTokenExpired', accessTokenExpired);
+      console.log('@@@timeRemaining', timeRemaining);
 
       if (timeRemaining > 1) {
         // 유효기간 내에는 토큰 그대로 반환
@@ -132,6 +136,8 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       } else {
         // accessToken이 만료된 경우 갱신
         try {
+          console.log('api 호출 시도중');
+
           const response = await publicAxiosInstance.post(
             '/auth/refresh-token',
             {
