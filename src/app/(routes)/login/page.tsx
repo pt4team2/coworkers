@@ -7,30 +7,29 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
 import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
-import Image from 'next/image';
-import googleLogo from '@/assets/icons/googleLogo.svg';
-import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 import { loginFieldData } from '@/hooks/formFieldData';
 import { useModalStore } from '@/store/useModalStore';
 import ModalWrapper from '@/components/Modal/ModalWrapper';
 import Modal from '@/components/Modal/Modal';
 import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import OAuthLoginOptions from '@/components/auth/OAuthLogin';
+import useSessionStore from '@/store/useSessionStore';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
 
   // 세션 존재 시 홈 화면으로 리다이렉트
   const router = useRouter();
-  const { data: session, status } = useSession();
+
+  // Zustand에서 세션 가져오기
+  const { user, accessToken } = useSessionStore((state) => state);
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (user && accessToken) {
       router.push('/');
     }
-  }, [status, router]);
+  }, [user, accessToken, router]);
 
   const {
     register,
