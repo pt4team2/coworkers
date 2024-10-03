@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import ImgLogo from 'src/assets/images/img_logo.svg';
 import IcMenu from 'src/assets/icons/ic-menu.svg';
@@ -6,11 +8,17 @@ import Profile from './Profile';
 import TeamDropdown from './TeamDropdown';
 import Link from 'next/link';
 import useUser from '@/hooks/useUser';
-import { useSession } from 'next-auth/react';
+import useSessionStore from '@/store/useSessionStore';
 
 export default function Header() {
-  const { data: session } = useSession();
-  const { user } = useUser(session?.user.id);
+  const {
+    user: sessionUser,
+    accessToken,
+    accessTokenExpires,
+  } = useSessionStore();
+
+  const { user } = useUser(sessionUser?.id);
+  // console.log('$$$Header.tsx $$$user', user);
 
   return (
     <div className="w-full bg-background-secondary">
