@@ -6,15 +6,21 @@ import React, { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
+  session: any;
 }
-function Providers({ children }: Props) {
+function Providers({ children, session }: Props) {
   return (
-    <SessionProvider refetchInterval={0} refetchOnWindowFocus={false}>
+    <SessionProvider
+      session={session}
+      refetchInterval={0}
+      refetchOnWindowFocus={false}
+    >
       <RefreshTokenWrapper>{children}</RefreshTokenWrapper>
     </SessionProvider>
   );
 }
 
+// token 갱신
 const RefreshTokenWrapper = ({ children }: { children: ReactNode }) => {
   useRefreshToken();
 
