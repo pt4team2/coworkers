@@ -62,17 +62,21 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
       </button>
       {isOpen && (
         <ul className="text-lg-regular absolute right-0 top-10 z-30 mt-2 flex h-[184px] w-[135px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-[14px] text-sm shadow-lg">
-          <li className="rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
-            마이 히스토리
-          </li>
+          <Link className="mg-0" href="/my-history">
+            <li className="rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+              마이 히스토리
+            </li>
+          </Link>
           <Link className="mg-0" href="/reset-password">
             <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
               계정 설정
             </li>
           </Link>
-          <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
-            팀 참여
-          </li>
+          <Link href="/join-team">
+            <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+              팀 참여
+            </li>
+          </Link>
           <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
             <Link
               href="#"
