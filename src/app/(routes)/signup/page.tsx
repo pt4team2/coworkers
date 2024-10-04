@@ -9,22 +9,24 @@ import FormField from '@/components/auth/FormField';
 import { signUpFieldData } from '@/hooks/formFieldData';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { loginStore } from '@/store/loginStore';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import OAuthLogin from '@/components/auth/OAuthLogin';
+import useSessionStore from '@/store/useSessionStore';
 
 export default function SignUpPage() {
   const signUpFields = signUpFieldData();
 
   // 세션 존재 시 홈 화면으로 리다이렉트
   const router = useRouter();
-  const { data: session, status } = useSession();
+
+  // Zustand에서 세션 가져오기
+  const { user, accessToken } = useSessionStore((state) => state);
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (user && accessToken) {
       router.push('/');
     }
-  }, [status, router]);
+  }, [user, accessToken, router]);
 
   const {
     register,
@@ -112,7 +114,7 @@ export default function SignUpPage() {
           회원가입
         </button>
       </form>
-      <OAuthLogin label="간편 회원가입하기" />
+      <OAuthLogin label="간편 회원가입하기" isItemsCenter={true} />
     </div>
   );
 }
