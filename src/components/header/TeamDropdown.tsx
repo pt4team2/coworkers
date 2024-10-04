@@ -62,7 +62,12 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
         className="text-lg-medium flex flex-row items-center justify-center gap-[11px]"
       >
         {selectedGroup?.group.name || '팀 선택'}
-        <Image src={IcArrow} alt="드롭다운 화살표" width={16} height={16} />
+        <Image
+          src={IcArrow}
+          alt="드롭다운 화살표"
+          width={8}
+          height={8}
+        />
       </button>
 
       {isOpen && (

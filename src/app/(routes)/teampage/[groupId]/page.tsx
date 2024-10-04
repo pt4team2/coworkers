@@ -14,13 +14,8 @@ export default function Page() {
   const { groupId } = useParams();
   const { data: session } = useSession();
   const { user } = useUser(session?.user.id);
-  const { group, isLoading, error, refetch } = useGroup(groupId);
+  const { group, isLoading, error} = useGroup(groupId);
 
-  useEffect(() => {
-    if (group) {
-      refetch();
-    }
-  }, [group?.taskLists]);
 
   if (isLoading || !group) {
     return <div>Loading...</div>;

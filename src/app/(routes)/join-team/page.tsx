@@ -4,10 +4,8 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import useUser from '@/hooks/useUser';
-import { IMembership, IUser } from '@/types/user';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
-import useMemberships from '@/hooks/useMemberships';
 import useGroup from '@/hooks/useGroup';
 
 export default function Page() {
@@ -16,7 +14,7 @@ export default function Page() {
   const router = useRouter();
   const groups = useGroup(user?.id);
   const newTeam = groups.group?.id;
-  // // 팀 생성 API 요청 함수
+
   const {
     register,
     handleSubmit,
@@ -31,10 +29,10 @@ export default function Page() {
     mutationFn: (formData: IFormData) => {
       return authAxiosInstance.post(`/groups/accept-invitation`, formData);
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       console.log('팀 참여 완료!');
-      // TODO: 참여한 팀 페이지로 접속할 수 있도록 라우팅
-      // router.push(`teampage/${}`);
+      const joinGroupId = data?.data?.groupId;
+      router.push(`teampage/${joinGroupId}`);
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -44,7 +42,7 @@ export default function Page() {
   const onSubmit = (data: IFormData) => {
     if (!data.token) {
       console.error('초대링크를 입력해주세요.');
-      
+
       console.log(newTeam);
       return;
     }

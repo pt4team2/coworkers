@@ -20,11 +20,6 @@ interface IFormData {
 export default function Page() {
   const { data: session } = useSession();
   const { user } = useUser(session?.user.id);
-
-  const memberhip = useMemberships(user?.id);
-  const joinGroups = memberhip.memberships?.map(
-    (membership: IMembership) => membership.group.id,
-  );
   const router = useRouter();
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
   const {
