@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import useUser from '@/hooks/useUser';
 import useMemberships from '@/hooks/useMemberships';
 import { IMembership, IUser } from '@/types/user';
+import useSessionStore from '@/store/useSessionStore';
 
 interface IFormData {
   name: string;
@@ -18,8 +19,8 @@ interface IFormData {
 }
 
 export default function Page() {
-  const { data: session } = useSession();
-  const { user } = useUser(session?.user.id);
+  const { user } = useSessionStore();
+  const { userData } = useUser(user?.id);
   const router = useRouter();
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
   const {
