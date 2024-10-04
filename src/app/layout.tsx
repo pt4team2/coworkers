@@ -14,8 +14,8 @@ export default function RootLayout({
 }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
-    <html lang="ko">
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <html lang="ko">
         <body>
           <Providers>
             <header>
@@ -28,7 +28,7 @@ export default function RootLayout({
             <div id="_modal"></div>
           </Providers>
         </body>
-      </QueryClientProvider>
-    </html>
+      </html>
+    </QueryClientProvider>
   );
 }

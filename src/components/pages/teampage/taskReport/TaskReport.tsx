@@ -23,8 +23,7 @@ export default function TaskReport({ taskLists }: TaskListProps) {
   const doneTasks = allTasks.filter((task: Task) => task.doneAt !== null);
 
   const doneTaskCount = doneTasks.length;
-  const progressPercent =
-    totalTaskCount > 0 ? Math.round((doneTaskCount / totalTaskCount) * 100) : 0;
+  const progressPercent = Math.round((doneTaskCount / totalTaskCount) * 100);
 
   return (
     <div className="flex flex-col gap-4">
