@@ -3,15 +3,16 @@ import XIcon from '@/assets/icons/ic_x2.svg';
 import React, { useState } from 'react';
 import ModalPortal from '../ModalPortal/ModalPortal';
 import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
-import useMemberships from '@/hooks/useMemberships';
-import { useSession } from 'next-auth/react';
-import { IUser, IMembership } from '@/types/user';
 import { useForm } from 'react-hook-form';
-import useUser from '@/hooks/useUser';
 import ImageInput from '../pages/teamcreate/ImageInput';
 import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
-import { useMutation } from '@tanstack/react-query';
+import {
+  useMutation,
+  QueryClient,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { useRouter } from 'next/navigation';
 
 interface AddTeamModalProps {
   onClose: () => void;
@@ -26,7 +27,8 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
   const { closeModal } = useAddTeamModalStore();
-
+  const queryClient = useQueryClient();
+  const router = useRouter();
   {
     /* mutation 함수 생성 */
   }
@@ -34,11 +36,15 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
     mutationFn: (formData: IFormData) => {
       return authAxiosInstance.post(`/groups`, formData);
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       console.log('팀 생성 완료');
       setImageUrl(null);
       closeModal();
-      window.location.reload();
+
+      const newGroupId = data?.data?.id;
+      await queryClient.invalidateQueries({ queryKey: ['getUser'] });
+      router.push(`/teampage/${newGroupId}`);
+      // window.location.reload();
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -64,6 +70,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
     console.log(formData);
     postCreateTeam.mutate(formData);
   };
+
   return (
     <ModalPortal onClose={closeModal}>
       <div className="flex w-[384px] flex-col items-center rounded-[12px] bg-background-secondary px-4 pb-10 pt-4">
