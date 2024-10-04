@@ -1,10 +1,13 @@
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { IUser } from '@/types/user';
+
 //user 정보 가져오기
 //TODO: 어떤 정보를 받아왔을 때 ex.id , user 정보를 가져올 수 있는가 ?
 
 export default function useUser(id?: number) {
+  const queryClient = useQueryClient();
+
   const {
     data: user,
     isLoading,

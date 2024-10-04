@@ -15,7 +15,7 @@ export default function Page() {
   const { user } = useUser(session?.user.id);
   const router = useRouter();
   const groups = useGroup(user?.id);
-  const newTeam = groups.group;
+  const newTeam = groups.group?.id
   // // 팀 생성 API 요청 함수
   const {
     register,

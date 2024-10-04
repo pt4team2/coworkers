@@ -62,8 +62,6 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
         className="text-lg-medium flex flex-row items-center justify-center gap-[11px]"
       >
         {selectedGroup?.group.name || '팀 선택'}
-
-        {/* TODO: 현재 속하는 팀 명으로 교체시켜야 함 */}
         <Image src={IcArrow} alt="드롭다운 화살표" width={16} height={16} />
       </button>
 

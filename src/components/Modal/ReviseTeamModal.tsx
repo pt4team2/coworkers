@@ -12,8 +12,9 @@ import Image from 'next/image';
 import { IGroup } from '@/types/user';
 import ImageInput from '@/components/pages/teamcreate/ImageInput';
 import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { QueryClient } from '@tanstack/react-query';
 
 interface ReviseTeamModalProps {
   onClose: () => void;
@@ -30,7 +31,7 @@ export default function ReviseTeamModal({
   group,
 }: ReviseTeamModalProps) {
   const { closeModal } = useReviseTeamModalStore();
-
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -49,8 +50,11 @@ export default function ReviseTeamModal({
     mutationFn: (formData: IFormData) => {
       return authAxiosInstance.patch(`/groups/${group.id}`, formData);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       console.log('팀 수정 완료');
+      await queryClient.invalidateQueries({ queryKey: ['getGroup'] });
+      await queryClient.invalidateQueries({ queryKey: ['getUser'] });
+
       closeModal();
     },
     onError: () => (error: any) => {
