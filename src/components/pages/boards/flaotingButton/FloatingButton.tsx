@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import PlusIcon from '@/assets/icons/ic_plus.svg';
+import PlusIcon from '@/assets/icons/ic_add.svg';
 
 const FloatingButton = () => {
   const router = useRouter();
