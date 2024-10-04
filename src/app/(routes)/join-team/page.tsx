@@ -78,7 +78,7 @@ export default function Page() {
         </button>
       </form>
       <p className="text-md-regular md:text-lg-regular lg:text-lg-regular m-auto">
-        공유받은 링크를 입력해 참여할 수 있어요.
+        공유받은 팀 링크를 입력해 참여할 수 있어요.
       </p>
     </div>
   );
