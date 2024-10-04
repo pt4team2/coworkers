@@ -7,7 +7,6 @@ import TeamDropdown from './TeamDropdown';
 import Link from 'next/link';
 import useUser from '@/hooks/useUser';
 import { useSession } from 'next-auth/react';
-
 export default function Header() {
   const { data: session } = useSession();
   const { user } = useUser(session?.user.id);
