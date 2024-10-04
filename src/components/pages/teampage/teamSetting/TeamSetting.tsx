@@ -3,20 +3,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import settingIcon from '@/assets/icons/ic_setting.svg';
 import backgroundImg from '@/assets/images/img_teambg.svg';
 import Image from 'next/image';
-import { IGroup } from '@/types/user';
+import { IGroup, IUser } from '@/types/user';
 import ReviseTeamModal from '@/components/modal/ReviseTeamModal';
 import { useReviseTeamModalStore } from '@/store/useReviseTeamModalStore';
+import { useDeleteTeamModalStore } from '@/store/useDeleteTeamModalStore';
+import TeamDeleteModal from '@/components/modal/TeamDeleteModal';
 
-interface GroupProps {
+interface TeamSettingProps {
   group: IGroup | undefined;
+  user: IUser;
 }
-export default function TeamSetting({ group }: GroupProps) {
+export default function TeamSetting({ group, user }: TeamSettingProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
   const { isReviseModalOpen, openModal, closeModal } =
     useReviseTeamModalStore();
-
+  const { isDeleteModalOpen, openDeleteModal, closeDeleteModal } =
+    useDeleteTeamModalStore();
+  const groupId = group?.id;
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -65,10 +71,16 @@ export default function TeamSetting({ group }: GroupProps) {
                   수정하기
                 </li>
               </button>
-
-              <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
-                삭제하기
-              </li>
+              <button
+                onClick={() => {
+                  openDeleteModal();
+                  setIsDeleteOpen(false);
+                }}
+              >
+                <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
+                  삭제하기
+                </li>
+              </button>
             </ul>
           )}
         </div>
@@ -76,7 +88,13 @@ export default function TeamSetting({ group }: GroupProps) {
       {isReviseModalOpen && (
         <ReviseTeamModal onClose={closeModal} group={group} />
       )}
-
+      {isDeleteModalOpen && (
+        <TeamDeleteModal
+          onClose={closeDeleteModal}
+          groupId={groupId}
+          user={user}
+        />
+      )}
     </>
   );
 }
