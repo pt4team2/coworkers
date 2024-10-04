@@ -91,7 +91,7 @@ export default function ReviseTeamModal({
             <div className="mb-10">
               <label className="text-lg-medium mb-3 block">팀 이름</label>
               <input
-                className={`h-44px ${isDuplicate ? 'border-text-danger' : 'border-border-primary'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-none`}
+                className={`h-44px ${isDuplicate ? 'border-status-danger ring-1 ring-status-danger' : 'border-border-primary'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px]  focus:border-status-brand focus:outline-none focus:ring-status-brand`}
                 placeholder="팀 이름을 입력해주세요."
                 {...register('name', {
                   required: true,

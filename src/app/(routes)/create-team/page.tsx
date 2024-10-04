@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
 import ImageInput from '@/components/pages/teamcreate/ImageInput';
-import { useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -34,27 +34,21 @@ export default function Page() {
     formState: { errors },
   } = useForm<IFormData>();
 
-  //가입한 팀 중에 랜덤으로 Id 값 가져오기
-  const randomGroupId =
-    joinGroups && joinGroups.length > 0
-      ? joinGroups[Math.floor(Math.random() * joinGroups.length)]
-      : undefined;
-
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-  {
-    /* postMutation 함수 */
-  }
+  const queryClient = useQueryClient();
 
   const postCreateTeam = useMutation({
     mutationFn: (formData: IFormData) => {
       return authAxiosInstance.post(`/groups`, formData);
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       console.log('팀 생성 완료');
       reset();
       setImageUrl(null);
-      router.push(`/teampage/${randomGroupId}`);
+
+      const newGroupId = data?.data?.id;
+      await queryClient.invalidateQueries({ queryKey: ['getUser'] });
+      router.push(`/teampage/${newGroupId}`);
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -88,7 +82,7 @@ export default function Page() {
         <div className="mb-10">
           <label className="text-lg-medium mb-3 block">팀 이름</label>
           <input
-            className={`h-44px ${isDuplicate ? 'border-text-danger' : 'border-border-primary'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-none`}
+            className={`h-44px ${isDuplicate ? 'border-status-danger' : 'border-border-primary'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-status-brand focus:outline-none focus:ring-status-brand`}
             placeholder="팀 이름을 입력해주세요."
             {...register('name', {
               required: true,

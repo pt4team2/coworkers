@@ -15,7 +15,7 @@ export default function Page() {
   const { user } = useUser(session?.user.id);
   const router = useRouter();
   const groups = useGroup(user?.id);
-  const newTeam = groups.group?.id
+  const newTeam = groups.group?.id;
   // // 팀 생성 API 요청 함수
   const {
     register,
@@ -44,6 +44,7 @@ export default function Page() {
   const onSubmit = (data: IFormData) => {
     if (!data.token) {
       console.error('초대링크를 입력해주세요.');
+      
       console.log(newTeam);
       return;
     }
@@ -63,7 +64,7 @@ export default function Page() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className="text-lg-medium mb-3">팀 링크</p>
         <input
-          className="h-44px mb-10 w-full rounded-[12px] border border-solid border-border-primary bg-background-secondary px-[16px] py-[13.5px]"
+          className="h-44px mb-10 w-full rounded-[12px] border border-solid border-border-primary bg-background-secondary px-[16px] py-[13.5px] focus:border-status-brand focus:outline-none focus:ring-status-brand"
           placeholder="팀 링크를 입력해주세요."
           {...register('token', {
             required: true,

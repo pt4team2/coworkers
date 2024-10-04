@@ -8,7 +8,6 @@ import ImageInput from '../pages/teamcreate/ImageInput';
 import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
 import {
   useMutation,
-  QueryClient,
   useQueryClient,
 } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
@@ -44,7 +43,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
       const newGroupId = data?.data?.id;
       await queryClient.invalidateQueries({ queryKey: ['getUser'] });
       router.push(`/teampage/${newGroupId}`);
-      // window.location.reload();
+
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -83,7 +82,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
             <div>
               <label className="text-md-medium block">팀 이름</label>
               <input
-                className={`h-44px ${isDuplicate ? 'border-text-danger' : 'border-border-primary'} mb-2 mt-4 w-full rounded-[12px] border border-solid bg-background-secondary px-[14.5px] py-[16px] focus:border-none`}
+                className={`h-44px ${isDuplicate ? 'border-text-danger ring-1 ring-status-danger' : 'border-border-primary'} mb-2 mt-4 w-full rounded-[12px] border border-solid bg-background-secondary px-[14.5px] py-[16px] focus:border-status-brand focus:outline-none focus:ring-status-brand`}
                 placeholder="팀 이름을 입력해주세요."
                 {...register('name', {
                   required: true,
