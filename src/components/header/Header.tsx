@@ -7,7 +7,6 @@ import TeamDropdown from './TeamDropdown';
 import Link from 'next/link';
 import useUser from '@/hooks/useUser';
 import { useSession } from 'next-auth/react';
-
 export default function Header() {
   const { data: session } = useSession();
   const { user } = useUser(session?.user.id);
@@ -28,7 +27,7 @@ export default function Header() {
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
           <TeamDropdown user={user} />
           <Link href="/boards">
-            <button className="flex items-center justify-center">
+            <button className="text-lg-medium flex items-center justify-center">
               {' '}
               자유게시판
             </button>
