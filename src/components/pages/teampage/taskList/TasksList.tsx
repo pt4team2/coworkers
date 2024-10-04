@@ -1,16 +1,15 @@
 import Task from './Task';
 import { IGroup, TaskList } from '@/types/Group';
-import { useModalStore } from '@/store/useModalStore';
-import PopupOneButton from '@/components/modal/PopupOneButton';
 import AddTaskListModal from '@/components/modal/AddTaskListModal';
-import { ITaskList } from '@/types/Task';
 import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
+import EmptyTaskList from './EmptyTaskList';
 
 interface TaskListProps {
   taskLists: TaskList[];
+  groupId: number;
 }
 
-export default function TasksList({ taskLists }: TaskListProps) {
+export default function TasksList({ taskLists, groupId }: TaskListProps) {
   const { isModalOpen, openModal, closeModal } = useAddTaskListModalStore();
   return (
     <div className="flex flex-col gap-4">
@@ -28,11 +27,17 @@ export default function TasksList({ taskLists }: TaskListProps) {
         </button>
       </div>
       <div className="flex flex-col gap-4">
-        {taskLists.map((tasklist: TaskList) => (
-          <Task key={tasklist.id} tasklist={tasklist} />
-        ))}
+        {taskLists && taskLists.length > 0 ? (
+          taskLists.map((tasklist: TaskList) => (
+            <Task key={tasklist.id} tasklist={tasklist} />
+          ))
+        ) : (
+          <EmptyTaskList />
+        )}
       </div>
-      {isModalOpen && <AddTaskListModal onClose={closeModal} />}
+      {isModalOpen && (
+        <AddTaskListModal groupId={groupId} onClose={closeModal} />
+      )}
     </div>
   );
 }

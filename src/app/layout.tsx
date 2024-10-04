@@ -15,8 +15,8 @@ export default function RootLayout({
   const [queryClient] = useState(() => new QueryClient());
   const session = useSessionStore((state) => state);
   return (
-    <QueryClientProvider client={queryClient}>
-      <html lang="ko">
+    <html lang="ko">
+      <QueryClientProvider client={queryClient}>
         <body>
           <Providers session={session}>
             <SessionStoreUpdater />
@@ -25,8 +25,8 @@ export default function RootLayout({
             <div id="_modal"></div>
           </Providers>
         </body>
-      </html>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </html>
   );
 }
 
