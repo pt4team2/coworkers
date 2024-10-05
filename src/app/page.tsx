@@ -2,9 +2,9 @@ import React from 'react';
 import '@/styles/globals.css';
 
 export default function Page() {
-  return (
-    <>
-      <p className="flex bg-brand-primary text-sm">최상단</p>
-    </>
-  );
+  return <>기본페이지</>;
+  // redirect('/teampage/891');
+  // return null;
+  /*TODO 유저 정보를 가져와서 소속된 팀들 중 가장 위에 있는 팀페이지를 로딩하도록 수정해야함
+   */
 }

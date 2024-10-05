@@ -51,7 +51,7 @@ export const loginFieldData = () => {
       id: 'password',
       type: showPassword ? 'text' : 'password',
       placeholder: '비밀번호를 입력해주세요.',
-      trailingIcon: showPassword ? visibility_off : visibility_on,
+      trailingIcon: showPassword ? visibility_on : visibility_off,
       onIconClick: togglePasswordVisibility,
     },
   ];
