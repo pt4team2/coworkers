@@ -11,9 +11,12 @@ import useUser from '@/hooks/useUser';
 import useSessionStore from '@/store/useSessionStore';
 import { IMembership } from '@/types/user';
 import IcClose from '@/assets/icons/ic_x2.svg';
+import AddTeamModal from '../modal/AddTeamModal';
+import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const { isModalOpen, openModal, closeModal } = useAddTeamModalStore();
   const { user } = useSessionStore();
   const { userData } = useUser(user?.id);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -46,11 +49,13 @@ export default function Header() {
           alt="메뉴 아이콘"
           onClick={toggleMenu}
         />
-        <Image
-          src={ImgLogo}
-          className="mr-auto h-8 w-[102px] md:mr-0 lg:mr-0 lg:w-[158px]"
-          alt="로고이미지"
-        />
+        <Link href={`/`} className="mr-auto md:mr-0 lg:mr-0">
+          <Image
+            src={ImgLogo}
+            className="h-8 w-[102px] lg:w-[158px]"
+            alt="로고이미지"
+          />
+        </Link>
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
           <TeamDropdown user={userData} />
           <Link href="/boards">
@@ -73,17 +78,13 @@ export default function Header() {
             ref={dropdownRef}
           >
             <div className="flex flex-col">
-              <button
-                className="mb-[35px] ml-auto cursor-pointer"
-                onClick={toggleMenu}
-              >
-                <Image width={24} height={24} src={IcClose} alt="닫기 버튼" />
-              </button>
+              <div className="mb-[35px] flex flex-row items-center justify-center">
+                <span className="text-2lg-semibold">팀 목록</span>
+                <button className="ml-auto cursor-pointer" onClick={toggleMenu}>
+                  <Image width={24} height={24} src={IcClose} alt="닫기 버튼" />
+                </button>
+              </div>
               <ul className="flex flex-col gap-2">
-                {/* <button className="mb-4 text-lg font-semibold" onClick={toggleMenu}>
-              닫기
-            </button> */}
-                {/* 팀 리스트 */}
                 {userData?.memberships.map((membership: IMembership) => (
                   <li
                     className="mt-2 flex items-center gap-1.5 rounded-[8px] py-2 pl-2 hover:bg-slate-700"
@@ -109,14 +110,20 @@ export default function Header() {
                     </Link>
                   </li>
                 ))}
-                <li className="mt-2 flex items-center gap-1.5 rounded-[8px] py-2 pl-2 text-brand-primary hover:bg-slate-700">
-                  <Link href={`/boards`}>자유게시판</Link>
+                <li className="mt-2 flex items-center rounded-[8px] py-2 pl-2 text-text-primary">
+                  <button onClick={openModal}>팀 추가하기</button>
+                </li>
+                <li className="mt-2 flex items-center rounded-[8px] py-2 pl-2 text-brand-primary">
+                  <Link href={`/boards`} onClick={() => setIsMenuOpen(false)}>
+                    자유게시판
+                  </Link>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       )}
+      {isModalOpen && <AddTeamModal onClose={closeModal} />}
     </div>
   );
 }
