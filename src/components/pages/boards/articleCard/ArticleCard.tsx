@@ -45,8 +45,8 @@ const ArticleCard = () => {
   };
 
   const handleSelect = (option: string) => {
-    console.log(option); // 선택한 옵션 처리
-    setIsDropdownOpen(false); // 드롭다운 메뉴 닫기
+    console.log(option);
+    setIsDropdownOpen(false);
   };
 
   const board = mockArticle; // 임시 데이터
