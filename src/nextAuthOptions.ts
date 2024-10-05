@@ -88,26 +88,58 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
         const searchParams = new URLSearchParams(parseUrl.search);
         const state = searchParams.get('state');
 
-        console.log('@@@결과');
-        console.log('@@@state', state);
-        console.log('@@@id_token', params?.account?.id_token);
-
+        params.account.state = state;
         const idToken = params.account?.id_token;
-        console.log('@@@idToken', idToken);
+        params.account.id_token = idToken;
 
-        const signInResponse = await publicAxiosInstance.post(
-          '/auth/signIn/GOOGLE',
-          {
-            state,
-            redirectUri: 'http://localhost:3000/api/auth/callback/google',
-            token: idToken,
-          },
-        );
-        return signInResponse.data;
+        return true;
       }
       return true;
     },
     async jwt({ token, user, account }) {
+      console.log('@@@token', token);
+
+      // 구글로그인
+      if (account?.provider === 'google') {
+        token = { ...token };
+
+        const idToken = account.id_token;
+        const state = account.state;
+
+        if (idToken) {
+          try {
+            console.log('API 호출 시도');
+            const signInResponse = await publicAxiosInstance.post(
+              '/auth/signIn/GOOGLE',
+              {
+                state: state,
+                redirectUri: 'http://localhost:3000/api/auth/callback/google',
+                token: idToken,
+              },
+            );
+            const newTokens = signInResponse.data;
+            console.log('@@@newTokens', newTokens);
+
+            // JWT에 필요한 토큰 정보 추가
+            token.user = newTokens.user;
+            token.accessToken = newTokens.accessToken;
+            token.refreshToken = newTokens.refreshToken;
+            token.accessTokenExpires =
+              Math.floor(new Date().getTime()) + 60 * 60 * 3 * 1000;
+
+            console.log('@@@newToken', token.accessToken);
+            console.log('API 호출 성공', token);
+            return token;
+          } catch (error) {
+            console.log('API 호출 실패', error);
+            return {
+              ...token,
+              error: 'API 호출 실패',
+            };
+          }
+        }
+      }
+
       // 최초 로그인
       if (user) {
         token = { ...token, ...user };
@@ -122,12 +154,12 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
         return token;
       }
 
+      // 토큰 갱신
       const currentTime = Math.floor(Date.now() / 1000);
       let accessTokenExpired = Math.floor(token.accessTokenExpires / 1000);
       const timeRemaining = accessTokenExpired - 60 * 10 - currentTime;
 
-      console.log('@@@currentTime', currentTime);
-      console.log('@@@accessTokenExpired', accessTokenExpired);
+      console.log('@@@accessToken', token.accessToken);
       console.log('@@@timeRemaining', timeRemaining);
 
       if (timeRemaining > 1) {
@@ -166,6 +198,7 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       session.accessToken = token.accessToken as any;
       session.error = token.error as any;
       session.accessTokenExpires = token.accessTokenExpires as any;
+      console.log('@@@session', session);
 
       return session;
     },
