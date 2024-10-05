@@ -1,5 +1,4 @@
 'use client';
-import { useEffect } from 'react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
@@ -7,10 +6,8 @@ import ImageInput from '@/components/pages/teamcreate/ImageInput';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import useUser from '@/hooks/useUser';
-import useMemberships from '@/hooks/useMemberships';
-import { IMembership, IUser } from '@/types/user';
+
 import useSessionStore from '@/store/useSessionStore';
 
 interface IFormData {
