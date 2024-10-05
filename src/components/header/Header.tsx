@@ -18,7 +18,6 @@ export default function Header() {
   } = useSessionStore();
 
   const { user } = useUser(sessionUser?.id);
-  // console.log('$$$Header.tsx $$$user', user);
 
   return (
     <div className="w-full bg-background-secondary">
