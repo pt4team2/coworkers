@@ -1,8 +1,13 @@
+'use client';
 import ImageInput from '@/components/pages/teamcreate/ImageInput';
 import IcExit from '@/assets/icons/ic_secession.svg';
 import Image from 'next/image';
+import useSessionStore from '@/store/useSessionStore';
+import useUser from '@/hooks/useUser';
 
 export default function Page() {
+  const { user } = useSessionStore();
+  const userData = useUser(user?.id);
   return (
     <div className="lg: m-auto max-w-[792px]">
       <p className="text-2l-bold md:text-xl-bold lg:text-xl-bold mb-6 mt-6 md:mt-6 lg:mt-10">
@@ -18,6 +23,7 @@ export default function Page() {
         <input
           className="text-md-regular md:text-lg-regular lg:text-lg-regular w-full cursor-not-allowed rounded-[12px] border border-solid border-border-primary bg-background-tertiary px-[16px] py-[13.5px] text-text-disabled md:py-[14.5px] lg:py-[14.5px]"
           disabled
+          placeholder={user?.email}
         />
       </div>
       <div className="mb-6">
@@ -26,6 +32,7 @@ export default function Page() {
           <input
             className="text-md-regular md:text-lg-regular lg:text-lg-regular w-full cursor-not-allowed rounded-[12px] border border-solid border-border-primary bg-background-tertiary px-[16px] py-[13.5px] text-text-disabled md:py-[14.5px] lg:py-[14.5px]"
             disabled
+            placeholder="비밀번호"
           />
           <button className="text-sm-semibold absolute right-4 top-[6px] h-8 w-[74px] rounded-[12px] bg-brand-primary px-[12.5px] py-[6px] md:top-2 lg:top-2">
             변경하기
