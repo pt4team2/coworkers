@@ -9,7 +9,7 @@ export default function useUser(id?: number) {
   const queryClient = useQueryClient();
 
   const {
-    data: user,
+    data: userData,
     isLoading,
     error,
   } = useQuery({
@@ -33,5 +33,5 @@ export default function useUser(id?: number) {
     },
     enabled: !!id,
   });
-  return { user, isLoading, error };
+  return { userData, isLoading, error };
 }

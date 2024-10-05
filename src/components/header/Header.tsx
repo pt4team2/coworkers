@@ -16,8 +16,8 @@ export default function Header() {
     accessToken,
     accessTokenExpires,
   } = useSessionStore();
-
-  const { user } = useUser(sessionUser?.id);
+  const { user } = useSessionStore();
+  const { userData } = useUser(user?.id);
   // console.log('$$$Header.tsx $$$user', user);
 
   return (
@@ -34,7 +34,7 @@ export default function Header() {
           alt="로고이미지"
         />
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
-          <TeamDropdown user={user} />
+          <TeamDropdown user={userData} />
           <Link href="/boards">
             <button className="text-lg-medium flex items-center justify-center">
               {' '}
@@ -43,7 +43,7 @@ export default function Header() {
           </Link>
         </div>
         <span>
-          <Profile user={user} />
+          <Profile user={userData} />
         </span>
       </div>
     </div>
