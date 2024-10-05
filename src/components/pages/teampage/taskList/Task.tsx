@@ -4,6 +4,18 @@ import IcKebab from '@/assets/icons/ic_kebab.svg';
 import Image from 'next/image';
 import ProgressBar from './ProgressBar';
 import IcDone from '@/assets/icons/ic_done.svg';
+import useTasks from '@/hooks/useTasks';
+import { IGroup } from '@/types/Group';
+import { ITask } from '@/types/Task';
+
+interface TaskListProps {
+  tasklist: IGroup;
+}
+
+interface TaskProps {
+  groupId: string;
+  id: number;
+}
 
 export default function Task({ tasklist }: { tasklist: any }) {
   const taskCount = tasklist.tasks.length;
@@ -11,8 +23,9 @@ export default function Task({ tasklist }: { tasklist: any }) {
   //완료한 task 개수 계산하는 식 //
 
   const doneTasks = tasklist.tasks.filter(
-    (task: any) => new Date(task.doneAt) < new Date(task.date),
+    (task: ITask) => task.doneAt !== null,
   );
+
   const doneTaskCount = doneTasks.length;
   const progressPercent = (doneTaskCount / taskCount) * 100;
 

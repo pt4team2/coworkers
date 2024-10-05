@@ -1,8 +1,9 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions, Session } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import KakaoProvider from 'next-auth/providers/kakao';
 import GoogleProvider from 'next-auth/providers/google';
+import { JWT } from 'next-auth/jwt';
 
 export const getOptions = (req?: Request): NextAuthOptions => ({
   debug: true,
@@ -107,43 +108,64 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       return true;
     },
     async jwt({ token, user, account }) {
-      console.log('---account---', account);
-      console.log('---token---', token);
-      console.log('---user---', user);
-
-      // 초기 로그인 시에만 user가 존재
-      const currentTime = Math.floor(Date.now() / 1000);
+      // 최초 로그인
       if (user) {
-        token.user = user.user;
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
+        token = { ...token, ...user };
 
+        // 불필요한 속성 제거
+        delete token.name;
+        delete token.email;
+        delete token.picture;
+        delete token.sub;
+
+        console.log('token', token);
         return token;
-      } else if (currentTime < token.exp) {
-        console.log('---currentTime---', currentTime);
-        console.log('---token.exp---', token.exp);
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      let accessTokenExpired = Math.floor(token.accessTokenExpires / 1000);
+      const timeRemaining = accessTokenExpired - 60 * 10 - currentTime;
+
+      console.log('@@@currentTime', currentTime);
+      console.log('@@@accessTokenExpired', accessTokenExpired);
+      console.log('@@@timeRemaining', timeRemaining);
+
+      if (timeRemaining > 1) {
+        // 유효기간 내에는 토큰 그대로 반환
         return token;
       } else {
+        // accessToken이 만료된 경우 갱신
         try {
-          console.log('---token.refreshToken---', token.refreshToken);
-          const response = publicAxiosInstance.post('/auth/refresh-token', {
-            refreshToken: token.refreshToken,
-          });
+          console.log('api 호출 시도중');
 
-          const newTokens = await (await response).data;
-          console.log('---newTokens---', newTokens);
+          const response = await publicAxiosInstance.post(
+            '/auth/refresh-token',
+            {
+              refreshToken: token.refreshToken,
+            },
+          );
+          const newTokens = response.data;
+          token.accessToken = newTokens.accessToken;
+          token.accessTokenExpires = Date.now() + 60 * 60 * 3 * 1000;
 
+          console.log('토큰 갱신 성공', token);
+
+          return token;
+        } catch (error) {
+          console.log('토큰 갱신 실패: ', error);
           return {
             ...token,
+            error: 'RefreshAccessTokenError',
           };
-        } catch (error) {
-          console.error('Error refreshing access token', error);
-          return { ...token, error: 'refreshAccessTokenError' as const };
         }
       }
     },
-    async session({ session, token }) {
-      session = token as any;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      // if (token) {
+      session.user = token.user as any;
+      session.accessToken = token.accessToken as any;
+      session.error = token.error as any;
+      session.accessTokenExpires = token.accessTokenExpires as any;
 
       return session;
     },

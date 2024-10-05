@@ -35,7 +35,7 @@
   --color-interaction-focus: #10b981; /* Focused State Color */
 
   /* Border Colors */
-  --color-border-primary: #f8fafc; /* Primary Border Color */
+  --color-border-primary: rgba(248, 250, 252, 0.1); /* Primary Border Color */
   --color-border-secondary: rgba(
     248,
     250,
@@ -71,6 +71,7 @@
 }
 
 body,
+a,
 blockquote,
 dd,
 dl,

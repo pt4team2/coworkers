@@ -1,31 +1,31 @@
-import axios from '@/services/axios';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { IGroup } from '@/types/Group';
 import { useQuery } from '@tanstack/react-query';
 
-export default function useMemberList(id: string) {
-  const {
-    data: memberList,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['getMemberList', id],
+interface UseGroupReturn {
+  group: IGroup | undefined; // data가 undefined일 수 있으므로 명시적으로 정의
+  isLoading: boolean;
+  error: unknown;
+}
+
+export default function useGroup(groupId: string | string[]): UseGroupReturn {
+  const { data, isLoading, error } = useQuery<IGroup>({
+    queryKey: ['getGroup', groupId],
     queryFn: () => {
-      if (id) {
-        return axios
-          .get(`/groups?id=${id}`)
-          .then((res) => res.data)
-          .then((data) => {
-            console.log(data.members);
-            return data.members;
-          })
-          .catch((err)=>{
-            console.error("Failed to fetch memberlist:", err);
-            throw err;
-          });
-      } else {
-        return [];
-      }
-    },
-    enabled:!!id,
+      return authAxiosInstance
+        .get(`/groups/${groupId}`) // Ensure groupId is a string
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
+          return data;
+        })
+        .catch((err:any) => {
+          console.error('Failed to fetch groups', err);
+          throw err;
+        });
+      },
+      enabled: !! groupId, // Ensure groupId is truthy
   });
-  return { memberList: memberList || [], isLoading, error };
+
+  return { group: data, isLoading, error }; // Return refetch
 }

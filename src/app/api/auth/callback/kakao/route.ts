@@ -9,11 +9,6 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  console.log('code---', code);
-  console.log('state---', state);
-
-  console.log('GET 함수 호출됨'); // 함수 진입 확인 로그
-
   if (code) {
     try {
       const response = await publicAxiosInstance.post('/auth/signIn/KAKAO', {
@@ -23,10 +18,12 @@ export async function GET(request: NextRequest) {
       });
 
       const userData = response.data;
-      console.log('userData: ', userData);
 
       // 쿠키에 JWT 토큰 존재여부 확인
       const existingCookie = request.cookies.get('next-auth.session-token');
+
+      const currentTime = Math.floor(new Date().getTime()); // UNIX 타임스탬프
+      const accessTokenExpires = currentTime + 60 * 60 * 3 * 1000;
 
       if (existingCookie) {
         console.log('기존 쿠키가 이미 존재합니다.');
@@ -36,6 +33,7 @@ export async function GET(request: NextRequest) {
           user: userData.user,
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
+          accessTokenExpires: accessTokenExpires,
         };
 
         // JWT 토큰 암호화

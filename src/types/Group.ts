@@ -1,11 +1,29 @@
 // Team의 멤버 타입 정의
 interface TeamMember {
   role: 'ADMIN' | 'MEMBER'; // 역할은 ADMIN 또는 MEMBER
-  userImage: string; // 사용자 이미지 URL
+  userImage: string | null; // 사용자 이미지 URL
   userEmail: string; // 사용자 이메일
   userName: string; // 사용자 이름
   groupId: number; // 그룹 ID
   userId: number; // 사용자 ID
+}
+
+interface Task {
+  doneBy: {
+    user: string;
+  };
+  writer: string;
+  displayIndex: number;
+  commentCount: number;
+  deletedAt: string | null;
+  recurringId: number;
+  frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+  updatedAt: string;
+  doneAt: string;
+  date: string;
+  description: string;
+  name: string;
+  id: number;
 }
 
 // Task 리스트 타입 정의
@@ -16,11 +34,11 @@ interface TaskList {
   createdAt: string; // 생성 일자
   name: string; // 할 일 리스트 이름
   id: number; // 할 일 리스트 ID
-  tasks: string[]; // 할 일(Task) 배열 (간단히 string으로 설정)
+  tasks: Task[]; // 할 일(Task) 배열 (간단히 string으로 설정)
 }
 
 // Team의 전체 구조 타입 정의
-interface Team {
+interface IGroup {
   teamId: string; // 팀 ID
   updatedAt: string; // 업데이트 일자
   createdAt: string; // 생성 일자
@@ -31,4 +49,4 @@ interface Team {
   taskLists: TaskList[]; // 할 일 리스트 배열 (TaskList 타입 사용)
 }
 
-export type { TeamMember, TaskList, Team };
+export type { Task, TeamMember, TaskList, IGroup };
