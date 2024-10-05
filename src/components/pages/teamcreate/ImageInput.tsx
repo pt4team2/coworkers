@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image';
 import IcPreview from '@/assets/icons/ic_imagePreview.svg';
 import IcEdit from '@/assets/icons/ic_edit.svg';

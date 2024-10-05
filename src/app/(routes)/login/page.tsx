@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { loginFieldData } from '@/hooks/formFieldData';
 import { useModalStore } from '@/store/useModalStore';
 import ModalWrapper from '@/components/modal/ModalWrapper';
-import Modal from '@/components/modal/Modal';
+import Modal from '@/components/modal/ResetPwdModal';
 import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
 import OAuthLoginOptions from '@/components/auth/OAuthLogin';
