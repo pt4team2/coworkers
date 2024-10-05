@@ -6,6 +6,7 @@ import Dropdown from '@/components/pages/boards/dropdown/Dropdown';
 import BestArticleCard from '@/components/pages/boards/bestArticleCard/BestArticleCard';
 import ArticleCard from '@/components/pages/boards/articleCard/ArticleCard';
 import SearchForm from '@/components/pages/boards/searchForm/SearchForm';
+import FloatingButton from '@/components/pages/boards/flaotingButton/FloatingButton';
 import RightArrowIcon from '@/assets/icons/ic_rightArrow.svg';
 
 const BoardPage = () => {
@@ -30,7 +31,7 @@ const BoardPage = () => {
   const bestArticles = [1, 2, 3]; // 임시 카드 배열
 
   return (
-    <div className="px-4 py-8 bg-[#0F172A] min-h-screen md:px-6 md:py-10 lg:py-10">
+    <div className="px-4 lg:px-0 py-8 bg-[#0F172A] min-h-screen md:px-6 md:py-10 lg:py-10">
       <h1 className="text-2lg-bold mb-6">자유게시판</h1>
       <SearchForm onSearch={(term) => console.log(term)} placeholder="검색어를 입력해주세요" />
 
@@ -67,6 +68,7 @@ const BoardPage = () => {
           <ArticleCard />
         </div>
       </div>
+      <FloatingButton />
     </div>
   );
 };
