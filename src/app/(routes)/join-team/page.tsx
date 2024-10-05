@@ -15,8 +15,10 @@ export default function Page() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<IFormData>();
+    formState: { errors, isValid },
+  } = useForm<IFormData>({
+    mode: 'onChange',
+  });
 
   interface IFormData {
     userEmail: string;
@@ -62,10 +64,15 @@ export default function Page() {
           {...register('token', {
             required: true,
           })}
-        ></input>
+        />
         <button
+          className={`text-lg-semibold mb-6 h-12 w-full rounded-[12px] ${
+            !isValid
+              ? 'cursor-not-allowed bg-text-disabled'
+              : 'bg-brand-primary'
+          }`}
           type="submit"
-          className="text-lg-semibold mb-6 h-12 w-full rounded-[12px] bg-brand-primary"
+          disabled={!isValid}
         >
           참여하기
         </button>
