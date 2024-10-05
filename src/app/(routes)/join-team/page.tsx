@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react';
 import useUser from '@/hooks/useUser';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
-import useGroup from '@/hooks/useGroup';
 import useSessionStore from '@/store/useSessionStore';
 
 export default function Page() {
