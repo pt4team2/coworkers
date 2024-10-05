@@ -1,25 +1,47 @@
 import { useEffect, useState } from 'react';
+import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getProviders, signIn } from 'next-auth/react';
 import googleLogo from '@/assets/icons/googleLogo.svg';
 import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 
 interface OAuthLoginOptionsProps {
   label: string;
+  isItemsCenter?: boolean;
 }
 
-export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
-  // 카카오 로그인
-  const [providers, setProviders] = useState(null);
+export default function OAuthLoginOptions({
+  label,
+  isItemsCenter = false,
+}: OAuthLoginOptionsProps) {
+  const [providers, setProviders] = useState<Record<
+    string,
+    ClientSafeProvider
+  > | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const res: any = await getProviders();
-
+  const handleSocialLoginClick = async (providerId: string) => {
+    // providers가 없으면 getProviders로 가져오기
+    if (!providers) {
+      console.log('@@@providers', providers);
+      console.log('@@@providerId1', providerId);
+      const res = await getProviders();
       setProviders(res);
-    })();
-  }, []);
+      console.log('@@@res', res);
+
+      // providers 설정 전 다음 코드로 넘어가지 않도록, getProviders 완료 후 다시 providers 확인
+      if (res && res[providerId]) {
+        console.log('providerId2', providerId);
+        signIn(providerId, { redirect: true, callbackUrl: '/' });
+      }
+      console.log('@@@providers3', providers);
+    } else {
+      // providers가 이미 존재하는 경우 바로 로그인 처리
+      if (providers[providerId]) {
+        console.log('@@@providerId4', providerId);
+        signIn(providerId, { redirect: true, callbackUrl: '/' });
+      }
+    }
+  };
 
   return (
     <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom lg:w-115-custom">
@@ -28,35 +50,37 @@ export default function OAuthLoginOptions({ label }: OAuthLoginOptionsProps) {
         <span className="text-lg-regular mx-6 text-text-inverse">OR</span>
         <div className="h-px flex-grow bg-border-tertiary"></div>
       </div>
-      <div className="flex w-full items-center justify-between">
+      <div
+        className={`flex w-full ${isItemsCenter ? 'items-center' : ''} justify-between`}
+      >
         <span className="text-lg-medium text-text-inverse">{label}</span>
         <div className="flex gap-4">
           <Link
             href="#"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
-              signIn('google', { redirect: true, callbackUrl: '/' });
+              await handleSocialLoginClick('google');
             }}
           >
             <Image
               src={googleLogo}
               width={42}
               height={42}
-              alt="구글로 로그인하기"
+              alt="구글 로그인하기"
             />
           </Link>
           <Link
             href="#"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
-              signIn('kakao', { redirect: true, callbackUrl: '/' });
+              await handleSocialLoginClick('kakao');
             }}
           >
             <Image
               src={kakaotalkLogo}
               width={42}
               height={42}
-              alt="카카오로 로그인하기"
+              alt="카카오 로그인하기"
             />
           </Link>
         </div>

@@ -5,21 +5,26 @@ import ImgDone from '@/assets/images/img_done.svg';
 import ImgTodo from '@/assets/images/img_todo.svg';
 import Image from 'next/image';
 import ProgressBarMobile from './ProgressBarMobile';
+import { TaskList, Task } from '@/types/Group';
+import { ITask, ITaskList } from '@/types/Task';
 
-export default function TaskReport() {
-  const allTasks = tasklistMockData.reduce<ITaskList[]>((acc, tasklist) => {
+interface TaskListProps {
+  taskLists: TaskList[];
+}
+
+export default function TaskReport({ taskLists }: TaskListProps) {
+  const allTasks = taskLists.reduce((acc: Task[], tasklist) => {
     return acc.concat(tasklist.tasks);
   }, []); // 타입을 명시적으로 지정
 
   const totalTaskCount = allTasks.length;
 
   // 완료한 task 개수 계산하는 식
-  const doneTasks = allTasks.filter(
-    (task: ITaskList) => new Date(task.doneAt) < new Date(task.date),
-  );
+  const doneTasks = allTasks.filter((task: Task) => task.doneAt !== null);
 
   const doneTaskCount = doneTasks.length;
-  const progressPercent = Math.round((doneTaskCount / totalTaskCount) * 100);
+  const progressPercent =
+    totalTaskCount > 0 ? Math.round((doneTaskCount / totalTaskCount) * 100) : 0;
 
   return (
     <div className="flex flex-col gap-4">
@@ -31,7 +36,7 @@ export default function TaskReport() {
             <ProgressBarMobile value={progressPercent} />
             <div className="inset1/2 absolute flex w-[50px] flex-col items-center justify-center">
               <span className="text-xs-medium text-center">오늘</span>
-              <span className="bg-gradient-custom text-xl-bold bg-clip-text text-transparent">
+              <span className="text-xl-bold bg-gradient-custom bg-clip-text text-transparent">
                 {progressPercent}%
               </span>
             </div>
