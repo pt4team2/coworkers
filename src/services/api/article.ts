@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Article, Comment } from '@/types/article';
 
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getArticles = async (params: { page: number; pageSize: number; orderBy: string }) => {
     const response = await axios.get('/api/articles', { params });
