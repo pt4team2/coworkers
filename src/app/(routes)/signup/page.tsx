@@ -12,6 +12,8 @@ import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
 import OAuthLogin from '@/components/auth/OAuthLogin';
 import useSessionStore from '@/store/useSessionStore';
+import { useSignupToastStore } from '@/store/useToastStore';
+import Toast from '@/components/toast/Toast';
 
 export default function SignUpPage() {
   const signUpFields = signUpFieldData();
@@ -21,12 +23,6 @@ export default function SignUpPage() {
 
   // Zustand에서 세션 가져오기
   const { user, accessToken } = useSessionStore((state) => state);
-
-  useEffect(() => {
-    if (user && accessToken) {
-      router.push('/');
-    }
-  }, [user, accessToken, router]);
 
   const {
     register,
@@ -42,6 +38,10 @@ export default function SignUpPage() {
 
   const { setEmail, setPassword, signInUser } = loginStore();
 
+  // 토스트
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useSignupToastStore();
+
   const onSubmit = async (data: SignUp) => {
     try {
       // 회원가입
@@ -51,19 +51,32 @@ export default function SignUpPage() {
         password: data.password,
         passwordConfirmation: data.passwordConfirmation,
       });
-      console.log('회원가입 성공: ', response.data);
 
       if (response.status === 201) {
+        openToast('회원가입이 완료되었습니다.', 'success');
+
         // 로그인
         setEmail(data.email);
         setPassword(data.password);
 
-        await signInUser();
+        const loginResult = await signInUser();
       }
-    } catch (error) {
-      console.log('회원가입 실패: ', error);
+    } catch (error: any) {
+      if (error.status === 400) {
+        openToast('닉네임 또는 이메일이 이미 존재합니다.', 'error');
+      } else {
+        openToast('회원가입에 실패했습니다.', 'error');
+      }
     }
   };
+
+  useEffect(() => {
+    if (user && accessToken) {
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    }
+  }, [user, accessToken, router]);
 
   return (
     <div
@@ -115,6 +128,15 @@ export default function SignUpPage() {
         </button>
       </form>
       <OAuthLogin label="간편 회원가입하기" isItemsCenter={true} />
+
+      {/* Toast 렌더링 */}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
     </div>
   );
 }
