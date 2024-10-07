@@ -7,29 +7,29 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/utils/schema';
 import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
-import Image from 'next/image';
-import googleLogo from '@/assets/icons/googleLogo.svg';
-import kakaotalkLogo from '@/assets/icons/kakaotalkLogo.svg';
 import { loginFieldData } from '@/hooks/formFieldData';
 import { useModalStore } from '@/store/useModalStore';
 import ModalWrapper from '@/components/modal/ModalWrapper';
-import Modal from '@/components/modal/Modal';
+import Modal from '@/components/modal/ResetPwdModal';
 import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import OAuthLoginOptions from '@/components/auth/OAuthLogin';
+import useSessionStore from '@/store/useSessionStore';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
 
   // 세션 존재 시 홈 화면으로 리다이렉트
   const router = useRouter();
-  const { data: session, status } = useSession();
+
+  // Zustand에서 세션 가져오기
+  const { user, accessToken } = useSessionStore((state) => state);
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (user && accessToken) {
       router.push('/');
     }
-  }, [status, router]);
+  }, [user, accessToken, router]);
 
   const {
     register,
@@ -123,36 +123,7 @@ export default function LoginPage() {
           </div>
         </div>
       </form>
-      <div className="flex w-85.75-custom flex-col items-center gap-4 md:w-115-custom lg:w-115-custom">
-        <div className="flex w-full items-center text-text-primary">
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-          <span className="text-lg-medium md:text-lg-regular lg:text-lg-regular mx-6 text-text-inverse">
-            OR
-          </span>
-          <div className="h-px flex-grow bg-border-tertiary"></div>
-        </div>
-        <div className="flex w-full justify-between">
-          <span className="text-lg-medium text-white">간편 로그인하기</span>
-          <div className="flex gap-4">
-            <Link href="#">
-              <Image
-                src={googleLogo}
-                width={42}
-                height={42}
-                alt="구글로 로그인하기"
-              />
-            </Link>
-            <Link href="#">
-              <Image
-                src={kakaotalkLogo}
-                width={42}
-                height={42}
-                alt="카카오로 로그인하기"
-              />
-            </Link>
-          </div>
-        </div>
-      </div>
+      <OAuthLoginOptions label="간편 로그인하기" isItemsCenter={false} />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import IcProfile from 'src/assets/icons/ic_profile.svg';
 // import { teamMockData } from '@/data/mockData';
-import { useSession } from 'next-auth/react';
 import ProfileDropdown from './ProfileDropdown';
 import { IUser } from '@/types/user';
 import Link from 'next/link';
@@ -19,6 +18,7 @@ export default function ({ user }: ProfileProps) {
         <div>로그인</div>
       </Link>
     ); // 유저 정보가 없을 때
+
   }
 
   return (

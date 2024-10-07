@@ -21,10 +21,10 @@ export default function useRefreshToken() {
         const accessTokenExpires = Math.floor(
           session.accessTokenExpires / 1000,
         );
-        const timeRemaining = accessTokenExpires - 60 * 10 - currentTime; // 만료 10분 전까지 남은 시간 계산
+        const timeRemaining = accessTokenExpires - 60 * 10 - currentTime;
 
         // 만료 10분 전 토큰 갱신
-        if (timeRemaining === 0 || timeRemaining === -1) {
+        if (timeRemaining <= 0) {
           console.log('토큰 만료 10분 전 갱신');
 
           try {

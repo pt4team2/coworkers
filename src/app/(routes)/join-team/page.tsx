@@ -7,14 +7,12 @@ import useUser from '@/hooks/useUser';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import useGroup from '@/hooks/useGroup';
+import useSessionStore from '@/store/useSessionStore';
 
 export default function Page() {
-  const { data: session } = useSession();
-  const { user } = useUser(session?.user.id);
+  const { user } = useSessionStore();
+  const { userData } = useUser(user?.id);
   const router = useRouter();
-  const groups = useGroup(user?.id);
-  const newTeam = groups.group?.id;
-
   const {
     register,
     handleSubmit,
@@ -42,14 +40,12 @@ export default function Page() {
   const onSubmit = (data: IFormData) => {
     if (!data.token) {
       console.error('초대링크를 입력해주세요.');
-
-      console.log(newTeam);
       return;
     }
 
     const formData = {
       token: data.token,
-      userEmail: user.email,
+      userEmail: userData.email,
     };
 
     acceptTeamRequest.mutate(formData);
