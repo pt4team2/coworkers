@@ -1,44 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import MemberIcon from '@/assets/icons/ic_member.svg';
-import BoardImage from '@/assets/images/img_boardtest.png';
 import IcKebeb from '@/assets/icons/ic_kebab.svg';
+import { getArticleById } from '@/services/api/article'; // API 함수 임포트
+import { Article } from '@/types/article';
 
-interface Writer {
-  name: string;
+interface ArticleCardProps {
+  articleId: number;
 }
 
-interface Article {
-  id: number;
-  title: string;
-  image: string | StaticImageData | null;
-  createdAt: string;
-  updatedAt: string;
-  writer: Writer;
-  content: string;
-  likeCount: number;
-  isLiked: boolean;
-}
-
-// 임시 데이터
-const mockArticle: Article = {
-  id: 1,
-  title: '자유게시판에 질문을 어쩌구',
-  image: BoardImage,
-  createdAt: '2024-09-10',
-  updatedAt: '2024-09-10',
-  writer: {
-    name: '김김김',
-  },
-  content: '질문을 올려볼까요?',
-  likeCount: 9999,
-  isLiked: false,
-};
-
-const ArticleCard = () => {
+const ArticleCard = ({ articleId }: ArticleCardProps) => {
+  const [board, setBoard] = useState<Article | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(prev => !prev);
@@ -49,7 +24,28 @@ const ArticleCard = () => {
     setIsDropdownOpen(false);
   };
 
-  const board = mockArticle; // 임시 데이터
+  const fetchArticle = async (id: number) => {
+    try {
+      const response = await getArticleById(id);
+      setBoard(response.data);
+    } catch (error) {
+      console.error('Failed to fetch article:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticle(articleId);
+  }, [articleId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!board) {
+    return <div>게시글을 불러오는데 실패했습니다.</div>;
+  }
 
   return (
     <div
