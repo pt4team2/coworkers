@@ -17,7 +17,7 @@ export default function Header() {
     accessTokenExpires,
   } = useSessionStore();
 
-  const { user } = useUser(sessionUser?.id);
+  const { userData } = useUser(sessionUser?.id);
 
   return (
     <div className="w-full bg-background-secondary">
