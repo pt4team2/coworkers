@@ -1,8 +1,10 @@
 import MemberCard from './MemberCard';
 import { IGroup } from '@/types/Group';
 import { useAddMemberModalStore } from '@/store/useAddMemberModalStore';
-import PopupOneButton from '@/components/Modal/PopupOneButton';
+import PopupOneButton from '@/components/modal/PopupOneButton';
 import { IUser } from '@/types/user';
+
+
 
 interface GroupProps {
   group: IGroup | undefined;

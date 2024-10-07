@@ -26,7 +26,9 @@ export default function useRefreshToken() {
         // 만료 10분 전 토큰 갱신
         if (timeRemaining <= 0) {
           console.log('토큰 만료 10분 전 갱신');
-
+          console.log(
+            new Date().toISOString().replace('T', ' ').substring(0, 19),
+          );
           try {
             update();
           } catch (error) {
@@ -36,8 +38,8 @@ export default function useRefreshToken() {
       }
     };
 
-    // 5분마다 토큰 만료 여부 체크
-    interval.current = setInterval(watchAndUpdateIfExpire, 60 * 5 * 1000);
+    // 5초마다 토큰 만료 여부 체크
+    interval.current = setInterval(watchAndUpdateIfExpire, 5 * 1000);
 
     // 컴포넌트 언마운트 시 interval 해제
     return () => {
