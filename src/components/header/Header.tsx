@@ -43,12 +43,14 @@ export default function Header() {
   return (
     <div className="w-full bg-background-secondary">
       <div className="m-auto flex items-center justify-between gap-4 px-4 py-5 md:gap-8 md:px-6 lg:max-w-[1200px] lg:gap-10 lg:px-0">
-        <Image
-          className="w-6 cursor-pointer md:hidden lg:hidden"
-          src={IcMenu}
-          alt="메뉴 아이콘"
-          onClick={toggleMenu}
-        />
+        {userData && (
+          <Image
+            className="w-6 cursor-pointer md:hidden lg:hidden"
+            src={IcMenu}
+            alt="메뉴 아이콘"
+            onClick={toggleMenu}
+          />
+        )}
         <Link href={`/`} className="mr-auto md:mr-0 lg:mr-0">
           <Image
             src={ImgLogo}
@@ -59,10 +61,12 @@ export default function Header() {
         <div className="mr-auto hidden md:flex md:items-center md:gap-8 lg:flex lg:items-center lg:justify-center lg:gap-10">
           <TeamDropdown user={userData} />
           <Link href="/boards">
-            <button className="text-lg-medium flex items-center justify-center">
-              {' '}
-              자유게시판
-            </button>
+            {userData && (
+              <button className="text-lg-medium flex items-center justify-center">
+                {' '}
+                자유게시판
+              </button>
+            )}
           </Link>
         </div>
         <span>
@@ -71,7 +75,7 @@ export default function Header() {
       </div>
 
       {/* 메뉴 클릭했을 때, 사이드 메뉴 - 팀리스트 */}
-      {isMenuOpen && (
+      {userData && isMenuOpen && (
         <div className="fixed left-0 top-0 z-50 h-full w-full bg-black bg-opacity-50">
           <div
             className="left-0 top-0 h-full w-3/4 max-w-xs bg-background-secondary p-6 shadow-lg"
