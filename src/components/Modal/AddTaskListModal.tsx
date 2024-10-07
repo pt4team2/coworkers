@@ -39,8 +39,10 @@ export default function AddTaskListModal({
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<IFormData>();
+    formState: { errors, isValid },
+  } = useForm<IFormData>({
+    mode: 'onChange',
+  });
 
   const onSubmit = (data: IFormData) => {
     if (!data.name) {
@@ -62,17 +64,26 @@ export default function AddTaskListModal({
         <div className="flex w-[280px] flex-col">
           <p className="text-lg-medium text-center">할 일 목록</p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              className="text-lg-regular mb-6 mt-4 h-12 w-full rounded-[12px] border border-solid border-border-primary border-opacity-10 bg-background-secondary px-[14.5px] py-[16px] text-text-primary active:border-none"
-              placeholder="목록 명을 입력해주세요."
-              {...register('name', {
-                required: true,
-              })}
-            ></input>
-
+            <div className="mb-6">
+              <input
+                className={` ${!isValid ? 'border-status-danger ring-1 ring-status-danger ' : 'border-brand-primary ring-1 ring-status-brand'}text-lg-regular mt-4 h-12 w-full rounded-[12px] border border-solid border-border-primary border-opacity-10 bg-background-secondary px-[14.5px] py-[16px] text-text-primary focus:border-status-brand focus:outline-none focus:ring-status-brand active:border-none`}
+                placeholder="목록 명을 입력해주세요."
+                {...register('name', {
+                  required: true,
+                })}
+              />
+              {errors.name && (
+                <p className="text-md-medium mt-2 text-text-danger">
+                  목록 명을 입력해주세요.
+                </p>
+              )}
+            </div>
             <button
               type="submit"
-              className="text-lg-semibold h-12 w-full rounded-[12px] bg-brand-primary"
+              className={`text-lg-semibold h-12 w-full rounded-[12px] ${
+                !isValid ? 'cursor-not-allowed bg-gray-400' : 'bg-brand-primary'
+              }`}
+              disabled={!isValid}
             >
               만들기
             </button>
