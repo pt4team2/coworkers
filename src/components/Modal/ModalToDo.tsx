@@ -1,7 +1,7 @@
 //리스트페이지에서 할 일을 생성할 때의 모달 컴포넌트
 
 import React, { useState, useRef, useEffect } from 'react';
-import Calendar from '@/components/calender/Calendar';
+import Calendar from '@/components/calendar/Calendar';
 import Image from 'next/image';
 import Toggle from '@/assets/icons/ic_toggle.svg';
 import { format } from 'date-fns';
