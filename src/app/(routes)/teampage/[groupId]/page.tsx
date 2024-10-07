@@ -6,14 +6,11 @@ import TasksList from '@/components/pages/teampage/taskList/TasksList';
 import TaskReport from '@/components/pages/teampage/taskReport/TaskReport';
 import MemberList from '@/components/pages/teampage/memberList/MemberList';
 import useUser from '@/hooks/useUser';
-import { useSession } from 'next-auth/react';
 import useGroup from '@/hooks/useGroup';
-import { useEffect } from 'react';
 import useSessionStore from '@/store/useSessionStore';
 
 export default function Page() {
   const { groupId } = useParams();
-  const { data: session } = useSession();
   const { user } = useSessionStore();
   const { userData } = useUser(user?.id);
   const { group, isLoading, error } = useGroup(groupId);

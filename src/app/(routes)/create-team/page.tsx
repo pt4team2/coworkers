@@ -24,7 +24,7 @@ export default function Page() {
     reset,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IFormData>();
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -62,6 +62,7 @@ export default function Page() {
     postCreateTeam.mutate(formData);
   };
 
+  const isFormDisabled = !isValid || !imageUrl || isDuplicate;
   return (
     <div className="mx-auto mt-[200px] flex w-[343px] flex-col md:w-[460px] lg:w-[460px]">
       <p className="text-2xl-medium m-auto mb-6 md:mb-20 lg:mb-20 lg:text-4xl">
@@ -75,13 +76,18 @@ export default function Page() {
         <div className="mb-10">
           <label className="text-lg-medium mb-3 block">팀 이름</label>
           <input
-            className={`h-44px ${isDuplicate ? 'border-status-danger' : 'border-border-primary'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-status-brand focus:outline-none focus:ring-status-brand`}
+            className={`h-44px ${isDuplicate ? 'border-status-danger' : 'border-border-primary'} w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-status-brand focus:outline-none focus:ring-status-brand`}
             placeholder="팀 이름을 입력해주세요."
             {...register('name', {
               required: true,
               onChange: (e) => checkDuplicate(e.target.value.trim()),
             })}
           />
+          {errors.name && (
+            <p className="text-md-medium mt-2 text-text-danger">
+              팀 명을 입력해주세요.
+            </p>
+          )}
           {isDuplicate && (
             <p className="text-md-medium text-text-danger">
               이미 존재하는 이름입니다.
@@ -89,8 +95,13 @@ export default function Page() {
           )}
         </div>
         <button
-          className="text-lg-semibold mb-6 h-12 w-full rounded-[12px] bg-brand-primary"
+          className={`text-lg-semibold mb-6 h-12 w-full rounded-[12px] ${
+            isFormDisabled
+              ? 'cursor-not-allowed bg-text-disabled'
+              : 'bg-brand-primary'
+          }`}
           type="submit"
+          disabled={isFormDisabled}
         >
           만들기
         </button>
