@@ -1,5 +1,3 @@
-// pages/posts/[id].tsx
-
 "use client";
 
 import { useEffect, useState } from 'react';

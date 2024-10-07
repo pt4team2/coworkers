@@ -3,7 +3,7 @@ import Image from 'next/image';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import IcKebeb from '@/assets/icons/ic_kebab.svg';
-import { getArticleById } from '@/services/api/article'; // API 함수 임포트
+import { getArticleById } from '@/services/api/article';
 import { Article } from '@/types/article';
 
 interface ArticleCardProps {
