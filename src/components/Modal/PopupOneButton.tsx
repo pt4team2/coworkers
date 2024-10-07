@@ -35,7 +35,7 @@ export default function PopupOneButton({
   const handleCopyClick = () => {
     const linkToCopy = invitationLink.link;
     copyToClipboard(linkToCopy);
-    console.log('111',linkToCopy);
+    console.log('111', linkToCopy);
   };
 
   return (

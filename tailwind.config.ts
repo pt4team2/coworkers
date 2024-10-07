@@ -120,7 +120,6 @@ const config: Config = {
         '85.75-custom': '343px',
 
         '93.75-custom': '375px',
-
       },
       gap: {
         'gap-2.5': '10px',
