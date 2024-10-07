@@ -1,4 +1,3 @@
-import { teamMockData } from '@/data/mockData';
 import React, { useState, useEffect, useRef } from 'react';
 import settingIcon from '@/assets/icons/ic_setting.svg';
 import backgroundImg from '@/assets/images/img_teambg.svg';

@@ -79,7 +79,7 @@ export default function ReviseTeamModal({
 
   return (
     <ModalPortal onClose={closeModal}>
-      <div className="flex flex-col rounded-[12px] bg-background-secondary p-8">
+      <div className="flex flex-col rounded-t-[12px] bg-background-secondary p-8 md:rounded-b-[12px] lg:rounded-b-[12px]">
         <button className="ml-auto" onClick={onClose}>
           <Image width={24} height={24} src={XIcon} alt="엑스 버튼" />
         </button>
