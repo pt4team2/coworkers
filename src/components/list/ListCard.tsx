@@ -6,6 +6,7 @@ import Kebab from '@/assets/icons/ic_kebab.svg';
 import Callender from '@/assets/icons/ic_calendar.svg';
 import Repeat from '@/assets/icons/ic_repeat.svg';
 import VectorIcon from '@/assets/icons/ic-vector.svg';
+import { ITaskList } from '@/types/Task';
 
 interface ListCardProps {
   task: ITaskList;
