@@ -132,6 +132,11 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
               error: 'API 호출 실패',
             };
           }
+        } else {
+          return {
+            ...token,
+            error: 'Missing ID Token',
+          };
         }
       }
 

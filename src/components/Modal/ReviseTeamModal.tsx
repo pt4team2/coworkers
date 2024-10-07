@@ -35,12 +35,13 @@ export default function ReviseTeamModal({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IFormData>({
     defaultValues: {
       name: group.name,
       image: group.image,
     },
+    mode: 'onChange',
   });
 
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
@@ -74,6 +75,8 @@ export default function ReviseTeamModal({
     patchTeam.mutate(formData);
   };
 
+  const isFormDisabled = !imageUrl || isDuplicate || !isValid;
+
   return (
     <ModalPortal onClose={closeModal}>
       <div className="flex flex-col rounded-[12px] bg-background-secondary p-8">
@@ -87,17 +90,27 @@ export default function ReviseTeamModal({
             <div className="mb-6">
               <label className="text-lg-medium mb-3 block">팀 프로필</label>
               <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} />
+              {!imageUrl && (
+                <p className="text-md-medium text-text-danger">
+                  이미지는 필수입니다.
+                </p>
+              )}
             </div>
             <div className="mb-10">
               <label className="text-lg-medium mb-3 block">팀 이름</label>
               <input
-                className={`h-44px ${isDuplicate ? 'border-status-danger ring-1 ring-status-danger' : 'border-border-primary'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-status-brand focus:outline-none focus:ring-status-brand`}
+                className={`h-44px ${isDuplicate || !isValid ? 'border-status-danger ring-1 ring-status-danger' : 'border-border-primary ring-status-brand'} mb-2 w-full rounded-[12px] border border-solid bg-background-secondary px-[16px] py-[13.5px] focus:border-status-brand focus:outline-none focus:ring-1 focus:ring-status-brand`}
                 placeholder="팀 이름을 입력해주세요."
                 {...register('name', {
                   required: true,
                   onChange: (e) => checkDuplicate(e.target.value.trim()),
                 })}
               />
+              {errors.name && (
+                <p className="text-md-medium mt-2 text-text-danger">
+                  필수 입력값입니다.
+                </p>
+              )}
               {isDuplicate && (
                 <p className="text-md-medium text-text-danger">
                   이미 존재하는 이름입니다.
@@ -106,7 +119,12 @@ export default function ReviseTeamModal({
             </div>
             <button
               type="submit"
-              className="text-lg-semibold mb-6 h-12 w-full rounded-[12px] bg-brand-primary"
+              className={`text-lg-semibold mb-6 h-12 w-full rounded-[12px] ${
+                isFormDisabled
+                  ? 'cursor-not-allowed bg-text-disabled'
+                  : 'bg-brand-primary'
+              }`}
+              disabled={isFormDisabled}
             >
               수정하기
             </button>
