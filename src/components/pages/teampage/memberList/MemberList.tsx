@@ -2,14 +2,22 @@ import MemberCard from './MemberCard';
 import { IGroup } from '@/types/Group';
 import { useAddMemberModalStore } from '@/store/useAddMemberModalStore';
 import PopupOneButton from '@/components/Modal/PopupOneButton';
+import { IUser } from '@/types/user';
 
 interface GroupProps {
   group: IGroup | undefined;
+  user: IUser;
 }
 
-export default function MemberList({ group }: GroupProps) {
+export default function MemberList({ group, user }: GroupProps) {
   const { isModalOpen, openModal, closeModal } = useAddMemberModalStore();
   const membersCount = group ? group.members.length : 0;
+
+  // ADMIN 권한이 있는지 확인
+  const isAdmin = group?.members.some(
+    (member) => member.role === 'ADMIN' && member.userId === user.id,
+  );
+
   return (
     <div className="flex flex-col gap-[26px]">
       <div className="flex flex-row justify-between">
@@ -20,12 +28,14 @@ export default function MemberList({ group }: GroupProps) {
           </span>
         </span>
         {/* 관리자일 때 */}
-        <button
-          onClick={() => openModal()}
-          className="text-md-regular text-brand-primary"
-        >
-          + 새로운 멤버 추가하기
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => openModal()}
+            className="text-md-regular text-brand-primary"
+          >
+            + 새로운 멤버 추가하기
+          </button>
+        )}
         {isModalOpen && (
           <PopupOneButton
             title={'멤버 초대'}

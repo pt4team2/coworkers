@@ -18,7 +18,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { isModalOpen, openModal, closeModal } = useAddTeamModalStore();
   const { user } = useSessionStore();
-  const { userData } = useUser(user?.id);
+  const { userData, isLoading, error } = useUser(user?.id);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
@@ -70,12 +70,12 @@ export default function Header() {
           </Link>
         </div>
         <span>
-          <Profile user={userData} />
+          <Profile user={userData} isLoading={isLoading}/>
         </span>
       </div>
 
       {/* 메뉴 클릭했을 때, 사이드 메뉴 - 팀리스트 */}
-      {userData && isMenuOpen && (
+      {isMenuOpen && (
         <div className="fixed left-0 top-0 z-50 h-full w-full bg-black bg-opacity-50">
           <div
             className="left-0 top-0 h-full w-3/4 max-w-xs bg-background-secondary p-6 shadow-lg"

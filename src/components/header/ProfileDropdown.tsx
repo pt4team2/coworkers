@@ -10,11 +10,12 @@ import { IUser } from '@/types/user';
 
 interface ProfileDropdownProps {
   user: IUser;
+  isLoading: boolean;
 }
-export default function ProfileDropdown({ user }: ProfileDropdownProps) {
-  if (!user) {
-    return <div>유저 정보가 없습니다.</div>; // user가 null일 경우 예외 처리
-  }
+export default function ProfileDropdown({
+  user,
+  isLoading,
+}: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -35,6 +36,14 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  if (isLoading) {
+    return <p>...loading</p>;
+  }
+
+  if (!user) {
+    return <div></div>; // user가 null일 경우 예외 처리
+  }
 
   return (
     <div className="relative z-30" ref={dropdownRef}>
