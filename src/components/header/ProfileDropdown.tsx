@@ -8,8 +8,8 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
 import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/Modal/ModalWrapper';
-import LogoutModal from '@/components/Modal/ModalDangerLogout';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import LogoutModal from '@/components/modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
   user: IUser;
@@ -20,7 +20,6 @@ export default function ProfileDropdown({
   user,
   isLoading,
 }: ProfileDropdownProps) {
-
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
