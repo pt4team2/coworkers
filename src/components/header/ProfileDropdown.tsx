@@ -7,10 +7,14 @@ import IcProfile from '@/assets/icons/ic_profile.svg';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
+import { useModalStore } from '@/store/useModalStore';
+import ModalWrapper from '@/components/Modal/ModalWrapper';
+import LogoutModal from '@/components/Modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
   user: IUser;
 }
+
 export default function ProfileDropdown({ user }: ProfileDropdownProps) {
   if (!user) {
     return <div>유저 정보가 없습니다.</div>; // user가 null일 경우 예외 처리
@@ -18,6 +22,9 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
+
+  // 모달
+  const { isModalOpen, openModal, closeModal } = useModalStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -82,13 +89,24 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                signOut();
+                openModal();
               }}
             >
               로그아웃
             </Link>
           </li>
         </ul>
+      )}
+
+      {/* 로그아웃 모달 */}
+      {isModalOpen && (
+        <ModalWrapper>
+          <LogoutModal
+            isOpen={true}
+            onClose={closeModal}
+            handleSignOut={signOut}
+          />
+        </ModalWrapper>
       )}
     </div>
   );

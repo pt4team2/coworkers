@@ -1,21 +1,19 @@
-import { useState } from 'react';
-import Image from 'next/image';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children?: React.ReactNode;
+  handleSignOut: () => void;
 }
 
-const ModalDangerLogout = ({ isOpen, onClose }: ModalProps) => {
+const ModalDangerLogout = ({ isOpen, onClose, handleSignOut }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="relative flex h-[171px] w-96 flex-col justify-between rounded-b-[0px] rounded-t-xl bg-background-secondary px-[52px] pb-8 pt-12 md:rounded-xl lg:rounded-xl">
+    <div className="relative flex flex-col justify-between gap-6 rounded-b-[0px] rounded-t-xl bg-background-secondary px-[36px] pt-8">
       <h2 className="text-lg-medium text-center text-text-primary">
         로그아웃 하시겠어요?
       </h2>
-
-      <div className="flex h-12 w-full justify-between">
+      <div className="flex h-12 w-full justify-between gap-2">
         <button
           className="px-auto py-auto text-lg-semibold w-[136px] rounded-xl border border-text-secondary bg-background-inverse text-text-default"
           onClick={onClose}
@@ -24,7 +22,7 @@ const ModalDangerLogout = ({ isOpen, onClose }: ModalProps) => {
         </button>
         <button
           className="px-auto py-auto text-lg-semibold w-[136px] rounded-xl bg-red-500 text-text-inverse"
-          onClick={onClose}
+          onClick={handleSignOut}
         >
           로그아웃
         </button>
