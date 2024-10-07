@@ -6,7 +6,8 @@ import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useModalStore } from '@/store/useModalStore';
 import { ModalProps } from '@/types/modal';
 import FormField from '@/components/auth/FormField';
-import { useToastStore } from '@/store/useToastStore';
+import { useResetPwdToastStore } from '@/store/useToastStore';
+import Toast from '../toast/Toast';
 
 export default function Modal({
   title,
@@ -15,10 +16,14 @@ export default function Modal({
 }: ModalProps) {
   const { closeModal } = useModalStore();
 
-  const { openToast, setLoading } = useToastStore((state) => ({
-    openToast: state.openToast,
-    setLoading: state.setLoading,
-  }));
+  const {
+    toastVisible,
+    toastMessage,
+    toastType,
+    openToast,
+    closeToast,
+    setLoading,
+  } = useResetPwdToastStore();
 
   const {
     register,
@@ -87,6 +92,15 @@ export default function Modal({
           {isSubmitting ? '전송 중' : '링크 보내기'}
         </button>
       </div>
+
+      {/* 토스트가 화면에 나타날 조건 */}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
     </div>
   );
 }

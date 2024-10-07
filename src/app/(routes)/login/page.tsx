@@ -9,12 +9,14 @@ import FormField from '@/components/auth/FormField';
 import Link from 'next/link';
 import { loginFieldData } from '@/hooks/formFieldData';
 import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/modal/ModalWrapper';
-import Modal from '@/components/modal/ResetPwdModal';
+import ModalWrapper from '@/components/Modal/ModalWrapper';
+import ResetPwdModal from '@/components/Modal/ResetPwdModal';
 import { loginStore } from '@/store/loginStore';
 import { useRouter } from 'next/navigation';
 import OAuthLoginOptions from '@/components/auth/OAuthLogin';
 import useSessionStore from '@/store/useSessionStore';
+import { useLoginToastStore } from '@/store/useToastStore';
+import Toast from '@/components/toast/Toast';
 
 export default function LoginPage() {
   const loginFields = loginFieldData();
@@ -24,12 +26,6 @@ export default function LoginPage() {
 
   // Zustand에서 세션 가져오기
   const { user, accessToken } = useSessionStore((state) => state);
-
-  useEffect(() => {
-    if (user && accessToken) {
-      router.push('/');
-    }
-  }, [user, accessToken, router]);
 
   const {
     register,
@@ -46,14 +42,37 @@ export default function LoginPage() {
   // 로그인
   const { setEmail, setPassword, signInUser } = loginStore();
 
+  // 모달
+  const { openModal } = useModalStore();
+
+  // 토스트
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useLoginToastStore();
+
   const onSubmit = async (data: Login) => {
     setEmail(data.email);
     setPassword(data.password);
 
-    await signInUser();
+    const result = await signInUser();
+
+    if (result?.ok) {
+      openToast(`${user?.nickname}님, 환영합니다.`, 'success');
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    } else {
+      openToast('로그인에 실패했습니다.', 'error');
+    }
   };
 
-  const { openModal } = useModalStore();
+  useEffect(() => {
+    if (user && accessToken) {
+      openToast(`${user.nickname}님, 환영합니다.`, 'success');
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    }
+  }, [user, accessToken]);
 
   return (
     <div
@@ -96,7 +115,7 @@ export default function LoginPage() {
             비밀번호를 잊으셨나요?
           </Link>
           <ModalWrapper>
-            <Modal
+            <ResetPwdModal
               title="비밀번호 재설정"
               description="비밀번호 재설정 링크를 보내드립니다."
               input={true}
@@ -124,6 +143,15 @@ export default function LoginPage() {
         </div>
       </form>
       <OAuthLoginOptions label="간편 로그인하기" isItemsCenter={false} />
+
+      {/* Toast 렌더링 */}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
     </div>
   );
 }

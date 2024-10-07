@@ -69,6 +69,25 @@ export const RESET_PASSWORD_SCHEMA = yup.object().shape({
   token: yup.string().required('유효하지 않은 토큰입니다.'),
 });
 
+// 계정 설정 페이지: 비밀번호 재설정 스키마
+export const RESET_PASSWORD_MODAL_SCHEMA = yup.object().shape({
+  password: yup
+    .string()
+    .required('비밀번호를 입력해주세요.')
+    .min(8, '비밀번호는 최소 8자 이상입니다.')
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9])/,
+      '영문, 숫자, 특수문자를 모두 포함해야 합니다.',
+    ),
+  passwordConfirmation: yup
+    .string()
+    .required('비밀번호를 입력해주세요.')
+    .min(8, '비밀번호는 최소 8자 이상입니다.')
+    .test('password-match', '비밀번호가 일치하지 않습니다.', function (value) {
+      return value === this.parent.password || !value;
+    }),
+});
+
 // 이메일 스키마
 export const EMAIL_SCHEMA = yup.object().shape({
   email: yup

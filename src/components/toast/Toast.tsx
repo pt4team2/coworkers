@@ -7,13 +7,17 @@ import errorIcon from '@/assets/icons/error.svg';
 import infoIcon from '@/assets/icons/info.svg';
 import closeIcon from '@/assets/icons/close.svg';
 import closeIconWhite from '@/assets/icons/close_white.svg';
-import { useToastStore } from '@/store/useToastStore';
 
-export default function Toast({ message, type, duration = 3000 }: ToastProps) {
-  const { closeToast } = useToastStore((state) => ({
-    closeToast: state.closeToast,
-  }));
+interface ToastComponentProps extends ToastProps {
+  closeToast: () => void;
+}
 
+export default function Toast({
+  message,
+  type,
+  duration = 3000,
+  closeToast,
+}: ToastComponentProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       closeToast();
@@ -28,7 +32,7 @@ export default function Toast({ message, type, duration = 3000 }: ToastProps) {
   return (
     <div
       id="toast-message"
-      className={`absolute top-24 flex w-80 items-center justify-between rounded-lg p-4 ${
+      className={`fixed left-1/2 top-24 flex w-80 -translate-x-1/2 transform items-center justify-between rounded-lg p-4 ${
         type === 'success'
           ? 'bg-background-inverse'
           : type === 'error'
@@ -50,7 +54,7 @@ export default function Toast({ message, type, duration = 3000 }: ToastProps) {
           alt="토스트 아이콘"
         />
         <span
-          className={`text-lg-medium absolute bottom-3.5 left-9 ${type === 'error' ? 'text-text-primary' : 'text-background-secondary'}`}
+          className={`text-lg-medium absolute left-9 top-4 ${type === 'error' ? 'text-text-primary' : 'text-background-secondary'}`}
         >
           {message}
         </span>

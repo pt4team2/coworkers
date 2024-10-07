@@ -16,9 +16,8 @@ export default function Header() {
     accessToken,
     accessTokenExpires,
   } = useSessionStore();
-  const { user } = useSessionStore();
-  const { userData } = useUser(user?.id);
-  // console.log('$$$Header.tsx $$$user', user);
+
+  const { user } = useUser(sessionUser?.id);
 
   return (
     <div className="w-full bg-background-secondary">
