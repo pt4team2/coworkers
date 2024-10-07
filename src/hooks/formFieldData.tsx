@@ -25,14 +25,14 @@ export const signUpFieldData = () => {
       id: 'password',
       type: showPassword ? 'text' : 'password',
       placeholder: '비밀번호를 입력해주세요.',
-      trailingIcon: showPassword ? visibility_off : visibility_on,
+      trailingIcon: showPassword ? visibility_on : visibility_off,
       onIconClick: togglePasswordVisibility,
     },
     {
       id: 'passwordConfirmation',
       type: showPasswordConfirmation ? 'text' : 'password',
       placeholder: '비밀번호를 다시 한 번 입력해주세요.',
-      trailingIcon: showPasswordConfirmation ? visibility_off : visibility_on,
+      trailingIcon: showPasswordConfirmation ? visibility_on : visibility_off,
       onIconClick: togglePasswordConfirmationVisibility,
     },
   ];
@@ -78,14 +78,14 @@ export const resetPasswordFieldData = () => {
       id: 'password',
       type: showPassword ? 'text' : 'password',
       placeholder: '비밀번호 (숫자, 영문, 특수문자, 8자 이상)를 입력해주세요.',
-      trailingIcon: showPassword ? visibility_off : visibility_on,
+      trailingIcon: showPassword ? visibility_on : visibility_off,
       onIconClick: togglePasswordVisibility,
     },
     {
       id: 'passwordConfirmation',
       type: showPasswordConfirmation ? 'text' : 'password',
       placeholder: '새 비밀번호를 다시 한번 입력해주세요.',
-      trailingIcon: showPasswordConfirmation ? visibility_off : visibility_on,
+      trailingIcon: showPasswordConfirmation ? visibility_on : visibility_off,
       onIconClick: togglePasswordConfirmationVisibility,
     },
   ];
