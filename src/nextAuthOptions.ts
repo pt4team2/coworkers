@@ -127,7 +127,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
             token.accessTokenExpires =
               Math.floor(new Date().getTime()) + 60 * 60 * 3 * 1000;
 
-            console.log('@@@newToken', token.accessToken);
             console.log('API 호출 성공', token);
             return token;
           } catch (error) {
@@ -137,6 +136,11 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
               error: 'API 호출 실패',
             };
           }
+        } else {
+          return {
+            ...token,
+            error: 'Missing ID Token',
+          };
         }
       }
 
