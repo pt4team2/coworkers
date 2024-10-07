@@ -17,8 +17,12 @@ import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { isModalOpen, openModal, closeModal } = useAddTeamModalStore();
-  const { user } = useSessionStore();
-  const { userData } = useUser(user?.id);
+  const {
+    user: sessionUser,
+    accessToken,
+    accessTokenExpires,
+  } = useSessionStore();
+  const { userData } = useUser(sessionUser?.id);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
@@ -39,6 +43,7 @@ export default function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
 
   return (
     <div className="w-full bg-background-secondary">
