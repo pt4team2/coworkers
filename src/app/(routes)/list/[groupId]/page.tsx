@@ -15,25 +15,44 @@ import useGroup from '@/hooks/useGroup';
 import { getUserGroups } from '@/api/userApis';
 import { Team } from '@/types/userTypes';
 import { getGroupTasks } from '@/api/groupApis';
+import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
+import AddTaskListModal from '@/components/modal/AddTaskListModal';
+import { useParams } from 'next/navigation';
+import { TaskList } from '@/types/Group';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 
 export default function List() {
+  const { groupId } = useParams();
+
   const [isAppendTaskModalOpen, setIsAppendTaskModalOpen] =
     useState<boolean>(false);
 
-  const { data: groupsResponse } = useQuery({
-    queryKey: ['getUserGroups'],
-    queryFn: getUserGroups,
-  });
-
-  const [selectedGroup, setSelectedGroup] = useState<Team | undefined>(
-    undefined,
-  );
+  const { isModalOpen, openModal, closeModal } = useAddTaskListModalStore();
+  console.log(isModalOpen);
 
   const { data: taskListResponse } = useQuery({
-    queryKey: ['taskList', selectedGroup],
-    queryFn: () => getGroupTasks(selectedGroup!.id || 0),
-    enabled: !!selectedGroup,
+    queryKey: ['taskList', groupId],
+    queryFn: () => getGroupTasks(groupId.toString()),
+    enabled: !!groupId,
   });
+
+  const { group } = useGroup(groupId);
+
+  const [selectedTaskList, setSelectedTaskList] = useState<
+    TaskList | undefined
+  >(undefined);
+
+  const { data: tasksResponse } = useQuery({
+    queryKey: ['group', groupId, selectedTaskList],
+    queryFn: async () => {
+      const response = await authAxiosInstance.get(
+        `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks`,
+      );
+      return response.data;
+    },
+  });
+
+  console.log(tasksResponse);
 
   return (
     <div className="lg:w-300.25-custom">
@@ -55,14 +74,18 @@ export default function List() {
             <Image src={BtnCallender} alt="BtnCallender" />
           </button>
         </div>
-        <button className="">+ 새로운 목록 추가하기</button>
+        <button className="" onClick={() => openModal()}>
+          + 새로운 목록 추가하기
+        </button>
       </div>
 
-      <FilterSelection
-        groups={groupsResponse || []}
-        selectedGroup={selectedGroup}
-        onSelected={setSelectedGroup}
-      />
+      {group && (
+        <FilterSelection
+          groups={group}
+          selectedGroup={selectedTaskList}
+          onSelected={setSelectedTaskList}
+        />
+      )}
 
       {!taskListResponse?.length && <p>Task가 없습니다.</p>}
       {taskListResponse?.flatMap((group) =>
@@ -81,7 +104,13 @@ export default function List() {
       <ModalToDo
         isOpen={isAppendTaskModalOpen}
         onClose={() => setIsAppendTaskModalOpen(false)}
+        groupId={groupId.toString()}
+        taskListId={selectedTaskList?.id.toString() || ''}
       />
+
+      {isModalOpen && groupId && (
+        <AddTaskListModal groupId={groupId.toString()} onClose={closeModal} />
+      )}
     </div>
   );
 }

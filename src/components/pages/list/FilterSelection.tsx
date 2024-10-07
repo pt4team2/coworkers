@@ -1,16 +1,17 @@
 'use client';
+import { IGroup, TaskList } from '@/types/Group';
 import { TeamList, Team } from '@/types/userTypes';
 import { useState } from 'react';
 
 interface FilterSelectionProps {
-  groups: TeamList;
-  selectedGroup?: Team;
-  onSelected: (team: Team) => void;
+  groups: IGroup;
+  selectedGroup?: TaskList;
+  onSelected: (team: TaskList) => void;
 }
 
 const FilterSelection: React.FC<FilterSelectionProps> = (props) => {
   const { onSelected, groups, selectedGroup } = props;
-  const filters = groups;
+  const filters = groups.taskLists;
 
   return (
     <div className="h-6.25-custom mb-4 flex items-center">

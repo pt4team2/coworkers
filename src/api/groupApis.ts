@@ -6,7 +6,7 @@ export const createGroup = async (data: {name: string, image: string}) => {
   return response.data;
 }
 
-export const getGroupTasks = async (teamId: number) => {
+export const getGroupTasks = async (teamId: string) => {
   const response = await authAxiosInstance.get<TaskList[]>(`/groups/${teamId}/tasks`);
   return response.data;
 }

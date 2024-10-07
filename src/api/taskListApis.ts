@@ -4,8 +4,8 @@ import { authAxiosInstance } from "@/app/api/auth/axiosInstance";
 import { TaskGroup } from "@/types/TaskList";
 
 // /{teamId}/groups/{groupId}/task-lists/{id}
-export const getTaskList = async (id: string) => {
-  const response = await authAxiosInstance.get<TaskGroup>(`/groups/4/task-lists/${id}`);
+export const getTaskList = async (groupId: number) => {
+  const response = await authAxiosInstance.get(`/groups/${groupId}/task-lists`);
   return response.data;
 }
 

@@ -10,28 +10,48 @@ import ArrowRight from '@/assets/icons/ic_arrow_right_ver2.svg';
 import { useMutation } from '@tanstack/react-query';
 import Toggle from '@/assets/icons/ic_toggle.svg';
 import { format } from 'date-fns';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+
+  groupId: string;
+  taskListId: string;
+
   children?: React.ReactNode;
 }
 
 const WeekDays = ['일', '월', '화', '수', '목', '금', '토']; //주 반복에서의 요일
 
-const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
+const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
 
-  // const { mutate: createTask } = useMutation({
-  //   mutationKey: 'createTask',
-  //   mutationFn: ,
-  // });
+  const { mutate: createTask } = useMutation({
+    mutationKey: ['createTask'],
+    mutationFn: async () => {
+      const response = await authAxiosInstance.post(
+        `/groups/${groupId}/task-lists/${taskListId}/tasks`,
+        {
+          name: 'string',
+          description: 'string',
+          startDate: '2025-01-01T00:00:00Z',
+          frequencyType: 'MONTHLY',
+          monthDay: 10,
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      onClose();
+    },
+  });
 
   // 달력 외부를 클릭하면 닫힙니다.
-  const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutsideCalendar = (event: MouseEvent) => {
     if (
       calendarRef.current &&
       !calendarRef.current.contains(event.target as Node)
@@ -201,7 +221,10 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
         {/* 만들기 버튼 */}
         <button
           className="px-auto py-auto mt-2 h-[47px] w-full rounded-xl bg-brand-primary text-text-inverse"
-          onClick={onClose}
+          onClick={() => {
+            // TODO: 입력한 데이터를 createTask 함수에 전달
+            createTask();
+          }}
         >
           만들기
         </button>
