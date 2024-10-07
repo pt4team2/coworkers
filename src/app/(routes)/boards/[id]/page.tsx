@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { getArticleById, getArticleComments, postComment, deleteComment } from '@/services/api/article';
 import { Article, Comment } from '@/types/article';
 
-const PostDetailPage = () => {
+const ArticleDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const articleId = Number(id);
@@ -141,4 +141,4 @@ const PostDetailPage = () => {
   );
 };
 
-export default PostDetailPage;
+export default ArticleDetailPage;
