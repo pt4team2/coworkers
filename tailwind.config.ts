@@ -116,24 +116,24 @@ const config: Config = {
       },
       width: {
         '115-custom': '460px',
-        '70-custom': '280px',
-        '85.75-custom': '343px',
-
+        '96-custom': '384px',
         '93.75-custom': '375px',
+        '85.75-custom': '343px',
+        '70-custom': '280px',
       },
       gap: {
-        'gap-2.5': '10px',
-        'gap-1.5': '6px',
         '12.25-custom': '49px',
         '11.25-custom': '45px',
         '10.5-custom': '42px',
         '6.75-custom': '27px',
         '6.5-custom': '26px',
         '6.25-custom': '25px',
+        'gap-2.5': '10px',
+        'gap-1.5': '6px',
       },
       padding: {
-        '3.625-custom': '14.5px',
         '5.25-custom': '21px',
+        '3.625-custom': '14.5px',
       },
       margin: {
         '35-custom': '140px',
