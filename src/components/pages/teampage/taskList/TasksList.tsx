@@ -11,6 +11,7 @@ interface TaskListProps {
 
 export default function TasksList({ taskLists, groupId }: TaskListProps) {
   const { isModalOpen, openModal, closeModal } = useAddTaskListModalStore();
+  console.log(isModalOpen);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2">

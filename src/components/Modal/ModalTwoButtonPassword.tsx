@@ -21,7 +21,7 @@ const ModalTwoButtonPassword = ({ isOpen, onClose }: ModalProps) => {
             <h2 className="text-lg-medium text-text-primary">새 비밀번호</h2>
             <input
               type="password"
-              className="text-lg-regular h-11 rounded-xl border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 text-text-default md:h-12 lg:h-12"
+              className="text-lg-regular h-11 rounded-xl border border-solid border-border-primary bg-background-secondary p-4 placeholder:text-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC] md:h-12 lg:h-12"
               placeholder="새 비밀번호를 입력해주세요."
             />
           </div>
@@ -31,7 +31,7 @@ const ModalTwoButtonPassword = ({ isOpen, onClose }: ModalProps) => {
             </h2>
             <input
               type="password"
-              className="text-lg-regular h-11 rounded-xl border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 text-text-default md:h-12 lg:h-12"
+              className="text-lg-regular h-11 rounded-xl border border-solid border-border-primary bg-background-secondary p-4 placeholder:text-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC] md:h-12 lg:h-12"
               placeholder="새 비밀번호를 입력해주세요."
             />
           </div>

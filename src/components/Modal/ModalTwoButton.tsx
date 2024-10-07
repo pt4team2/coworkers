@@ -21,7 +21,7 @@ const ModalTwoButton = ({ isOpen, onClose, children }: ModalProps) => {
             </div>
           </div>
           <input
-            className="h-11 rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary text-center text-text-default md:h-12 lg:h-12"
+            className="h-11 rounded-xl border border-solid border-border-primary bg-background-secondary p-4 placeholder:text-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC] md:h-12 lg:h-12"
             placeholder="이메일을 입력하세요."
           />
           {/* border의 컬러의 투명도가 0.1인 것이 없어 이렇게 적용하였습니다. */}

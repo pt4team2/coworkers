@@ -6,11 +6,11 @@ import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { group } from 'console';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface AddTeamModalProps {
   onClose: () => void;
-  groupId: number;
+  groupId: string;
 }
 
 interface IFormData {
@@ -22,6 +22,8 @@ export default function AddTaskListModal({
 }: AddTeamModalProps) {
   const { closeModal } = useAddTaskListModalStore();
 
+  const client = useQueryClient();
+
   const postCreateTaskList = useMutation({
     mutationFn: (formData: IFormData) => {
       return authAxiosInstance.post(`/groups/${groupId}/task-lists`, formData);
@@ -29,7 +31,11 @@ export default function AddTaskListModal({
     onSuccess: () => {
       console.log('할일 목록 생성 성공');
       closeModal();
-      window.location.reload();
+
+      client.invalidateQueries({
+        queryKey: ['taskList'],
+      });
+      // window.location.reload();
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -53,6 +59,7 @@ export default function AddTaskListModal({
     console.log(formData);
     postCreateTaskList.mutate(formData);
   };
+
   return (
     <ModalPortal onClose={closeModal}>
       <div className="flex w-[384px] flex-col items-center rounded-[12px] bg-background-secondary px-4 pb-10 pt-4">
