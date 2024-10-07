@@ -74,7 +74,7 @@ export default function Header() {
       {isMenuOpen && (
         <div className="fixed left-0 top-0 z-50 h-full w-full bg-black bg-opacity-50">
           <div
-            className="absolute left-0 top-0 h-full w-3/4 max-w-xs bg-background-secondary p-6 shadow-lg"
+            className="left-0 top-0 h-full w-3/4 max-w-xs bg-background-secondary p-6 shadow-lg"
             ref={dropdownRef}
           >
             <div className="flex flex-col">
