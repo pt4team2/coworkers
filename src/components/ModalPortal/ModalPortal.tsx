@@ -32,11 +32,15 @@ function ModalPortal({
   };
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={handleModalClick}
-    >
-      {children}
+    <div className="relative">
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        onClick={handleModalClick}
+      >
+        <div className="absolute bottom-0 md:bottom-auto lg:bottom-auto">
+          {children}
+        </div>
+      </div>
     </div>,
     selectedElement as HTMLElement,
   );

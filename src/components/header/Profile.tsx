@@ -1,29 +1,31 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import IcProfile from 'src/assets/icons/ic_profile.svg';
-// import { teamMockData } from '@/data/mockData';
 import ProfileDropdown from './ProfileDropdown';
 import { IUser } from '@/types/user';
 import Link from 'next/link';
 interface ProfileProps {
   user: IUser | null;
+  isLoading: boolean;
 }
 
-export default function ({ user }: ProfileProps) {
+export default function ({ user, isLoading }: ProfileProps) {
+
+  if (isLoading) {
+    return <p>...loading</p>;
+  }
+
   if (!user) {
     return (
       <Link href="/login">
         <div>로그인</div>
       </Link>
-    ); // 유저 정보가 없을 때
-
+    );
   }
 
   return (
     <div className="text-md-medium flex flex-row items-center gap-2">
-      <ProfileDropdown user={user} />
+      <ProfileDropdown user={user} isLoading={isLoading} />
     </div>
   );
 }
