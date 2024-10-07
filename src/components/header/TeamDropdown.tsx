@@ -62,12 +62,7 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
         className="text-lg-medium flex flex-row items-center justify-center gap-[11px]"
       >
         {selectedGroup?.group.name || '팀 선택'}
-        <Image
-          src={IcArrow}
-          alt="드롭다운 화살표"
-          width={8}
-          height={8}
-        />
+        <Image src={IcArrow} alt="드롭다운 화살표" width={8} height={8} />
       </button>
 
       {isOpen && (
@@ -88,14 +83,6 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
                   className="h-8 w-8 rounded-[6px] object-cover"
                 />
                 <span className="text-lg-medium">{membership.group.name}</span>
-                {/* 케밥 아이콘 */}
-                <Image
-                  src={IcKebab}
-                  alt="케밥 아이콘"
-                  width={16}
-                  height={16}
-                  className="ml-auto"
-                />
               </Link>
             </li>
           ))}
