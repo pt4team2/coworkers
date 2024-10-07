@@ -23,6 +23,12 @@ export interface ResetPassword {
   token: string;
 }
 
+// 계정 설정 페이지: 비밀번호 재설정
+export interface ResetPasswordModal {
+  password: string;
+  passwordConfirmation: string;
+}
+
 // 이메일
 export interface Email {
   email: string;

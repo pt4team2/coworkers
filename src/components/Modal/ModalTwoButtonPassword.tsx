@@ -1,56 +1,114 @@
-import { useState } from 'react';
-import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { RESET_PASSWORD_MODAL_SCHEMA } from '@/utils/schema';
+import { ResetPasswordModal } from '@/types/auth';
+import FormField from '@/components/auth/FormField';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { resetPasswordFieldData } from '@/hooks/formFieldData';
+import { useUserSettingToastStore } from '@/store/useToastStore';
+import { useEffect } from 'react';
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children?: React.ReactNode;
+  accessToken: string;
 }
 
-const ModalTwoButtonPassword = ({ isOpen, onClose }: ModalProps) => {
+const ModalTwoButtonPassword = ({
+  isOpen,
+  onClose,
+  accessToken,
+}: ModalProps) => {
   if (!isOpen) return null;
 
-  return (
-    <div className="relative flex h-[345px] w-[375px] rounded-b-[0px] rounded-t-xl bg-background-secondary md:h-[353px] md:w-96 md:rounded-xl lg:h-[353px] lg:w-96 lg:rounded-xl">
-      <div className="mx-auto mb-8 mt-12 flex w-[280px] flex-col items-center justify-between">
-        <div className="flex h-[193px] w-full flex-col justify-between md:h-[201px] lg:h-[201px]">
-          <span className="text-lg-medium flex flex-col justify-between text-center">
-            비밀번호 변경하기
-          </span>
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordModal>({
+    resolver: yupResolver(RESET_PASSWORD_MODAL_SCHEMA),
+    mode: 'onChange',
+  });
 
-          <div className="flex h-[71px] w-full flex-col justify-between md:h-[75px] lg:h-[75px]">
-            <h2 className="text-lg-medium text-text-primary">새 비밀번호</h2>
-            <input
-              type="password"
-              className="text-lg-regular h-11 rounded-xl border border-solid border-border-primary bg-background-secondary p-4 placeholder:text-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC] md:h-12 lg:h-12"
-              placeholder="새 비밀번호를 입력해주세요."
+  // 토스트
+  const { openToast, closeToast } = useUserSettingToastStore();
+
+  useEffect(() => {
+    closeToast();
+  }, [closeToast]);
+
+  // 비밀번호 변경하기
+  const resetPasswordFields = resetPasswordFieldData();
+
+  async function handleChangePwd(data: ResetPasswordModal) {
+    try {
+      const response = await authAxiosInstance.patch(
+        '/user/password',
+        {
+          password: data.password,
+          passwordConfirmation: data.passwordConfirmation,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      openToast('비밀번호가 변경되었습니다.', 'success');
+      setTimeout(() => {
+        onClose();
+      }, 500);
+      setTimeout(() => {
+        closeToast();
+      }, 2500);
+    } catch (error: any) {
+      openToast('비밀번호 변경에 실패했습니다.', 'error');
+    }
+  }
+
+  return (
+    <div className="mx-auto mt-4 flex w-[280px] flex-col items-center justify-between">
+      <div className="flex w-full flex-col justify-between">
+        <span className="text-lg-medium mb-4 flex flex-col justify-between text-center">
+          비밀번호 변경하기
+        </span>
+        {resetPasswordFields.map((field) => (
+          <div key={field.id} className="flex flex-col gap-2">
+            <label
+              htmlFor={field.id}
+              className="text-lg-medium text-text-primary"
+            >
+              {field.id === 'password' ? '새 비밀번호' : '비밀번호 확인'}
+            </label>
+            <FormField
+              key={field.id}
+              {...field}
+              register={register}
+              error={errors[field.id as keyof ResetPasswordModal]}
+              className="mb-4 w-70-custom"
+              placeholder={
+                field.id === 'password'
+                  ? '새 비밀번호를 입력해주세요'
+                  : '새 비밀번호를 다시 입력해주세요'
+              }
             />
           </div>
-          <div className="flex h-[71px] w-full flex-col justify-between md:h-[75px] lg:h-[75px]">
-            <h2 className="text-lg-medium text-text-primary">
-              새 비밀번호 확인
-            </h2>
-            <input
-              type="password"
-              className="text-lg-regular h-11 rounded-xl border border-solid border-border-primary bg-background-secondary p-4 placeholder:text-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC] md:h-12 lg:h-12"
-              placeholder="새 비밀번호를 입력해주세요."
-            />
-          </div>
-          {/* border의 컬러의 투명도가 0.1인 것이 없어 이렇게 적용하였습니다. */}
-        </div>
-        <div className="flex h-12 w-full justify-between">
-          <button
-            className="px-auto py-auto w-[136px] rounded-xl bg-background-inverse text-brand-primary"
-            onClick={onClose}
-          >
-            닫기
-          </button>
-          <button
-            className="px-auto py-auto w-[136px] rounded-xl border border-brand-primary bg-brand-primary"
-            onClick={onClose}
-          >
-            링크 보내기
-          </button>
-        </div>
+        ))}
+      </div>
+      <div className="text-lg-semibold flex h-12 w-full justify-between">
+        <button
+          className="px-auto py-auto w-[136px] rounded-xl bg-background-inverse text-brand-primary"
+          onClick={onClose}
+        >
+          닫기
+        </button>
+        <button
+          className="px-auto py-auto w-[136px] rounded-xl border border-brand-primary bg-brand-primary"
+          onClick={handleSubmit(handleChangePwd)}
+        >
+          링크 보내기
+        </button>
       </div>
     </div>
   );

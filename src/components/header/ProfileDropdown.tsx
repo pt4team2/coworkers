@@ -7,18 +7,26 @@ import IcProfile from '@/assets/icons/ic_profile.svg';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
+import { useModalStore } from '@/store/useModalStore';
+import ModalWrapper from '@/components/Modal/ModalWrapper';
+import LogoutModal from '@/components/Modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
   user: IUser;
   isLoading: boolean;
 }
+
 export default function ProfileDropdown({
   user,
   isLoading,
 }: ProfileDropdownProps) {
+
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
+
+  // 모달
+  const { isModalOpen, openModal, closeModal } = useModalStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,7 +84,7 @@ export default function ProfileDropdown({
               마이 히스토리
             </li>
           </Link>
-          <Link className="mg-0" href="/reset-password">
+          <Link className="mg-0" href="/user-setting">
             <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
               계정 설정
             </li>
@@ -91,13 +99,24 @@ export default function ProfileDropdown({
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                signOut();
+                openModal();
               }}
             >
               로그아웃
             </Link>
           </li>
         </ul>
+      )}
+
+      {/* 로그아웃 모달 */}
+      {isModalOpen && (
+        <ModalWrapper>
+          <LogoutModal
+            isOpen={true}
+            onClose={closeModal}
+            handleSignOut={signOut}
+          />
+        </ModalWrapper>
       )}
     </div>
   );
