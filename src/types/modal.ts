@@ -16,4 +16,7 @@ export interface ModalState {
   isModalOpen: boolean;
   openModal: () => void;
   closeModal: () => void;
+  isSecondModalOpen?: boolean;
+  openSecondModal?: () => void;
+  closeSecondModal?: () => void;
 }
