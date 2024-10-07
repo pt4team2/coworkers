@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions, Session } from 'next-auth';
+import { NextAuthOptions, Session } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import KakaoProvider from 'next-auth/providers/kakao';
@@ -97,8 +97,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       return true;
     },
     async jwt({ token, user, account }) {
-      console.log('@@@token', token);
-
       // 구글로그인
       if (account?.provider === 'google') {
         token = { ...token };
@@ -118,7 +116,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
               },
             );
             const newTokens = signInResponse.data;
-            console.log('@@@newTokens', newTokens);
 
             // JWT에 필요한 토큰 정보 추가
             token.user = newTokens.user;
@@ -127,8 +124,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
             token.accessTokenExpires =
               Math.floor(new Date().getTime()) + 60 * 60 * 3 * 1000;
 
-            console.log('@@@newToken', token.accessToken);
-            console.log('API 호출 성공', token);
             return token;
           } catch (error) {
             console.log('API 호출 실패', error);
@@ -158,9 +153,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       const currentTime = Math.floor(Date.now() / 1000);
       let accessTokenExpired = Math.floor(token.accessTokenExpires / 1000);
       const timeRemaining = accessTokenExpired - 60 * 10 - currentTime;
-
-      console.log('@@@accessToken', token.accessToken);
-      console.log('@@@timeRemaining', timeRemaining);
 
       if (timeRemaining > 1) {
         // 유효기간 내에는 토큰 그대로 반환

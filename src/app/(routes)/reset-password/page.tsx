@@ -46,7 +46,6 @@ export default function ResetPasswordPage() {
       console.log(data.passwordConfirmation);
       console.log(token);
 
-      // 로그인 페이지로 리다이렉트
       router.push('/login');
     } catch (error) {
       console.error('비밀번호 재설정 실패:', error);

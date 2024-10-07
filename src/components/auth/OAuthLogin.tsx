@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,22 +22,16 @@ export default function OAuthLoginOptions({
   const handleSocialLoginClick = async (providerId: string) => {
     // providers가 없으면 getProviders로 가져오기
     if (!providers) {
-      console.log('@@@providers', providers);
-      console.log('@@@providerId1', providerId);
       const res = await getProviders();
       setProviders(res);
-      console.log('@@@res', res);
 
       // providers 설정 전 다음 코드로 넘어가지 않도록, getProviders 완료 후 다시 providers 확인
       if (res && res[providerId]) {
-        console.log('providerId2', providerId);
         signIn(providerId, { redirect: true, callbackUrl: '/' });
       }
-      console.log('@@@providers3', providers);
     } else {
       // providers가 이미 존재하는 경우 바로 로그인 처리
       if (providers[providerId]) {
-        console.log('@@@providerId4', providerId);
         signIn(providerId, { redirect: true, callbackUrl: '/' });
       }
     }
