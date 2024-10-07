@@ -3,6 +3,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Calendar from '@/components/calender/Calendar';
 import Image from 'next/image';
+import ToggleIcon from '@/assets/icons/ic_toggle.svg';
+import 'react-datepicker/dist/react-datepicker.css';
+import ArrowLeft from '@/assets/icons/ic_arrow_left_ver2.svg';
+import ArrowRight from '@/assets/icons/ic_arrow_right_ver2.svg';
+import { useMutation } from '@tanstack/react-query';
 import Toggle from '@/assets/icons/ic_toggle.svg';
 import { format } from 'date-fns';
 
@@ -20,7 +25,13 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
 
-  const handleClickOutsideCalendar = (event: MouseEvent) => {
+  // const { mutate: createTask } = useMutation({
+  //   mutationKey: 'createTask',
+  //   mutationFn: ,
+  // });
+
+  // 달력 외부를 클릭하면 닫힙니다.
+  const handleClickOutside = (event: MouseEvent) => {
     if (
       calendarRef.current &&
       !calendarRef.current.contains(event.target as Node)
