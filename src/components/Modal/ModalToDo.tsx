@@ -1,12 +1,10 @@
 //리스트페이지에서 할 일을 생성할 때의 모달 컴포넌트
 
 import React, { useState, useRef, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
+import Calendar from '@/components/calender/Calendar';
 import Image from 'next/image';
-import ToggleIcon from '@/assets/icons/ic_toggle.svg';
-import 'react-datepicker/dist/react-datepicker.css';
-import ArrowLeft from '@/assets/icons/ic_arrow_left_ver2.svg';
-import ArrowRight from '@/assets/icons/ic_arrow_right_ver2.svg';
+import Toggle from '@/assets/icons/ic_toggle.svg';
+import { format } from 'date-fns';
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,33 +12,69 @@ interface ModalProps {
   children?: React.ReactNode;
 }
 
-const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const datePickerRef = useRef<HTMLDivElement>(null);
+const WeekDays = ['일', '월', '화', '수', '목', '금', '토']; //주 반복에서의 요일
 
-  // 달력 외부를 클릭하면 닫힙니다.
-  const handleClickOutside = (event: MouseEvent) => {
+const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
+  // 날짜 및 캘린더 상태 관리
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutsideCalendar = (event: MouseEvent) => {
     if (
-      datePickerRef.current &&
-      !datePickerRef.current.contains(event.target as Node)
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target as Node)
     ) {
-      setIsDatePickerOpen(false);
+      setIsCalendarOpen(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutsideCalendar);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutsideCalendar);
     };
   }, []);
 
+  // 드롭다운 상태 관리
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('반복 안함');
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
+
+  const options = ['반복 안함', '한 번', '매일', '주 반복', '월 반복'];
+  const filteredOptions = options.filter((option) => option !== selectedOption);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutsideDropDown = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropDownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutsideDropDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideDropDown);
+    };
+  }, []);
+  //주 반복 상태 관리
+  const handleButtonClick = (day: string) => {
+    setSelectedDays((prevSelectedDays) =>
+      prevSelectedDays.includes(day)
+        ? prevSelectedDays.filter((selectedDay) => selectedDay !== day)
+        : [...prevSelectedDays, day],
+    );
+  };
+  console.log(selectedDays);
   if (!isOpen) return null;
 
   return (
     <div className="relative flex w-[375px] rounded-b-[0px] rounded-t-xl bg-background-secondary py-8 md:w-96 md:rounded-xl lg:w-96 lg:rounded-xl">
       <div className="mx-auto flex w-[336px] flex-col items-center justify-center gap-6">
+        {/* 모달 헤더 */}
         <div className="flex h-[69px] w-[269px] flex-col justify-between">
           <h2 className="text-lg-medium text-center text-text-primary">
             할 일 만들기
@@ -49,78 +83,111 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
             할 일은 실제로 행동 가능한 작업 중심으로 작성해주시면 좋습니다.
           </div>
         </div>
+
+        {/* 할 일 제목 입력 */}
         <div className="flex h-[83px] w-full flex-col justify-between">
           <h2 className="text-lg-medium text-text-primary">할 일 제목</h2>
           <input
-            className="text-lg-regular h-12 rounded-xl border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 text-text-default"
+            className="text-lg-regular h-12 rounded-xl border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 text-text-primary placeholder-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC]"
             placeholder="할 일 제목을 입력해주세요."
           />
         </div>
-        <div className="flex h-auto w-full flex-col justify-between gap-4">
+
+        {/* 날짜 및 시간 선택 */}
+        <div className="flex w-full flex-col gap-4">
           <h2 className="text-lg-medium text-text-primary">
-            시작 및 날짜 시간
+            시작 날짜 및 시간
           </h2>
-          <div ref={datePickerRef} className="relative">
-            <input
-              onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-              value={startDate ? startDate.toLocaleDateString() : ''}
-              readOnly
-              className="text-lg-regular h-12 w-full cursor-pointer rounded-xl border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 text-text-default"
-              placeholder="날짜를 선택해주세요."
-            />
-            {isDatePickerOpen && (
-              <div className="mt-2">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date: Date | null) => {
+          <div className="flex w-full flex-col gap-2">
+            <button
+              onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+              className="text-lg-medium border-1 h-12 cursor-pointer rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary p-2 pl-4 text-left text-text-default placeholder-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-interaction-hover"
+            >
+              {startDate ? format(startDate, 'yyyy년 MM월 dd일') : '날짜 선택'}
+            </button>
+
+            {/* 캘린더 */}
+            {isCalendarOpen && (
+              <div ref={calendarRef}>
+                <Calendar
+                  startDate={startDate}
+                  setStartDate={(date: Date | null) => {
                     setStartDate(date);
-                    setIsDatePickerOpen(false); // 날짜 선택 후 달력 닫기
+                    setIsCalendarOpen(false);
                   }}
-                  showPopperArrow={false}
-                  renderCustomHeader={({
-                    date,
-                    decreaseMonth,
-                    increaseMonth,
-                  }) => (
-                    <div className="mb-2 flex items-center justify-between">
-                      <button onClick={decreaseMonth} className="p-1">
-                        <Image src={ArrowLeft} alt="이전" />
-                      </button>
-                      <span className="font-medium">
-                        {date.toLocaleString('default', { month: 'long' })}{' '}
-                        {date.getFullYear()}
-                      </span>
-                      <button onClick={increaseMonth} className="p-1">
-                        <Image src={ArrowRight} alt="다음" />
-                      </button>
-                    </div>
-                  )}
-                  dateFormat="yyyy/MM/dd"
-                  calendarClassName="rounded-lg border-2 border bg-white shadow-lg p-2"
-                  inline
-                  dayClassName={(date) =>
-                    'w-full p-2 text-center hover:bg-blue-500 hover:text-white transition-colors duration-150 ease-in-out'
-                  }
                 />
               </div>
             )}
           </div>
         </div>
+
+        {/* 반복 설정 드롭다운 */}
         <div className="flex h-[79px] w-full flex-col justify-between">
           <h2 className="text-lg-medium text-text-primary">반복 설정</h2>
-          <button className="text-md-medium flex h-[44px] w-[109px] justify-between rounded-xl bg-[#18212F] px-[12.5px] py-[10px] text-text-default">
-            반복 안함
-            <Image src={ToggleIcon} alt="토글" width={24} height={24} />
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+              className="text-md-medium flex h-[44px] w-[117px] items-center justify-between rounded-xl bg-[#18212F] px-[12.5px] py-[10px] text-text-default"
+            >
+              {selectedOption}
+              <Image src={Toggle} alt="토글" width={24} height={24} />
+            </button>
+
+            {/* 드롭다운 메뉴 */}
+            {isDropDownOpen && (
+              <div
+                ref={dropdownRef}
+                className="absolute z-10 w-[117px] rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary text-text-primary"
+              >
+                {filteredOptions.map((option) => (
+                  <div
+                    key={option}
+                    onClick={() => {
+                      setSelectedOption(option);
+                      setIsDropDownOpen(false);
+                    }}
+                    className="cursor-pointer p-2 hover:rounded-xl hover:bg-[#18212F]"
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* 주 반복 시 요일 선택 */}
+        {selectedOption === '주 반복' && (
+          <div className="flex h-[79px] w-full flex-col justify-between">
+            <h2 className="text-lg-medium text-text-primary">반복 요일</h2>
+            <div className="flex h-12 justify-between">
+              {WeekDays.map((day) => (
+                <button
+                  key={day}
+                  onClick={() => handleButtonClick(day)}
+                  className={`text-md-medium flex w-11 items-center justify-center rounded-xl border p-2 ${
+                    selectedDays.includes(day)
+                      ? 'bg-brand-primary text-text-primary'
+                      : 'bg-[#18212F] text-text-default'
+                  }`}
+                >
+                  {day}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 할 일 메모 입력 */}
         <div className="flex h-[110px] w-full flex-col justify-between">
-          <h2>할 일 제목</h2>
+          <h2 className="text-lg-medium text-text-primary">할 일 메모</h2>
           <textarea
-            className="text-lg-regular h-[75px] resize-none break-keep rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 pt-3 text-text-default"
+            className="text-lg-regular h-[75px] resize-none break-keep rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 pt-3 text-text-primary placeholder-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC]"
             placeholder="메모를 입력해주세요."
           />
         </div>
 
+        {/* 만들기 버튼 */}
         <button
           className="px-auto py-auto mt-2 h-[47px] w-full rounded-xl bg-brand-primary text-text-inverse"
           onClick={onClose}
