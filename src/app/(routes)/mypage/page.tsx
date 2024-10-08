@@ -110,7 +110,7 @@ export default function Page() {
       await queryClient.invalidateQueries({ queryKey: ['getGroup'] });
       await queryClient.invalidateQueries({ queryKey: ['getUser'] });
       openToast2('회원 정보 수정 성공!', 'success');
-      
+      router.push('/mypage');
     },
     onError: (error: any) => {
       console.error('에러 발생', error);
@@ -145,7 +145,9 @@ export default function Page() {
             변경하기
           </button>
         </div>
-        <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        <div className="mb-6">
+          <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        </div>
         <div className="mb-6">
           <label className="text-lg-medium mb-3 block">이름</label>
           <input
