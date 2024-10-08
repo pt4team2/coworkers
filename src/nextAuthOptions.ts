@@ -26,7 +26,7 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
           if (user) {
             return {
               ...user,
-              accessTokenExpires: Date.now() + 60 * 60 * 3 * 1000, // 3시간
+              accessTokenExpires: Date.now() + 60 * 60 * 1 * 1000, // 3시간
             };
           } else {
             return null;
@@ -43,7 +43,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       authorization: {
         params: {
           grant_type: 'authorization_code',
-          redirect_uri: 'http://localhost:3000/api/auth/callback/kakao',
           response_type: 'code',
           scope: 'profile_nickname, profile_image',
         },
@@ -54,7 +53,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          redirect_uri: 'http://localhost:3000/api/auth/callback/google',
           response_type: 'code',
         },
       },
@@ -62,11 +60,11 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 3,
-    updateAge: 60 * 60 * 3,
+    maxAge: 60 * 60 * 1,
+    updateAge: 60 * 60 * 1,
   },
   jwt: {
-    maxAge: 60 * 60 * 3,
+    maxAge: 60 * 60 * 1,
   },
   pages: {
     signIn: '/login',
@@ -76,8 +74,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       return baseUrl;
     },
     async signIn(params) {
-      console.log('params', params);
-
       if (params.account?.provider === 'google') {
         if (!req?.url) {
           console.error('req.url is not defined');
@@ -122,7 +118,7 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
             token.accessToken = newTokens.accessToken;
             token.refreshToken = newTokens.refreshToken;
             token.accessTokenExpires =
-              Math.floor(new Date().getTime()) + 60 * 60 * 3 * 1000;
+              Math.floor(new Date().getTime()) + 60 * 60 * 1 * 1000;
 
             return token;
           } catch (error) {
@@ -175,7 +171,7 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
           );
           const newTokens = response.data;
           token.accessToken = newTokens.accessToken;
-          token.accessTokenExpires = Date.now() + 60 * 60 * 3 * 1000;
+          token.accessTokenExpires = Date.now() + 60 * 60 * 1 * 1000;
 
           console.log('토큰 갱신 성공', token);
 
@@ -190,7 +186,6 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
       }
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      // if (token) {
       session.user = token.user as any;
       session.accessToken = token.accessToken as any;
       session.error = token.error as any;
