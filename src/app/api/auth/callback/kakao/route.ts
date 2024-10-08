@@ -13,7 +13,8 @@ export async function GET(request: NextRequest) {
     try {
       const response = await publicAxiosInstance.post('/auth/signIn/KAKAO', {
         state: state,
-        redirectUri: 'http://localhost:3000/api/auth/callback/kakao',
+        redirectUri:
+          'https://coworkers-team2.vercel.app/api/auth/callback/kakao',
         token: code,
       });
 
