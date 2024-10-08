@@ -46,7 +46,7 @@ export default function ListCardDropdown({
 
       {/* 드롭다운 메뉴 */}
       {isListCardDropdownOpen && (
-        <div className="absolute right-0 z-50 w-[117px] rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary text-text-primary shadow-lg">
+        <div className="text-md-regular absolute right-0 z-50 w-[117px] rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary text-center text-text-primary shadow-lg">
           {options.map((option) => (
             <div
               key={option}
