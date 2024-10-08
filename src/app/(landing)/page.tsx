@@ -8,8 +8,27 @@ import LandingIcon3 from '@/assets/landing/ic_landing_3.svg';
 import LandingImage1 from '@/assets/landing/landing_1.png';
 import LandingImage2 from '@/assets/landing/landing_2.png';
 import RepairIcon from '@/assets/icons/ic_repair.svg';
+import { getServerSession } from 'next-auth';
+import { getOptions } from '@/nextAuthOptions';
+import { authAxiosInstance } from '../api/auth/axiosInstance';
+import { redirect } from 'next/navigation';
 
-export default function Landing() {
+export default async function Landing() {
+  const session = await getServerSession(getOptions());
+
+  if (session && session.accessToken) {
+    const token = session.accessToken;
+    const userResponse = await authAxiosInstance.get('/user', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (userResponse.data.memberships.length > 0) {
+      redirect(`/teampage/${userResponse.data.memberships[0].groupId}`);
+    } else {
+      redirect(`/no-team`);
+    }
+  }
   return (
     <div className="flex flex-col items-center">
       <div className="relative h-[640px] w-full overflow-hidden md:h-[940px] lg:h-[1080px]">
