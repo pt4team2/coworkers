@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import LeftArrow from '@/assets/icons/ic_arrow_left_ver2.svg';
-import RightArrow from '@/assets/icons/ic_arrow_right_ver2.svg';
+import ArrowLeft from '@/assets/icons/ic_arrow_left_ver2.svg';
+import ArrowRight from '@/assets/icons/ic_arrow_right_ver2.svg';
 import {
   addMonths,
   subMonths,
@@ -22,7 +22,7 @@ interface CalendarProps {
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const Calendar: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
+const Calendar = ({ startDate, setStartDate }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
 
   const handlePrevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
@@ -55,13 +55,13 @@ const Calendar: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
     >
       <div className="flex h-[34px] items-center justify-between">
         <button onClick={handlePrevMonth} className="p-1">
-          <Image src={LeftArrow} alt="이전" width={24} height={24} />
+          <Image src={ArrowLeft} alt="이전" width={24} height={24} />
         </button>
         <span className="text-md-medium text-text-inverse">
           {format(currentMonth, 'MMMM yyyy')}
         </span>
         <button onClick={handleNextMonth} className="p-1">
-          <Image src={RightArrow} alt="다음" width={24} height={24} />
+          <Image src={ArrowRight} alt="다음" width={24} height={24} />
         </button>
       </div>
 
