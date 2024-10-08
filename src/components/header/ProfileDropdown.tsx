@@ -8,8 +8,8 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
 import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/Modal/ModalWrapper';
-import LogoutModal from '@/components/Modal/ModalDangerLogout';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import LogoutModal from '@/components/modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
   user: IUser;
