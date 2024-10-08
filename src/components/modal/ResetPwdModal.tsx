@@ -9,7 +9,7 @@ import FormField from '@/components/auth/FormField';
 import { useResetPwdToastStore } from '@/store/useToastStore';
 import Toast from '../toast/Toast';
 
-export default function Modal({
+export default function ResetPwdModal({
   title,
   description,
   input = true,
