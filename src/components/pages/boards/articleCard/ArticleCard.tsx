@@ -16,7 +16,7 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
   const [loading, setLoading] = useState(true);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(prev => !prev);
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const handleSelect = (option: string) => {
@@ -27,7 +27,11 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
   const fetchArticle = async (id: number) => {
     try {
       const response = await getArticleById(id);
-      setBoard(response.data);
+      setBoard({
+        ...response.data,
+        image:
+          'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
+      });
     } catch (error) {
       console.error('Failed to fetch article:', error);
     } finally {
@@ -49,16 +53,16 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
 
   return (
     <div
-      className="relative w-full h-auto p-[24px_16px_16px] gap-4 border rounded-[12px] lg:w-[590px]"
+      className="relative h-auto w-full gap-4 rounded-[12px] border p-[24px_16px_16px] lg:w-[590px]"
       style={{
         backgroundColor: 'var(--color-background-secondary)',
         borderColor: '#334155',
       }}
     >
       <div className="flex">
-        <div className="flex-1 flex flex-col justify-between">
+        <div className="flex flex-1 flex-col justify-between">
           <div
-            className="text-md-medium-alt md:text-lg md:leading-7 md:font-medium lg:text-lg lg:leading-7 lg:font-medium"
+            className="text-md-medium-alt md:text-lg md:font-medium md:leading-7 lg:text-lg lg:font-medium lg:leading-7"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             {board.title}
@@ -71,13 +75,13 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
           </div>
         </div>
         {board.image && (
-          <div className="border-[1px] border-[#475569] rounded-[8px] ml-[23px] mb-[10px]">
+          <div className="mb-[10px] ml-[23px] rounded-[8px] border-[1px] border-[#475569]">
             <Image
               src={board.image}
               alt={board.title}
               width={64}
               height={64}
-              className="rounded-[8px] lg:w-[72px] lg:h-[72px] md:w-[72px] md:h-[72px]"
+              className="rounded-[8px] md:h-[72px] md:w-[72px] lg:h-[72px] lg:w-[72px]"
             />
           </div>
         )}
@@ -87,22 +91,28 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
             alt="kebab icon"
             width={16}
             height={16}
-            className="hidden lg:ml-4 md:ml-4 lg:w-6 lg:h-6 md:w-6 md:h-6 md:inline lg:inline cursor-pointer"
+            className="hidden cursor-pointer md:ml-4 md:inline md:h-6 md:w-6 lg:ml-4 lg:inline lg:h-6 lg:w-6"
             onClick={toggleDropdown}
           />
           {isDropdownOpen && (
-            <div className="origin-top-right absolute right-0 mt-[6px] md:mt-2 lg:mt-2 w-[120px] rounded-lg shadow-lg bg-[#1E293B] border border-[#334155] focus:outline-none z-10">
-              <div role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <div className="absolute right-0 z-10 mt-[6px] w-[120px] origin-top-right rounded-lg border border-[#334155] bg-[#1E293B] shadow-lg focus:outline-none md:mt-2 lg:mt-2">
+              <div
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu"
+              >
                 <button
                   onClick={() => handleSelect('수정하기')}
-                  className="block h-[40px] w-full px-[8px] py-[11px] text-md-regular hover:bg-gray-700 rounded-t-3 text-center"
-                  role="menuitem">
+                  className="text-md-regular rounded-t-3 block h-[40px] w-full px-[8px] py-[11px] text-center hover:bg-gray-700"
+                  role="menuitem"
+                >
                   수정하기
                 </button>
                 <button
                   onClick={() => handleSelect('삭제하기')}
-                  className="block h-[40px] w-full px-[8px] py-[11px] text-md-regular hover:bg-gray-700 rounded-b-3 text-center"
-                  role="menuitem">
+                  className="text-md-regular rounded-b-3 block h-[40px] w-full px-[8px] py-[11px] text-center hover:bg-gray-700"
+                  role="menuitem"
+                >
                   삭제하기
                 </button>
               </div>
@@ -111,7 +121,7 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="mt-4 flex items-center justify-between">
         <div className="flex items-center">
           <Image
             src={MemberIcon}
@@ -120,10 +130,12 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
             width={32}
             height={32}
           />
-          <span className="text-xs-medium ml-3 md:text-md-medium lg:text-md-medium">{board.writer.name}</span>
-          <div className="hidden border-r border border-[#334155] h-3 mx-4 md:inline lg:inline"></div>
+          <span className="text-xs-medium md:text-md-medium lg:text-md-medium ml-3">
+            {board.writer.name}
+          </span>
+          <div className="mx-4 hidden h-3 border border-r border-[#334155] md:inline lg:inline"></div>
           <div
-            className="hidden text-xs-medium md:text-md-medium lg:text-md-medium md:inline lg:inline"
+            className="text-xs-medium md:text-md-medium lg:text-md-medium hidden md:inline lg:inline"
             style={{ color: 'var(--color-text-disabled)' }}
           >
             {new Date(board.createdAt).toLocaleDateString()}
@@ -131,9 +143,9 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
         </div>
 
         <div className="flex items-center">
-          <Image src={LikeIcon} alt="likeIcon" width={18}/>
+          <Image src={LikeIcon} alt="likeIcon" width={18} />
           <span
-            className="text-xs-regular ml-2 md:text-md-regular lg:text-md-regular"
+            className="text-xs-regular md:text-md-regular lg:text-md-regular ml-2"
             style={{ color: 'var(--color-text-disabled)' }}
           >
             {board.likeCount}
@@ -143,7 +155,7 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
             alt="kebab icon"
             width={16}
             height={16}
-            className="ml-2 lg:w-6 lg:h-6 md:w-6 md:h-6 md:hidden lg:hidden cursor-pointer"
+            className="ml-2 cursor-pointer md:hidden md:h-6 md:w-6 lg:hidden lg:h-6 lg:w-6"
             onClick={toggleDropdown}
           />
         </div>

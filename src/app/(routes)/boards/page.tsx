@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -34,14 +34,14 @@ const BoardPage = () => {
         pageSize: 3,
         orderBy: 'like',
       });
-      setBestArticles(bestResponse.data.list);
+      setBestArticles(bestResponse.list);
 
       const articleResponse = await getArticles({
         page: 1,
         pageSize: 4,
-        orderBy: 'createdAt',
+        orderBy: 'recent',
       });
-      setArticles(articleResponse.data.list);
+      setArticles(articleResponse.list);
     } catch (error) {
       console.error('Failed to fetch articles:', error);
     } finally {
@@ -52,7 +52,7 @@ const BoardPage = () => {
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
-    
+
     fetchArticles();
 
     return () => window.removeEventListener('resize', handleResize);
@@ -62,39 +62,50 @@ const BoardPage = () => {
     return <div>Loading...</div>;
   }
 
+  console.log(articles);
+
   return (
-    <div className="px-4 lg:px-0 py-8 bg-[#0F172A] min-h-screen md:px-6 md:py-10 lg:py-10">
+    <div className="min-h-screen bg-[#0F172A] px-4 py-8 md:px-6 md:py-10 lg:px-0 lg:py-10">
       <h1 className="text-2lg-bold mb-6">자유게시판</h1>
-      
-      <SearchForm onSearch={(term) => console.log(term)} placeholder="검색어를 입력해주세요" />
+
+      <SearchForm
+        onSearch={(term) => console.log(term)}
+        placeholder="검색어를 입력해주세요"
+      />
 
       <div className="mt-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg-medium">베스트 게시글</h2>
           <button className="flex items-center">
-            <span className="text-[#94A3B8] text-xs-regular">더보기</span>
-            <Image src={RightArrowIcon} alt="오른쪽 화살 아이콘" width={16} height={16} className="ml-[2px]" />
+            <span className="text-xs-regular text-[#94A3B8]">더보기</span>
+            <Image
+              src={RightArrowIcon}
+              alt="오른쪽 화살 아이콘"
+              width={16}
+              height={16}
+              className="ml-[2px]"
+            />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {bestArticles.slice(0, cardCount).map((article) => (
             <BestArticleCard key={article.id} articleId={article.id} />
           ))}
         </div>
       </div>
 
-      <div className="border-t border-[#F8FAFC1A] my-8"></div>
+      <div className="my-8 border-t border-[#F8FAFC1A]"></div>
 
       <div>
-        <div className="flex justify-between items-center mb-4 relative">
-          <h2 className="text-white text-lg-regular">게시글</h2>
+        <div className="relative mb-4 flex items-center justify-between">
+          <h2 className="text-lg-regular text-white">게시글</h2>
           <div className="relative z-10">
             <Dropdown onSelect={(option) => console.log(option)} />
           </div>
         </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 z-0">
+
+        <div className="z-0 grid grid-cols-1 gap-4 lg:grid-cols-2">
           {articles.map((article) => (
             <ArticleCard key={article.id} articleId={article.id} />
           ))}
