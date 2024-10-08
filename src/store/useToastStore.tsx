@@ -13,7 +13,7 @@ export const useSignupToastStore = create<ToastState>((set) => ({
   setLoading: (loading) => set({ loading }),
 }));
 
-// 로그인 페이지 토스트 
+// 로그인 페이지 토스트
 export const useLoginToastStore = create<ToastState>((set) => ({
   toastVisible: false,
   toastMessage: '',
@@ -51,6 +51,41 @@ export const useUserSettingToastStore = create<ToastState>((set) => ({
 
 // modal wrapper 토스트
 export const useModalWrapperToastStore = create<ToastState>((set) => ({
+  toastVisible: false,
+  toastMessage: '',
+  toastType: 'info',
+  openToast: (message, type) =>
+    set({ toastVisible: true, toastMessage: message, toastType: type }),
+  closeToast: () => set({ toastVisible: false }),
+  loading: false,
+  setLoading: (loading) => set({ loading }),
+}));
+
+// create-team 페이지에서의 팀생성 토스트
+export const useCreateTeamToastStore = create<ToastState>((set) => ({
+  toastVisible: false,
+  toastMessage: '',
+  toastType: 'info',
+  openToast: (message, type) =>
+    set({ toastVisible: true, toastMessage: message, toastType: type }),
+  closeToast: () => set({ toastVisible: false }),
+  loading: false,
+  setLoading: (loading) => set({ loading }),
+}));
+
+export const useAddTeamModalToastStore = create<ToastState>((set) => ({
+  toastVisible: false,
+  toastMessage: '',
+  toastType: 'info',
+  openToast: (message, type) =>
+    set({ toastVisible: true, toastMessage: message, toastType: type }),
+  closeToast: () => set({ toastVisible: false }),
+  loading: false,
+  setLoading: (loading) => set({ loading }),
+}));
+
+//할 일 목록 생성 토스트
+export const useAddTaskListToastStore = create<ToastState>((set) => ({
   toastVisible: false,
   toastMessage: '',
   toastType: 'info',

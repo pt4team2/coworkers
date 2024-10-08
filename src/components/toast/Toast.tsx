@@ -15,7 +15,7 @@ interface ToastComponentProps extends ToastProps {
 export default function Toast({
   message,
   type,
-  duration = 3000,
+  duration = 5000,
   closeToast,
 }: ToastComponentProps) {
   useEffect(() => {

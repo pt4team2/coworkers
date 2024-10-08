@@ -69,7 +69,7 @@ export default function LoginPage() {
     if (user && accessToken) {
       openToast(`${user.nickname}님, 환영합니다.`, 'success');
       setTimeout(() => {
-        router.push('/');
+        router.push('/no-team');
       }, 1500);
     }
   }, [user, accessToken]);
