@@ -44,7 +44,6 @@ export default function Header() {
     };
   }, []);
 
-
   return (
     <div className="w-full bg-background-secondary">
       <div className="m-auto flex items-center justify-between gap-4 px-4 py-5 md:gap-8 md:px-6 lg:max-w-[1200px] lg:gap-10 lg:px-0">
