@@ -24,12 +24,12 @@ export default function Page() {
 
   // 모달
   const {
-    isModalOpen,
-    openModal,
-    closeModal,
     isSecondModalOpen,
     openSecondModal,
     closeSecondModal,
+    isThirdModalOpen,
+    openThirdModal,
+    closeThirdModal,
   } = useModalStore();
 
   // 토스트
@@ -51,7 +51,7 @@ export default function Page() {
       console.log('회원 탈퇴 성공');
       openToast('성공적으로 탈퇴되었습니다.', 'success');
       setTimeout(() => {
-        closeSecondModal?.();
+        closeThirdModal?.();
       }, 500);
       setTimeout(() => {
         signOut();
@@ -103,7 +103,7 @@ export default function Page() {
             className={`text-sm-semibold absolute right-4 top-[6px] h-8 w-[74px] rounded-[12px] px-[12.5px] py-[6px] md:top-2 lg:top-2 ${!domain ? 'bg-brand-primary' : 'cursor-not-allowed bg-text-default opacity-50'}`}
             onClick={(e) => {
               e.preventDefault();
-              openModal();
+              openSecondModal?.();
             }}
             disabled={domain}
           >
@@ -116,8 +116,8 @@ export default function Page() {
         <button
           onClick={(e) => {
             e.preventDefault();
-            if (openSecondModal) {
-              openSecondModal();
+            if (openThirdModal) {
+              openThirdModal();
             }
           }}
         >
@@ -128,22 +128,22 @@ export default function Page() {
       </div>
 
       {/* 비밀번호 변경 모달 */}
-      {isModalOpen && accessToken && (
+      {isSecondModalOpen && accessToken && (
         <ModalWrapper>
           <ChangePassword
             isOpen={true}
-            onClose={closeModal}
+            onClose={closeSecondModal}
             accessToken={accessToken}
           />
         </ModalWrapper>
       )}
 
       {/* 회원 탈퇴 모달 */}
-      {isSecondModalOpen && (
+      {isThirdModalOpen && (
         <ModalWrapper>
           <DeleteAccountModal
             isOpen={true}
-            onClose={closeSecondModal}
+            onClose={closeThirdModal}
             onDelete={handleAccountDeletion}
           />
         </ModalWrapper>
