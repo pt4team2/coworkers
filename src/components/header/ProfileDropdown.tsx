@@ -8,7 +8,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
 import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/modal/ModalWrapper';
+import ModalWrapper from '../modal/ModalWrapper';
 import LogoutModal from '@/components/modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
