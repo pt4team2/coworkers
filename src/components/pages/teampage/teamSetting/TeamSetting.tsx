@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import settingIcon from '@/assets/icons/ic_setting.svg';
 import backgroundImg from '@/assets/images/img_teambg.svg';
 import Image from 'next/image';
-import { IGroup, IUser } from '@/types/user';
+import { IUser } from '@/types/user';
+import { IGroup } from '@/types/Group';
 import ReviseTeamModal from '@/components/modal/ReviseTeamModal';
 import { useReviseTeamModalStore } from '@/store/useReviseTeamModalStore';
 import { useDeleteTeamModalStore } from '@/store/useDeleteTeamModalStore';
@@ -22,6 +23,9 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
   const { isDeleteModalOpen, openDeleteModal, closeDeleteModal } =
     useDeleteTeamModalStore();
   const groupId = group?.id;
+  const isAdmin = group?.members.some(
+    (member) => member.role === 'ADMIN' && member.userId === user?.id,
+  );
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -55,9 +59,16 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
           alt="백그라운드 이미지"
         />
         <div className="relative">
-          <button onClick={toggleDropdown}>
-            <Image width={24} height={24} src={settingIcon} alt="설정 아이콘" />
-          </button>
+          {isAdmin && (
+            <button onClick={toggleDropdown}>
+              <Image
+                width={24}
+                height={24}
+                src={settingIcon}
+                alt="설정 아이콘"
+              />
+            </button>
+          )}
           {isOpen && (
             <ul className="text-lg-regular absolute right-0 top-5 z-30 mt-2 flex w-[120px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-2 text-sm shadow-lg">
               <button
