@@ -13,7 +13,8 @@ export async function GET(request: NextRequest) {
     try {
       const response = await publicAxiosInstance.post('/auth/signIn/KAKAO', {
         state: state,
-        redirectUri: 'http://localhost:3000/api/auth/callback/kakao',
+        redirectUri:
+          'https://coworkers-team2.vercel.app/api/auth/callback/kakao',
         token: code,
       });
 
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
       const existingCookie = request.cookies.get('next-auth.session-token');
 
       const currentTime = Math.floor(new Date().getTime()); // UNIX 타임스탬프
-      const accessTokenExpires = currentTime + 60 * 60 * 3 * 1000;
+      const accessTokenExpires = currentTime + 60 * 60 * 1 * 1000;
 
       if (existingCookie) {
         console.log('기존 쿠키가 이미 존재합니다.');
