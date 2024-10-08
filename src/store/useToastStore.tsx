@@ -107,3 +107,26 @@ export const useReviseMyDataToastStore = create<Toast2State>((set) => ({
   loading2: false,
   setLoading2: (loading2) => set({ loading2 }),
 }));
+
+//팀 삭제 토스트
+export const useDeleteTeamToastStore = create<ToastState>((set) => ({
+  toastVisible: false,
+  toastMessage: '',
+  toastType: 'info',
+  openToast: (message, type) =>
+    set({ toastVisible: true, toastMessage: message, toastType: type }),
+  closeToast: () => set({ toastVisible: false }),
+  loading: false,
+  setLoading: (loading) => set({ loading }),
+}));
+
+export const useCopyLinkToastStore = create<ToastState>((set) => ({
+  toastVisible: false,
+  toastMessage: '',
+  toastType: 'info',
+  openToast: (message, type) =>
+    set({ toastVisible: true, toastMessage: message, toastType: type }),
+  closeToast: () => set({ toastVisible: false }),
+  loading: false,
+  setLoading: (loading) => set({ loading }),
+}));

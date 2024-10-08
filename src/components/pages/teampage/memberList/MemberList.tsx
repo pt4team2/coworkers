@@ -3,6 +3,8 @@ import { IGroup } from '@/types/Group';
 import { useAddMemberModalStore } from '@/store/useAddMemberModalStore';
 import PopupOneButton from '@/components/modal/PopupOneButton';
 import { IUser } from '@/types/user';
+import { useCopyLinkToastStore } from '@/store/useToastStore';
+import Toast from '@/components/toast/Toast';
 
 interface GroupProps {
   group: IGroup | undefined;
@@ -12,6 +14,8 @@ interface GroupProps {
 export default function MemberList({ group, user }: GroupProps) {
   const { isModalOpen, openModal, closeModal } = useAddMemberModalStore();
   const membersCount = group ? group.members.length : 0;
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useCopyLinkToastStore();
 
   // ADMIN 권한이 있는지 확인
   const isAdmin = group?.members.some(
@@ -38,6 +42,7 @@ export default function MemberList({ group, user }: GroupProps) {
         )}
         {isModalOpen && (
           <PopupOneButton
+            openToast={openToast}
             title={'멤버 초대'}
             onClose={closeModal}
             description={'그룹에 참여할 수 있는 링크를 복사합니다.'}
@@ -53,6 +58,13 @@ export default function MemberList({ group, user }: GroupProps) {
             <MemberCard member={member} key={member.userId} />
           ))}
       </div>
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
     </div>
   );
 }

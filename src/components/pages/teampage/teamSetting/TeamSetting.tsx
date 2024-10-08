@@ -8,6 +8,8 @@ import ReviseTeamModal from '@/components/modal/ReviseTeamModal';
 import { useReviseTeamModalStore } from '@/store/useReviseTeamModalStore';
 import { useDeleteTeamModalStore } from '@/store/useDeleteTeamModalStore';
 import TeamDeleteModal from '@/components/modal/TeamDeleteModal';
+import Toast from '@/components/toast/Toast';
+import { useDeleteTeamToastStore } from '@/store/useToastStore';
 
 interface TeamSettingProps {
   group: IGroup | undefined;
@@ -22,6 +24,8 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
     useReviseTeamModalStore();
   const { isDeleteModalOpen, openDeleteModal, closeDeleteModal } =
     useDeleteTeamModalStore();
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useDeleteTeamToastStore();
   const groupId = group?.id;
   const isAdmin = group?.members.some(
     (member) => member.role === 'ADMIN' && member.userId === user?.id,
@@ -100,9 +104,17 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
       )}
       {isDeleteModalOpen && (
         <TeamDeleteModal
+          openToast={openToast}
           onClose={closeDeleteModal}
           groupId={groupId}
           user={user}
+        />
+      )}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
         />
       )}
     </>

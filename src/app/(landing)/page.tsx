@@ -25,7 +25,8 @@ export default async function Landing() {
     });
     if (userResponse.data.memberships.length > 0) {
       redirect(`/teampage/${userResponse.data.memberships[0].groupId}`);
-    } else {
+    } 
+    if (userResponse.data.memberships.length === 0){
       redirect(`/no-team`);
     }
   }
