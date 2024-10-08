@@ -11,7 +11,7 @@ import useUser from '@/hooks/useUser';
 import useSessionStore from '@/store/useSessionStore';
 import { IMembership } from '@/types/user';
 import IcClose from '@/assets/icons/ic_x2.svg';
-import AddTeamModal from '@/components/modal/AddTeamModal';
+import AddTeamModal from '@/components/modal/AddTeamModal'
 import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
 
 export default function Header() {

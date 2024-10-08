@@ -8,7 +8,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
 import { useModalStore } from '@/store/useModalStore';
-import ModalWrapper from '@/components/modal/ModalWrapper';
+import ModalWrapper from '../modal/ModalWrapper';
 import LogoutModal from '@/components/modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
@@ -83,7 +83,7 @@ export default function ProfileDropdown({
               마이 히스토리
             </li>
           </Link>
-          <Link className="mg-0" href="/user-setting">
+          <Link className="mg-0" href="mypage">
             <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
               계정 설정
             </li>
