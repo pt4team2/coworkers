@@ -25,7 +25,6 @@ export default function Toast({
 
     return () => {
       clearTimeout(timer);
-      console.log('toast 출력');
     };
   }, [duration, closeToast]);
 
