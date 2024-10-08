@@ -12,6 +12,7 @@ import Toast from '../toast/Toast';
 
 interface AddTeamModalProps {
   onClose: () => void;
+  openToast: (message: string, type: 'success' | 'error') => void;
   groupId: number;
 }
 
@@ -21,10 +22,10 @@ interface IFormData {
 export default function AddTaskListModal({
   onClose,
   groupId,
+  openToast,
 }: AddTeamModalProps) {
   const { closeModal } = useAddTaskListModalStore();
-  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
-    useAddTaskListToastStore();
+
   const postCreateTaskList = useMutation({
     mutationFn: (formData: IFormData) => {
       return authAxiosInstance.post(`/groups/${groupId}/task-lists`, formData);
@@ -32,11 +33,13 @@ export default function AddTaskListModal({
     onSuccess: async () => {
       console.log('할일 목록 생성 성공');
       const message = '할일 목록 생성 성공';
+      openToast('할 일 목록 생성 성공!', 'success');
 
       closeModal();
       openToast(message, 'success');
-      console.log('openToast 호출:', { message, type: 'success' });
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
@@ -102,13 +105,6 @@ export default function AddTaskListModal({
           </div>
         </div>
       </ModalPortal>
-      {toastVisible && (
-        <Toast
-          message={toastMessage}
-          type={toastType}
-          closeToast={closeToast}
-        />
-      )}
     </div>
   );
 }

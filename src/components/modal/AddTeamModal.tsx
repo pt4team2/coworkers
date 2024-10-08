@@ -9,11 +9,10 @@ import useCheckDuplicateTeam from '@/libs/useCheckDuplicateTeam';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useRouter } from 'next/navigation';
-import Toast from '../toast/Toast';
-import { useAddTeamModalToastStore } from '@/store/useToastStore';
 
 interface AddTeamModalProps {
   onClose: () => void;
+  openToast: (message: string, type: 'success' | 'error') => void;
 }
 
 interface IFormData {
@@ -21,12 +20,13 @@ interface IFormData {
   image: string;
 }
 
-export default function AddTeamModal({ onClose }: AddTeamModalProps) {
+export default function AddTeamModal({
+  onClose,
+  openToast,
+}: AddTeamModalProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isDuplicate, checkDuplicate } = useCheckDuplicateTeam();
   const { closeModal } = useAddTeamModalStore();
-  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
-    useAddTeamModalToastStore();
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -39,6 +39,7 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
     },
     onSuccess: async (data) => {
       console.log('팀 생성 완료');
+      closeModal();
       openToast('팀 추가 성공!', 'success');
       setImageUrl(null);
 
@@ -47,7 +48,6 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
       setTimeout(() => {
         router.push(`/teampage/${newGroupId}`);
       }, 1500);
-      await closeModal();
     },
     onError: (error: any) => {
       console.error('에러 발생', error);
@@ -136,13 +136,6 @@ export default function AddTeamModal({ onClose }: AddTeamModalProps) {
           </div>
         </div>
       </ModalPortal>
-      {toastVisible && (
-        <Toast
-          message={toastMessage}
-          type={toastType}
-          closeToast={closeToast}
-        />
-      )}
     </div>
   );
 }

@@ -4,8 +4,6 @@ import { useAddMemberModalStore } from '@/store/useAddMemberModalStore';
 import PopupOneButton from '@/components/modal/PopupOneButton';
 import { IUser } from '@/types/user';
 
-
-
 interface GroupProps {
   group: IGroup | undefined;
   user: IUser;
@@ -17,7 +15,7 @@ export default function MemberList({ group, user }: GroupProps) {
 
   // ADMIN 권한이 있는지 확인
   const isAdmin = group?.members.some(
-    (member) => member.role === 'ADMIN' && member.userId === user.id,
+    (member) => member.role === 'ADMIN' && member.userId === user?.id,
   );
 
   return (

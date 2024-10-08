@@ -3,6 +3,8 @@ import { IGroup, TaskList } from '@/types/Group';
 import AddTaskListModal from '@/components/modal/AddTaskListModal';
 import { useAddTaskListModalStore } from '@/store/useAddTaskListModalStore';
 import EmptyTaskList from './EmptyTaskList';
+import { useAddTaskListToastStore } from '@/store/useToastStore';
+import Toast from '@/components/toast/Toast';
 
 interface TaskListProps {
   taskLists: TaskList[];
@@ -11,6 +13,8 @@ interface TaskListProps {
 
 export default function TasksList({ taskLists, groupId }: TaskListProps) {
   const { isModalOpen, openModal, closeModal } = useAddTaskListModalStore();
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useAddTaskListToastStore();
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2">
@@ -36,7 +40,18 @@ export default function TasksList({ taskLists, groupId }: TaskListProps) {
         )}
       </div>
       {isModalOpen && (
-        <AddTaskListModal groupId={groupId} onClose={closeModal} />
+        <AddTaskListModal
+          openToast={openToast}
+          groupId={groupId}
+          onClose={closeModal}
+        />
+      )}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
       )}
     </div>
   );
