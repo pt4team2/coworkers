@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import IcKebab from '@/assets/icons/ic_kebab.svg';
-import { getArticleComments, postComment, deleteComment } from '@/services/api/article';
+import { getArticleComments, deleteComment, patchComment } from '@/services/api/article';
 import { Comment } from '@/types/article';
 
 interface CommentCardProps {
@@ -11,9 +11,10 @@ interface CommentCardProps {
 
 const CommentCard = ({ articleId }: CommentCardProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editedContent, setEditedContent] = useState<string>('');
 
   const toggleDropdown = (commentId: number) => {
     setIsDropdownOpen(prev => (prev === commentId ? null : commentId));
@@ -27,6 +28,9 @@ const CommentCard = ({ articleId }: CommentCardProps) => {
         alert('댓글이 삭제되었습니다.');
         setComments(comments.filter(comment => comment.id !== commentId));
       }
+    } else if (option === '수정하기') {
+      setEditingCommentId(commentId);
+      setEditedContent(comments.find(comment => comment.id === commentId)?.content || '');
     }
     setIsDropdownOpen(null);
   };
@@ -42,17 +46,25 @@ const CommentCard = ({ articleId }: CommentCardProps) => {
     }
   };
 
-  const handleCommentSubmit = async () => {
-    if (newComment.trim() === '') return;
-
-    try {
-      await postComment(articleId, newComment);
-      setNewComment('');
-      await fetchComments(articleId);
-    } catch (error) {
-      console.error('댓글 등록에 실패했습니다.', error);
-      alert('댓글 등록에 실패했습니다.');
+  const handleEdit = async (commentId: number) => {
+    if (editedContent.trim() === '') {
+      alert('내용을 입력해주세요.');
+      return;
     }
+    try {
+      await patchComment(commentId, editedContent);
+      setComments(comments.map(comment => comment.id === commentId ? { ...comment, content: editedContent } : comment));
+      setEditingCommentId(null);
+      setEditedContent('');
+    } catch (error) {
+      console.error('Failed to update comment:', error);
+      alert('댓글 수정에 실패했습니다.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+    setEditedContent('');
   };
 
   useEffect(() => {
@@ -64,7 +76,7 @@ const CommentCard = ({ articleId }: CommentCardProps) => {
   }
 
   if (!comments.length) {
-    return <div>댓글이 없습니다.</div>;
+    return <div className="text-md-medium text-gray-400">아직 작성된 댓글이 없습니다.</div>;
   }
 
   return (
@@ -72,28 +84,56 @@ const CommentCard = ({ articleId }: CommentCardProps) => {
       {comments.map(comment => (
         <div
           key={comment.id}
-          className="relative w-full h-auto p-[24px_16px_16px] gap-4 border rounded-[12px] lg:w-[590px] mb-4"
+          className="relative w-full h-[113px] p-4 gap-4 border rounded-[12px] mb-4"
           style={{
             backgroundColor: 'var(--color-background-secondary)',
             borderColor: '#334155',
           }}
         >
           <div className="flex">
-            <div className="flex-1">
-              <div
-                className="text-md-medium-alt md:text-lg md:leading-7 md:font-medium lg:text-lg lg:leading-7 lg:font-medium"
-                style={{ color: 'var(--color-text-secondary)' }}
-              >
-                {comment.content}
-              </div>
+            <div className="flex-1 mb-8">
+              {editingCommentId === comment.id ? (
+                <div className="flex flex-row">
+                  <div className="flex-1 text-md-regular md:text-lg-regular lg:text-lg-regular">
+                    <textarea
+                      value={editedContent}
+                      onChange={(e) => setEditedContent(e.target.value)}
+                      className="w-full h-20 border rounded-[8px] p-2 bg-transparent resize-none"
+                      style={{
+                        borderColor: '#334155',
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={() => handleEdit(comment.id)}
+                    className="bg-status-brand rounded-[8px] w-12 h-8 ml-2"
+                  >
+                    수정
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="bg-gray-500 rounded-[8px] w-12 h-8 ml-2"
+                  >
+                    취소
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className="text-md-regular md:text-lg-regular lg:text-lg-regular"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
+                  {comment.content}
+                </div>
+              )}
             </div>
+
             <div className="relative">
               <Image
                 src={IcKebab}
                 alt="kebab icon"
                 width={16}
                 height={16}
-                className="hidden lg:ml-4 md:ml-4 lg:w-6 lg:h-6 md:w-6 md:h-6 md:inline lg:inline cursor-pointer"
+                className="lg:ml-4 md:ml-4 lg:w-6 lg:h-6 md:w-6 md:h-6 cursor-pointer"
                 onClick={() => toggleDropdown(comment.id)}
               />
               {isDropdownOpen === comment.id && (
@@ -119,27 +159,29 @@ const CommentCard = ({ articleId }: CommentCardProps) => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center">
-              <Image
-                src={MemberIcon}
-                alt="작성자 이미지"
-                className="rounded-full"
-                width={32}
-                height={32}
-              />
-              <span className="text-xs-medium ml-3 md:text-md-medium lg:text-md-medium">
-                {comment.writer.nickname}
-              </span>
-              <div className="hidden border-r border border-[#334155] h-3 mx-4 md:inline lg:inline"></div>
-              <div
-                className="hidden text-xs-medium md:text-md-medium lg:text-md-medium md:inline lg:inline"
-                style={{ color: 'var(--color-text-disabled)' }}
-              >
-                {new Date(comment.createdAt).toLocaleDateString()}
+          {editingCommentId !== comment.id && (
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                <Image
+                  src={MemberIcon}
+                  alt="작성자 이미지"
+                  className="rounded-full"
+                  width={32}
+                  height={32}
+                />
+                <span className="text-xs-medium ml-[6px] md:text-md-medium lg:text-md-medium">
+                  {comment.writer.nickname}
+                </span>
+                <div className="border-r border border-[#334155] h-3 mx-2 md:mx-4 lg:mx-4"></div>
+                <div
+                  className="text-xs-medium md:text-md-medium lg:text-md-medium"
+                  style={{ color: 'var(--color-text-disabled)' }}
+                >
+                  {new Date(comment.createdAt).toLocaleDateString()}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </div>

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useEffect, useState } from 'react';
 import { getArticleById, getArticleComments, postComment } from '@/services/api/article';
@@ -9,14 +9,16 @@ import MemberIcon from '@/assets/icons/ic_member.svg';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import CommentIcon from '@/assets/icons/ic_comment.svg';
 import CommentCard from '@/components/pages/boards/commentCard/CommentCard';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 
 const ArticleDetailPage = () => {
   const { id } = useParams();
   const articleId = Array.isArray(id) ? id[0] : id;
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const { register, handleSubmit, reset } = useForm();
 
   const fetchArticle = async () => {
     if (!articleId) return;
@@ -44,12 +46,12 @@ const ArticleDetailPage = () => {
     }
   };
 
-  const handleCommentSubmit = async () => {
-    if (newComment.trim() === '') return;
+  const onCommentSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (!data.comment.trim()) return;
 
     try {
-      await postComment(Number(articleId), newComment);
-      setNewComment('');
+      await postComment(Number(articleId), data.comment);
+      reset();
       await fetchComments();
     } catch (error) {
       console.error('댓글 등록에 실패했습니다.', error);
@@ -118,24 +120,26 @@ const ArticleDetailPage = () => {
 
         <div className="mb-6">
           <p className="mb-4 text-lg-medium">댓글달기</p>
-          <div className="flex flex-col">
+          <form onSubmit={handleSubmit(onCommentSubmit)} className="flex flex-col">
             <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
+              {...register('comment', { required: true })}
               placeholder="댓글을 입력해주세요."
-              className="w-full h-[104px] p-4 bg-[#2C3E50] rounded-lg mb-4 resize-none"
+              className="w-full h-[104px] p-4 bg-background-secondary rounded-lg mb-4 resize-none"
             ></textarea>
             <div className="flex justify-end">
-              <button onClick={handleCommentSubmit} className="bg-status-brand text-md-bold px-6 py-2 rounded-[12px]">
+              <button
+              type="submit"
+              className="bg-status-brand text-md-semibold md:text-lg-semibold lg:text-lg-semibold
+              rounded-[12px] w-[74px] h-[32px] md:w-[184px] md:h-[48px] lg:w-[184px] lg:h-[48px]">
                 등록
               </button>
             </div>
-          </div>
+          </form>
         </div>
 
         <div>
           {comments.length === 0 ? (
-            <p className="text-gray-400">아직 작성된 댓글이 없습니다.</p>
+            <p className="text-md-medium text-gray-400">아직 작성된 댓글이 없습니다.</p>
           ) : (
             <CommentCard articleId={Number(articleId)} />
           )}
