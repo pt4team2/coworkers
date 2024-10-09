@@ -153,3 +153,14 @@ export const useReviseTeamToastStore = create<Toast2State>((set) => ({
   loading2: false,
   setLoading2: (loading2) => set({ loading2 }),
 }));
+
+export const useJoinTeamToastStore=create<ToastState>((set) => ({
+  toastVisible: false,
+  toastMessage: '',
+  toastType: 'info',
+  openToast: (message, type) =>
+    set({ toastVisible: true, toastMessage: message, toastType: type }),
+  closeToast: () => set({ toastVisible: false }),
+  loading: false,
+  setLoading: (loading) => set({ loading }),
+}));

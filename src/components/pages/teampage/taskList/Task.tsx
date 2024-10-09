@@ -82,7 +82,6 @@ export default function Task({ tasklist }: { tasklist: any }) {
             {doneTaskCount}/{taskCount}
           </span>
         </div>
-        <Image src={IcKebab} width={16} height={16} alt="케밥 아이콘" />
       </div>
     </div>
   );
