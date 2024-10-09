@@ -9,6 +9,7 @@ import useUser from '@/hooks/useUser';
 import useGroup from '@/hooks/useGroup';
 import useSessionStore from '@/store/useSessionStore';
 import { PacmanLoader } from 'react-spinners';
+import Loading from '@/components/loading/Loading';
 
 export default function Page() {
   const { groupId } = useParams();
@@ -16,17 +17,8 @@ export default function Page() {
   const { userData } = useUser(user?.id);
   const { group, isLoading, error } = useGroup(groupId);
 
-  if (isLoading || !group) {
-    return (
-      <div>
-        <PacmanLoader
-          color="#10b981"
-          cssOverride={{ margin: '150px auto' }}
-          size={40}
-        />
-      </div>
-    );
-  }
+  if (isLoading || !group) return <Loading />;
+
   console.log(group.taskLists);
   return (
     <div className="flex flex-col gap-6 py-6">
