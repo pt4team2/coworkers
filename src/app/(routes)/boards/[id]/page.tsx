@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { getArticleById, getArticleComments, postComment } from '@/services/api/article';
+import { getArticleById, getArticleComments, postComment, deleteArticleById } from '@/services/api/article';
 import { Article, Comment } from '@/types/article';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import CommentIcon from '@/assets/icons/ic_comment.svg';
 import CommentCard from '@/components/pages/boards/commentCard/CommentCard';
+import IcKebab from '@/assets/icons/ic_kebab.svg';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 
 const ArticleDetailPage = () => {
@@ -17,8 +18,10 @@ const ArticleDetailPage = () => {
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm();
+  const router = useRouter();
 
   const fetchArticle = async () => {
     if (!articleId) return;
@@ -59,6 +62,27 @@ const ArticleDetailPage = () => {
     }
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prev => !prev);
+  };
+
+  const handleSelect = async (option: string) => {
+    if (option === '삭제하기') {
+      const confirmDelete = confirm('이 게시글을 삭제하시겠습니까?');
+      if (confirmDelete) {
+        try {
+          await deleteArticleById(Number(articleId));
+          alert('게시글이 삭제되었습니다.');
+          router.push('/boards');
+        } catch (error) {
+          console.error('게시글 삭제에 실패했습니다.', error);
+          alert('게시글 삭제에 실패했습니다.');
+        }
+      }
+    }
+    setIsDropdownOpen(false);
+  };
+
   useEffect(() => {
     if (articleId) {
       fetchArticle();
@@ -77,7 +101,38 @@ const ArticleDetailPage = () => {
   return (
     <div className="px-4 py-8 min-h-screen">
       <div className="mt-8 mx-auto">
-        <h1 className="text-lg-medium mb-4">{article.title}</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-lg-medium mb-4">{article.title}</h1>
+          <div className="relative">
+            <Image
+              src={IcKebab}
+              alt="kebab icon"
+              width={16}
+              height={16}
+              className="lg:ml-4 md:ml-4 lg:w-6 lg:h-6 md:w-6 md:h-6 cursor-pointer"
+              onClick={toggleDropdown}
+            />
+            {isDropdownOpen && (
+              <div className="origin-top-right absolute right-0 mt-[6px] md:mt-2 lg:mt-2 w-[120px] rounded-lg shadow-lg bg-[#1E293B] border border-[#334155] focus:outline-none z-10">
+                <div role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                  <button
+                    onClick={() => handleSelect('수정하기')}
+                    className="block h-[40px] w-full px-[8px] py-[11px] text-md-regular hover:bg-gray-700 rounded-t-3 text-center"
+                    role="menuitem">
+                    수정하기
+                  </button>
+                  <button
+                    onClick={() => handleSelect('삭제하기')}
+                    className="block h-[40px] w-full px-[8px] py-[11px] text-md-regular hover:bg-gray-700 rounded-b-3 text-center"
+                    role="menuitem">
+                    삭제하기
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        
         <div className="border-t border-[#F8FAFC1A] my-4"></div>
         <div className="flex justify-between items-center text-gray-400 mb-6">
           <div className="flex items-center space-x-2">
@@ -128,9 +183,9 @@ const ArticleDetailPage = () => {
             ></textarea>
             <div className="flex justify-end">
               <button
-              type="submit"
-              className="bg-status-brand text-md-semibold md:text-lg-semibold lg:text-lg-semibold
-              rounded-[12px] w-[74px] h-[32px] md:w-[184px] md:h-[48px] lg:w-[184px] lg:h-[48px]">
+                type="submit"
+                className="bg-status-brand text-md-semibold md:text-lg-semibold lg:text-lg-semibold
+                rounded-[12px] w-[74px] h-[32px] md:w-[184px] md:h-[48px] lg:w-[184px] lg:h-[48px]">
                 등록
               </button>
             </div>
