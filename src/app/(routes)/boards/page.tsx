@@ -18,6 +18,7 @@ const BoardPage = () => {
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOption, setSortOption] = useState('최신순');
 
   const handleResize = () => {
     if (window.innerWidth >= 1200) {
@@ -58,6 +59,21 @@ const BoardPage = () => {
       article.title.toLowerCase().includes(term.toLowerCase())
     );
     setFilteredArticles(filtered);
+  };
+
+  const handleSort = (option: string) => {
+    setSortOption(option);
+    let sortedArticles = [...articles];
+
+    if (option === '좋아요 많은순') {
+      sortedArticles = sortedArticles.sort((a, b) => b.likeCount - a.likeCount);
+    } else {
+      sortedArticles = sortedArticles.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    }
+
+    setFilteredArticles(sortedArticles);
   };
 
   useEffect(() => {
@@ -101,7 +117,7 @@ const BoardPage = () => {
         <div className="flex justify-between items-center mb-4 relative">
           <h2 className="text-white text-lg-regular">게시글</h2>
           <div className="relative z-10">
-            <Dropdown onSelect={(option) => console.log(option)} />
+            <Dropdown onSelect={handleSort} />
           </div>
         </div>
         

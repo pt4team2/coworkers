@@ -4,7 +4,7 @@ import Link from 'next/link';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import IcKebeb from '@/assets/icons/ic_kebab.svg';
-import { getArticleById } from '@/services/api/article';
+import { getArticleById, deleteArticleById } from '@/services/api/article';
 import { Article } from '@/types/article';
 
 interface ArticleCardProps {
@@ -20,8 +20,15 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
     setIsDropdownOpen(prev => !prev);
   };
 
-  const handleSelect = (option: string) => {
-    console.log(option);
+  const handleSelect = async (option: string) => {
+    if (option === '삭제하기') {
+      const confirmDelete = confirm('이 게시글을 삭제하시겠습니까?');
+      if (confirmDelete) {
+        await deleteArticleById(articleId);
+        alert('게시글이 삭제되었습니다.');
+        // 삭제 후 작업 추가
+      }
+    }
     setIsDropdownOpen(false);
   };
 
@@ -49,7 +56,6 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
   }
 
   return (
-    <Link href={`/boards/${articleId}`} passHref>
       <div
         className="relative w-full h-auto p-[24px_16px_16px] gap-4 border rounded-[12px] lg:w-[590px] cursor-pointer"
         style={{
@@ -58,10 +64,11 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
         }}
       >
         <div className="flex">
-          <div className="flex-1 flex flex-col justify-between">
+        <Link href={`/boards/${articleId}`} className="flex-1 flex flex-col justify-between" passHref>
+          <div>
             <div
               className="text-md-medium-alt md:text-lg md:leading-7 md:font-medium lg:text-lg lg:leading-7 lg:font-medium"
-              style={{ color: 'var(--color-text-secondary)' }}>
+              style={{ color: 'var(--color-text-secondary)' }} >
               {board.title}
             </div>
             <div
@@ -70,6 +77,7 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
               {new Date(board.createdAt).toLocaleDateString()}
             </div>
           </div>
+        </Link>
           {board.image && (
             <div className="border-[1px] border-[#475569] rounded-[8px] ml-[23px] mb-[10px]">
               <Image
@@ -161,7 +169,6 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
           </div>
         </div>
       </div>
-    </Link>
   );
 };
 
