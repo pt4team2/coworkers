@@ -5,6 +5,7 @@ import PopupOneButton from '@/components/modal/PopupOneButton';
 import { IUser } from '@/types/user';
 import { useCopyLinkToastStore } from '@/store/useToastStore';
 import Toast from '@/components/toast/Toast';
+import { useCopyEmailToastStore } from '@/store/useToastStore';
 
 interface GroupProps {
   group: IGroup | undefined;
@@ -16,6 +17,8 @@ export default function MemberList({ group, user }: GroupProps) {
   const membersCount = group ? group.members.length : 0;
   const { toastVisible, toastMessage, toastType, openToast, closeToast } =
     useCopyLinkToastStore();
+  const { openToast2, toast2Visible, toast2Type, toast2Message, closeToast2 } =
+    useCopyEmailToastStore();
 
   // ADMIN 권한이 있는지 확인
   const isAdmin = group?.members.some(
@@ -55,7 +58,11 @@ export default function MemberList({ group, user }: GroupProps) {
       <div className="grid w-full grid-flow-row grid-cols-2 place-items-stretch gap-4 md:grid-cols-3 lg:grid-cols-3">
         {group &&
           group.members.map((member) => (
-            <MemberCard member={member} key={member.userId} />
+            <MemberCard
+              member={member}
+              openToast2={openToast2}
+              key={member.userId}
+            />
           ))}
       </div>
       {toastVisible && (
@@ -63,6 +70,13 @@ export default function MemberList({ group, user }: GroupProps) {
           message={toastMessage}
           type={toastType}
           closeToast={closeToast}
+        />
+      )}
+      {toast2Visible && (
+        <Toast
+          message={toast2Message}
+          type={toast2Type}
+          closeToast={closeToast2}
         />
       )}
     </div>

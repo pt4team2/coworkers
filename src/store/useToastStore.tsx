@@ -130,3 +130,14 @@ export const useCopyLinkToastStore = create<ToastState>((set) => ({
   loading: false,
   setLoading: (loading) => set({ loading }),
 }));
+
+export const useCopyEmailToastStore = create<Toast2State>((set) => ({
+  toast2Visible: false,
+  toast2Message: '',
+  toast2Type: 'info',
+  openToast2: (message, type) =>
+    set({ toast2Visible: true, toast2Message: message, toast2Type: type }),
+  closeToast2: () => set({ toast2Visible: false }),
+  loading2: false,
+  setLoading2: (loading2) => set({ loading2 }),
+}));
