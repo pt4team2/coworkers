@@ -19,9 +19,20 @@ import { useQuery } from '@tanstack/react-query';
 import { useModalNewListStore } from '@/store/useModalNewListStore';
 import { useModalToDoStore } from '@/store/useModalToDoStore';
 import filters from '@/components/pages/list/FilterSelection';
-// import { getTaskList } from '@/api/taskListApis';
+import { useParams } from 'next/navigation';
+import useSessionStore from '@/store/useSessionStore';
+import useUser from '@/hooks/useUser';
+import useGroup from '@/hooks/useGroup';
+import { TaskList } from '@/types/Group';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { getTaskList } from '@/api/taskListApis';
 
 export default function List() {
+  const { groupId } = useParams();
+  const { user } = useSessionStore();
+  const { userData } = useUser(user?.id);
+  const { group, isLoading, error } = useGroup(groupId);
+
   //날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -73,26 +84,50 @@ export default function List() {
   const { closeModal: closeToDoModal, isModalOpen: isToDoOpen } =
     useModalToDoStore();
 
-  if (!tasklistMockData) {
-    if (!filters) {
-      return (
-        <div className="text-md-medium text-center text-text-default">
-          아직 할 일 목록이 없습니다.
-          <br />
-          새로운 목록을 추가해주세요.
-        </div>
+  // 선택된 taskList
+  const [selectedTaskList, setSelectedTaskList] = useState<
+    TaskList | undefined
+  >(undefined);
+
+  const { data: tasksResponse } = useQuery({
+    queryKey: [groupId, selectedTaskList, startDate],
+    queryFn: async () => {
+      const response = await authAxiosInstance.get(
+        `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks`,
+        {
+          params: {
+            date: startDate?.toISOString(),
+          },
+        },
       );
-    }
-    return (
-      <div className="text-md-medium text-center text-text-default">
-        아직 할 일이 없습니다.
-        <br />할 일을 추가해보세요.
-      </div>
-    );
-  }
+
+      return response.data;
+    },
+    enabled: !!selectedTaskList && !!groupId,
+  });
+
+  console.log('tasksResponse', groupId, selectedTaskList, tasksResponse);
+
+  // if (!group?.taskLists) {
+  //   if (!filters) {
+  //     return (
+  //       <div className="text-md-medium text-center text-text-default">
+  //         아직 할 일 목록이 없습니다.
+  //         <br />
+  //         새로운 목록을 추가해주세요.
+  //       </div>
+  //     );
+  //   }
+  //   return (
+  //     <div className="text-md-medium text-center text-text-default">
+  //       아직 할 일이 없습니다.
+  //       <br />할 일을 추가해보세요.
+  //     </div>
+  //   );
+  // }
   return (
     <div className="lg:w-300.25-custom">
-      <span className="font-pretendard mb-27px lg: md-6 h-5.25-custom leading-5.25-custom mt-6 block w-9 text-center text-lg font-bold md:my-6 md:h-6 md:w-10 md:text-xl md:leading-6 lg:mb-6 lg:mt-10 lg:h-6 lg:w-12 lg:text-left">
+      <span className="font-pretendard mb-27px lg: md-6 h-5.25-custom leading-5.25-custom mt-6 block w-9 whitespace-nowrap text-center text-lg font-bold md:my-6 md:h-6 md:w-10 md:text-xl md:leading-6 lg:mb-6 lg:mt-10 lg:h-6 lg:w-12 lg:text-left">
         할 일
       </span>
       <div className="mb-4 flex justify-between md:mb-6 lg:mb-6">
@@ -141,20 +176,66 @@ export default function List() {
           <ModalNewList isOpen={isNewListOpen} onClose={closeNewListModal} />
         )}
       </div>
-      <FilterSelection />
 
-      {tasklistMockData.flatMap((group) =>
-        group.tasks.map((task) => (
-          <ListCard
-            key={task.id}
-            task={task}
-            checked={taskStates[task.id] || false}
-            onCheckboxChange={(checked) =>
-              handleCheckboxChange(task.id, checked)
-            }
-            onSelectOption={handleSelectOption}
-          />
-        )),
+      {!group?.taskLists || group.taskLists.length === 0 ? (
+        <div>
+          {!filters ? (
+            <div className="text-md-medium jus mt-[232px] text-center text-text-default md:mt-[393px] lg:mt-[359px]">
+              아직 할 일 목록이 없습니다.
+              <br />
+              새로운 목록을 추가해주세요.
+            </div>
+          ) : (
+            <div className="text-md-medium jus mt-[191px] text-center text-text-default md:mt-[345px] lg:mt-[310px]">
+              아직 할 일이 없습니다.
+              <br />할 일을 추가해보세요.
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* <FilterSelection filters={group?.taskLists || []} selectedFilter={selectedTaskList} onSelectFilter={setSelectedTaskList}/> */}
+          <div
+            style={{
+              display: 'flex',
+              gap: 16,
+              justifyContent: 'start',
+              alignContent: 'center',
+              marginBottom: '16px',
+            }}
+          >
+            {group?.taskLists.map((taskList) => {
+              return (
+                <button
+                  key={taskList.id}
+                  onClick={() => {
+                    setSelectedTaskList(taskList);
+                  }}
+                  style={{
+                    background:
+                      selectedTaskList?.id === taskList.id ? 'red' : 'gray',
+                  }}
+                >
+                  {taskList.name}
+                </button>
+              );
+            })}
+          </div>
+
+          {tasklistMockData.flatMap((group) =>
+            group.tasks.map((task) => (
+              <ListCard
+                key={task.id}
+                task={task}
+                checked={taskStates[task.id] || false}
+                onCheckboxChange={(checked) =>
+                  handleCheckboxChange(task.id, checked)
+                }
+                onSelectOption={handleSelectOption}
+              />
+            )),
+          )}
+        </>
       )}
 
       <button
@@ -163,7 +244,14 @@ export default function List() {
       >
         + 할 일 추가
       </button>
-      {isToDoOpen && <ModalToDo isOpen={isToDoOpen} onClose={closeToDoModal} />}
+      {isToDoOpen && selectedTaskList && (
+        <ModalToDo
+          isOpen={isToDoOpen}
+          onClose={closeToDoModal}
+          groupId={groupId.toString()}
+          taskListId={selectedTaskList?.id}
+        />
+      )}
     </div>
   );
 }

@@ -7,16 +7,20 @@ import Toggle from '@/assets/icons/ic_toggle.svg';
 import { format } from 'date-fns';
 import ModalPortal from '../ModalPortal/ModalPortal';
 import { useModalToDoStore } from '@/store/useModalToDoStore';
+import { useMutation } from '@tanstack/react-query';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 
 interface ModalProps {
   isOpen: boolean;
+  groupId: string;
+  taskListId: number;
   onClose: () => void;
   children?: React.ReactNode;
 }
 
 const WeekDays = ['일', '월', '화', '수', '목', '금', '토']; //주 반복에서의 요일
 
-const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
+const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -31,6 +35,29 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
       setIsCalendarOpen(false);
     }
   };
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+
+  const { mutate: createTask } = useMutation({
+    mutationKey: [name, description, startDate, groupId, taskListId],
+    mutationFn: async () => {
+      const response = await authAxiosInstance.post(
+        `/groups/${groupId}/task-lists/${taskListId}/tasks`,
+        {
+          name,
+          description,
+          startDate: startDate?.toISOString(),
+          // TODO: 반복 일정인 경우 데이터 처리
+          frequencyType: 'MONTHLY',
+          monthDay: 1,
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      onClose();
+    },
+  });
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutsideCalendar);
@@ -93,6 +120,10 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
             <div className="flex h-[83px] w-full flex-col justify-between">
               <h2 className="text-lg-medium text-text-primary">할 일 제목</h2>
               <input
+                value={name}
+                onChange={(event) => {
+                  setName(event.target.value);
+                }}
                 className="text-lg-regular h-12 rounded-xl border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 text-text-primary placeholder-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC]"
                 placeholder="할 일 제목을 입력해주세요."
               />
@@ -189,6 +220,10 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
             <div className="flex h-[110px] w-full flex-col justify-between">
               <h2 className="text-lg-medium text-text-primary">할 일 메모</h2>
               <textarea
+                value={description}
+                onChange={(event) => {
+                  setDescription(event.target.value);
+                }}
                 className="text-lg-regular h-[75px] resize-none break-keep rounded-xl border border-solid border-[#F8FAFC] border-opacity-10 bg-background-secondary pl-4 pt-3 text-text-primary placeholder-text-default focus:border-none focus:outline-none focus:ring-1 focus:ring-[#F8FAFC]"
                 placeholder="메모를 입력해주세요."
               />
@@ -197,7 +232,10 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
             {/* 만들기 버튼 */}
             <button
               className="px-auto py-auto mt-2 h-[47px] w-full rounded-xl bg-brand-primary text-text-inverse"
-              onClick={onClose}
+              onClick={() => {
+                // TODO: 데이터 생성 API 호출
+                createTask();
+              }}
             >
               만들기
             </button>
