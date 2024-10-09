@@ -47,6 +47,10 @@ export default function ResetPwdModal({
       );
       if (result.status === 200) {
         openToast('이메일을 전송했습니다.', 'success');
+        setTimeout(() => {
+          closeModal?.();
+          closeToast();
+        }, 1500);
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {

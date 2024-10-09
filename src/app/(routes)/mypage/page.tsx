@@ -20,7 +20,6 @@ import {
 import { loginStore } from '@/store/loginStore';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { IUser } from '@/types/user';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 interface IFormData {
