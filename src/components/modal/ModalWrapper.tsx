@@ -36,7 +36,7 @@ export default function ModalWrapper({ children }: ModalWrapperProps) {
 
   return (
     <div
-      className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 md:items-center lg:items-center"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 md:items-center lg:items-center"
       onClick={handleClickOutside}
     >
       <div
