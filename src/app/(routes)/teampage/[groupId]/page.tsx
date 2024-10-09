@@ -9,7 +9,7 @@ import useUser from '@/hooks/useUser';
 import useGroup from '@/hooks/useGroup';
 import useSessionStore from '@/store/useSessionStore';
 import { PacmanLoader } from 'react-spinners';
-import Loading from '@/components/loading/Loading';
+import Loading from '@/components/loading/loading';
 
 export default function Page() {
   const { groupId } = useParams();
