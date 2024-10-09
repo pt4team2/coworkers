@@ -22,12 +22,8 @@ const CommentCard = ({ articleId }: CommentCardProps) => {
 
   const handleSelect = async (option: string, commentId: number) => {
     if (option === '삭제하기') {
-      const confirmDelete = confirm('이 댓글을 삭제하시겠습니까?');
-      if (confirmDelete) {
-        await deleteComment(commentId);
-        alert('댓글이 삭제되었습니다.');
-        setComments(comments.filter(comment => comment.id !== commentId));
-      }
+      await deleteComment(commentId);
+      setComments(comments.filter(comment => comment.id !== commentId));
     } else if (option === '수정하기') {
       setEditingCommentId(commentId);
       setEditedContent(comments.find(comment => comment.id === commentId)?.content || '');

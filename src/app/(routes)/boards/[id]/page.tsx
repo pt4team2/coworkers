@@ -1,9 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { getArticleById, getArticleComments, postComment, deleteArticleById } from '@/services/api/article';
-import { Article, Comment } from '@/types/article';
 import { useParams, useRouter } from 'next/navigation';
+import {
+  getArticleById,
+  getArticleComments,
+  postComment,
+  deleteArticleById,
+} from '@/services/api/article';
+import { Article, Comment } from '@/types/article';
 import Image from 'next/image';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
@@ -11,6 +16,9 @@ import CommentIcon from '@/assets/icons/ic_comment.svg';
 import CommentCard from '@/components/pages/boards/commentCard/CommentCard';
 import IcKebab from '@/assets/icons/ic_kebab.svg';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+import ModalDeleteArticle from '@/components/modal/ModalDeleteArticle';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import { useModalStore } from '@/store/useModalStore';
 
 const ArticleDetailPage = () => {
   const { id } = useParams();
@@ -20,6 +28,8 @@ const ArticleDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const { isModalOpen, openModal, closeModal } = useModalStore();
+  
   const { register, handleSubmit, reset } = useForm();
   const router = useRouter();
 
@@ -63,24 +73,26 @@ const ArticleDetailPage = () => {
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(prev => !prev);
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const handleSelect = async (option: string) => {
     if (option === '삭제하기') {
-      const confirmDelete = confirm('이 게시글을 삭제하시겠습니까?');
-      if (confirmDelete) {
-        try {
-          await deleteArticleById(Number(articleId));
-          alert('게시글이 삭제되었습니다.');
-          router.push('/boards');
-        } catch (error) {
-          console.error('게시글 삭제에 실패했습니다.', error);
-          alert('게시글 삭제에 실패했습니다.');
-        }
-      }
+      openModal();
     }
     setIsDropdownOpen(false);
+  };
+
+  const handleDeleteArticle = async () => {
+    try {
+      await deleteArticleById(Number(articleId));
+      router.push('/boards');
+    } catch (error) {
+      console.error('게시글 삭제에 실패했습니다.', error);
+      alert('게시글 삭제에 실패했습니다.');
+    } finally {
+      closeModal();
+    }
   };
 
   useEffect(() => {
@@ -132,7 +144,7 @@ const ArticleDetailPage = () => {
             )}
           </div>
         </div>
-        
+
         <div className="border-t border-[#F8FAFC1A] my-4"></div>
         <div className="flex justify-between items-center text-gray-400 mb-6">
           <div className="flex items-center space-x-2">
@@ -200,6 +212,16 @@ const ArticleDetailPage = () => {
           )}
         </div>
       </div>
+
+      {isModalOpen && (
+        <ModalWrapper>
+          <ModalDeleteArticle
+            isOpen={true}
+            onClose={closeModal}
+            handleDeleteArticle={handleDeleteArticle}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 };
