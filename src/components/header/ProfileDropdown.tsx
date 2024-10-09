@@ -7,17 +7,25 @@ import IcProfile from '@/assets/icons/ic_profile.svg';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { IUser } from '@/types/user';
+import { useModalStore } from '@/store/useModalStore';
+import ModalWrapper from '../modal/ModalWrapper';
+import LogoutModal from '@/components/modal/ModalDangerLogout';
 
 interface ProfileDropdownProps {
   user: IUser;
+  isLoading: boolean;
 }
-export default function ProfileDropdown({ user }: ProfileDropdownProps) {
-  if (!user) {
-    return <div>유저 정보가 없습니다.</div>; // user가 null일 경우 예외 처리
-  }
+
+export default function ProfileDropdown({
+  user,
+  isLoading,
+}: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
+
+  // 모달
+  const { isModalOpen, openModal, closeModal } = useModalStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,6 +43,14 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  if (isLoading) {
+    return <p>...loading</p>;
+  }
+
+  if (!user) {
+    return <div></div>; // user가 null일 경우 예외 처리
+  }
 
   return (
     <div className="relative z-30" ref={dropdownRef}>
@@ -67,7 +83,7 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
               마이 히스토리
             </li>
           </Link>
-          <Link className="mg-0" href="/reset-password">
+          <Link className="mg-0" href="mypage">
             <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
               계정 설정
             </li>
@@ -82,13 +98,24 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                signOut();
+                openModal();
               }}
             >
               로그아웃
             </Link>
           </li>
         </ul>
+      )}
+
+      {/* 로그아웃 모달 */}
+      {isModalOpen && (
+        <ModalWrapper>
+          <LogoutModal
+            isOpen={true}
+            onClose={closeModal}
+            handleSignOut={signOut}
+          />
+        </ModalWrapper>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RESET_PASSWORD_SCHEMA } from '@/utils/schema';
@@ -11,7 +11,7 @@ import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const resetPasswordFields = resetPasswordFieldData();
   const params = useSearchParams();
   const token = params.get('token');
@@ -46,7 +46,6 @@ export default function ResetPasswordPage() {
       console.log(data.passwordConfirmation);
       console.log(token);
 
-      // 로그인 페이지로 리다이렉트
       router.push('/login');
     } catch (error) {
       console.error('비밀번호 재설정 실패:', error);
@@ -97,5 +96,12 @@ export default function ResetPasswordPage() {
         </div>
       </form>
     </div>
+  );
+}
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
