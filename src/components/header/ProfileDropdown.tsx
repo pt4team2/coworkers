@@ -83,7 +83,7 @@ export default function ProfileDropdown({
               마이 히스토리
             </li>
           </Link>
-          <Link className="mg-0" href="mypage">
+          <Link className="mg-0" href="/mypage">
             <li className="items-center justify-between rounded-[8px] bg-background-secondary p-2 text-center hover:bg-slate-700">
               계정 설정
             </li>

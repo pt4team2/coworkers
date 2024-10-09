@@ -13,3 +13,13 @@ export interface ToastState {
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }
+
+export interface Toast2State {
+  toast2Type: 'success' | 'error' | 'info';
+  toast2Visible: boolean;
+  toast2Message: string;
+  openToast2: (message: string, type: 'success' | 'error' | 'info') => void;
+  closeToast2: () => void;
+  loading2: boolean;
+  setLoading2: (loading: boolean) => void;
+}

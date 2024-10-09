@@ -32,7 +32,7 @@ export default function Toast({
   return (
     <div
       id="toast-message"
-      className={`fixed left-1/2 top-24 flex w-80 -translate-x-1/2 transform items-center justify-between rounded-lg p-4 ${
+      className={`z-300 fixed left-1/2 top-24 flex w-80 -translate-x-1/2 transform items-center justify-between rounded-lg p-4 ${
         type === 'success'
           ? 'bg-background-inverse'
           : type === 'error'
