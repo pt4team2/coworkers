@@ -4,6 +4,8 @@ import Image from 'next/image';
 import ModalPortal from '../ModalPortal/ModalPortal';
 import { useAddMemberModalStore } from '@/store/useAddMemberModalStore';
 import useInvitation from '@/hooks/useInvitation';
+import Toast from '../toast/Toast';
+import { useCopyLinkToastStore } from '@/store/useToastStore';
 
 interface ModalProps {
   onClose: () => void;
@@ -11,9 +13,11 @@ interface ModalProps {
   description: string;
   buttonContents: string;
   groupId: number | undefined;
+  openToast: (message: string, type: 'success' | 'error' | 'info') => void;
 }
 
 export default function PopupOneButton({
+  openToast,
   onClose,
   title,
   description,
@@ -25,7 +29,8 @@ export default function PopupOneButton({
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('클립보드에 복사되었습니다.');
+      closeModal();
+      openToast('링크 복사 완료!', 'info');
     } catch (error) {
       console.error(error);
     }

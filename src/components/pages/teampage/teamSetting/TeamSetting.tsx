@@ -2,11 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import settingIcon from '@/assets/icons/ic_setting.svg';
 import backgroundImg from '@/assets/images/img_teambg.svg';
 import Image from 'next/image';
-import { IGroup, IUser } from '@/types/user';
+import { IUser } from '@/types/user';
+import { IGroup } from '@/types/Group';
 import ReviseTeamModal from '@/components/modal/ReviseTeamModal';
 import { useReviseTeamModalStore } from '@/store/useReviseTeamModalStore';
 import { useDeleteTeamModalStore } from '@/store/useDeleteTeamModalStore';
 import TeamDeleteModal from '@/components/modal/TeamDeleteModal';
+import Toast from '@/components/toast/Toast';
+import {
+  useReviseTeamToastStore,
+  useDeleteTeamToastStore,
+} from '@/store/useToastStore';
 
 interface TeamSettingProps {
   group: IGroup | undefined;
@@ -21,7 +27,15 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
     useReviseTeamModalStore();
   const { isDeleteModalOpen, openDeleteModal, closeDeleteModal } =
     useDeleteTeamModalStore();
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useDeleteTeamToastStore();
+  const { toast2Visible, toast2Message, toast2Type, openToast2, closeToast2 } =
+    useReviseTeamToastStore();
+
   const groupId = group?.id;
+  const isAdmin = group?.members.some(
+    (member) => member.role === 'ADMIN' && member.userId === user?.id,
+  );
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -55,9 +69,16 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
           alt="백그라운드 이미지"
         />
         <div className="relative">
-          <button onClick={toggleDropdown}>
-            <Image width={24} height={24} src={settingIcon} alt="설정 아이콘" />
-          </button>
+          {isAdmin && (
+            <button onClick={toggleDropdown}>
+              <Image
+                width={24}
+                height={24}
+                src={settingIcon}
+                alt="설정 아이콘"
+              />
+            </button>
+          )}
           {isOpen && (
             <ul className="text-lg-regular absolute right-0 top-5 z-30 mt-2 flex w-[120px] flex-col justify-center gap-[8px] rounded-[12px] border border-background-tertiary bg-background-secondary p-2 text-sm shadow-lg">
               <button
@@ -85,13 +106,32 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
         </div>
       </div>
       {isReviseModalOpen && (
-        <ReviseTeamModal onClose={closeModal} group={group} />
+        <ReviseTeamModal
+          onClose={closeModal}
+          group={group}
+          openToast2={openToast2}
+        />
       )}
       {isDeleteModalOpen && (
         <TeamDeleteModal
+          openToast={openToast}
           onClose={closeDeleteModal}
           groupId={groupId}
           user={user}
+        />
+      )}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
+      {toast2Visible && (
+        <Toast
+          message={toast2Message}
+          type={toast2Type}
+          closeToast={closeToast2}
         />
       )}
     </>

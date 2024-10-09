@@ -10,6 +10,8 @@ import IcPlus from 'src/assets/icons/ic_plus.svg';
 import { IUser } from '@/types/user';
 import AddTeamModal from '../modal/AddTeamModal';
 import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
+import Toast from '../toast/Toast';
+import { useAddTeamModalToastStore } from '@/store/useToastStore';
 
 interface TeamDropdownProps {
   user: IUser | null;
@@ -20,6 +22,8 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
   const { isModalOpen, openModal, closeModal } = useAddTeamModalStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useAddTeamModalToastStore();
 
   const pathname = usePathname();
   const selectedTeamId = useMemo(() => {
@@ -98,7 +102,16 @@ export default function TeamDropdown({ user }: TeamDropdownProps) {
           </li>
         </ul>
       )}
-      {isModalOpen && <AddTeamModal onClose={closeModal} />}
+      {isModalOpen && (
+        <AddTeamModal openToast={openToast} onClose={closeModal} />
+      )}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
     </div>
   );
 }

@@ -5,8 +5,14 @@ import { useModalStore } from '@/store/useModalStore';
 import { ModalWrapperProps } from '@/types/modal';
 
 export default function ModalWrapper({ children }: ModalWrapperProps) {
-  const { isModalOpen, isSecondModalOpen, closeModal, closeSecondModal } =
-    useModalStore();
+  const {
+    isModalOpen,
+    isSecondModalOpen,
+    isThirdModalOpen,
+    closeModal,
+    closeSecondModal,
+    closeThirdModal,
+  } = useModalStore();
   const { toastVisible, toastMessage, toastType, closeToast } =
     useModalWrapperToastStore((state) => ({
       toastVisible: state.toastVisible,
@@ -22,10 +28,11 @@ export default function ModalWrapper({ children }: ModalWrapperProps) {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       if (isModalOpen) closeModal();
       if (isSecondModalOpen) closeSecondModal?.();
+      if (isThirdModalOpen) closeThirdModal?.();
     }
   };
 
-  if (!isModalOpen && !isSecondModalOpen) return null;
+  if (!isModalOpen && !isSecondModalOpen && !isThirdModalOpen) return null;
 
   return (
     <div
