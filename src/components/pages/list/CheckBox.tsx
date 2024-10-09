@@ -11,7 +11,7 @@ interface CheckboxProps {
 
 const Checkbox = ({ checked, onChange }: CheckboxProps) => {
   const handleChange = () => {
-    onChange(!checked); // 체크된 상태를 인자로 전달
+    onChange(!checked);
   };
   return (
     <div
