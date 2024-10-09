@@ -8,6 +8,7 @@ import MemberList from '@/components/pages/teampage/memberList/MemberList';
 import useUser from '@/hooks/useUser';
 import useGroup from '@/hooks/useGroup';
 import useSessionStore from '@/store/useSessionStore';
+import { PacmanLoader } from 'react-spinners';
 
 export default function Page() {
   const { groupId } = useParams();
@@ -16,7 +17,15 @@ export default function Page() {
   const { group, isLoading, error } = useGroup(groupId);
 
   if (isLoading || !group) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <PacmanLoader
+          color="#10b981"
+          cssOverride={{ margin: '150px auto' }}
+          size={40}
+        />
+      </div>
+    );
   }
   console.log(group.taskLists);
   return (
