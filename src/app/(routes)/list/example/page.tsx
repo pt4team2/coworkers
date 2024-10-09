@@ -6,18 +6,24 @@ import { useState } from 'react';
 // import ModalDangerLogout from '@/components/modal/ModalDangerLogout';
 // import ModalTwoButton from '@/components/modal/ModalTwoButton';
 import ModalOneButton from '@/components/modal/ModalOneButton';
-// import ModalTwoButtonPassword from '@/components/modal/ModalTwoButtonPassword';
-// import ModalToDo from '@/components/modal/ModalToDo';
-// import ModalNewList from '@/components/modal/ModalNewList';
-
+import ModalToDoDef from '@/components/pages/list/ModalToDoDef';
 export default function Example() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const close = () => {
+    setIsOpen(false);
+  };
+
+  const open = () => {
+    setIsOpen(true);
+  };
+
   return (
     <div className="bg-background-inverse">
-      <ModalOneButton
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <button onClick={open} className="btn-open-modal">
+        Open Modal
+      </button>
+      {isOpen && <ModalToDoDef onClose={close} />}
     </div>
   );
 }
