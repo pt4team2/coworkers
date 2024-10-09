@@ -17,7 +17,14 @@ export const deleteArticleById = async (articleId: number) => {
 };
 
 export const getArticleComments = async (articleId: number) => {
-  const response = await authAxiosInstance.get<{ list: Comment[] }>(`/articles/${articleId}/comments`);
+  const response = await authAxiosInstance.get<{ list: Comment[] }>(
+    `/articles/${articleId}/comments`,
+    {
+      params: {
+        limit: 10,
+      },
+    },
+  );
   return response.data;
 };
 

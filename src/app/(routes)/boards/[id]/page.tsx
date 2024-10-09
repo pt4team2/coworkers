@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { getArticleById, getArticleComments, postComment, deleteComment, patchComment } from '@/services/api/article';
+import { getArticleById, getArticleComments, postComment } from '@/services/api/article';
 import { Article, Comment } from '@/types/article';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import CommentIcon from '@/assets/icons/ic_comment.svg';
+import CommentCard from '@/components/pages/boards/commentCard/CommentCard';
 
 const ArticleDetailPage = () => {
   const { id } = useParams();
@@ -15,8 +16,6 @@ const ArticleDetailPage = () => {
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [editingCommentContent, setEditingCommentContent] = useState('');
   const [loading, setLoading] = useState(true);
 
   const fetchArticle = async () => {
@@ -35,7 +34,7 @@ const ArticleDetailPage = () => {
 
   const fetchComments = async () => {
     if (!articleId) return;
-  
+
     try {
       const response = await getArticleComments(Number(articleId));
       setComments(response.list);
@@ -55,28 +54,6 @@ const ArticleDetailPage = () => {
     } catch (error) {
       console.error('댓글 등록에 실패했습니다.', error);
       alert('댓글 등록에 실패했습니다.');
-    }
-  };
-
-  const handleDeleteComment = async (commentId: number) => {
-    try {
-      await deleteComment(commentId);
-      await fetchComments();
-    } catch (error) {
-      console.error('댓글 삭제에 실패했습니다.', error);
-      alert('댓글 삭제에 실패했습니다.');
-    }
-  };
-
-  const handleEditComment = async (commentId: number, newContent: string) => {
-    try {
-      await patchComment(commentId, newContent);
-      setEditingCommentId(null);
-      setEditingCommentContent('');
-      await fetchComments();
-    } catch (error) {
-      console.error('댓글 수정에 실패했습니다.', error);
-      alert('댓글 수정에 실패했습니다.');
     }
   };
 
@@ -149,73 +126,18 @@ const ArticleDetailPage = () => {
               className="w-full h-[104px] p-4 bg-[#2C3E50] rounded-lg mb-4 resize-none"
             ></textarea>
             <div className="flex justify-end">
-              <button onClick={handleCommentSubmit} className="bg-green-500 px-6 py-2 rounded-lg">
+              <button onClick={handleCommentSubmit} className="bg-status-brand text-md-bold px-6 py-2 rounded-[12px]">
                 등록
               </button>
             </div>
           </div>
         </div>
 
-        <div className="p-6 rounded-lg">
+        <div>
           {comments.length === 0 ? (
             <p className="text-gray-400">아직 작성된 댓글이 없습니다.</p>
           ) : (
-            <ul>
-              {comments.map((comment) => (
-                <li key={comment.id} className="mb-4">
-                  <div className="flex justify-between items-center">
-                    <span>{comment.writer.nickname}</span>
-                    <button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      className="text-red-500"
-                    >
-                      삭제
-                    </button>
-                  </div>
-                  {editingCommentId === comment.id ? (
-                    <div className="flex">
-                      <input
-                        type="text"
-                        value={editingCommentContent}
-                        onChange={(e) => setEditingCommentContent(e.target.value)}
-                        className="w-full h-10 p-2 bg-[#2C3E50] rounded-lg mb-2"
-                      />
-                      <button
-                        onClick={() => {
-                          handleEditComment(comment.id, editingCommentContent);
-                        }}
-                        className="bg-blue-500 px-4 py-2 rounded-lg ml-2"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingCommentId(null);
-                          setEditingCommentContent('');
-                        }}
-                        className="bg-gray-500 px-4 py-2 rounded-lg ml-2"
-                      >
-                        취소
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <p>{comment.content}</p>
-                      <span className="text-gray-400">{new Date(comment.createdAt).toLocaleString()}</span>
-                      <button
-                        onClick={() => {
-                          setEditingCommentId(comment.id);
-                          setEditingCommentContent(comment.content);
-                        }}
-                        className="text-blue-500 ml-2"
-                      >
-                        수정
-                      </button>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <CommentCard articleId={Number(articleId)} />
           )}
         </div>
       </div>
