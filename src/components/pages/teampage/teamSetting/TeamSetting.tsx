@@ -9,7 +9,10 @@ import { useReviseTeamModalStore } from '@/store/useReviseTeamModalStore';
 import { useDeleteTeamModalStore } from '@/store/useDeleteTeamModalStore';
 import TeamDeleteModal from '@/components/modal/TeamDeleteModal';
 import Toast from '@/components/toast/Toast';
-import { useDeleteTeamToastStore } from '@/store/useToastStore';
+import {
+  useReviseTeamToastStore,
+  useDeleteTeamToastStore,
+} from '@/store/useToastStore';
 
 interface TeamSettingProps {
   group: IGroup | undefined;
@@ -26,6 +29,9 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
     useDeleteTeamModalStore();
   const { toastVisible, toastMessage, toastType, openToast, closeToast } =
     useDeleteTeamToastStore();
+  const { toast2Visible, toast2Message, toast2Type, openToast2, closeToast2 } =
+    useReviseTeamToastStore();
+
   const groupId = group?.id;
   const isAdmin = group?.members.some(
     (member) => member.role === 'ADMIN' && member.userId === user?.id,
@@ -100,7 +106,11 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
         </div>
       </div>
       {isReviseModalOpen && (
-        <ReviseTeamModal onClose={closeModal} group={group} />
+        <ReviseTeamModal
+          onClose={closeModal}
+          group={group}
+          openToast2={openToast2}
+        />
       )}
       {isDeleteModalOpen && (
         <TeamDeleteModal
@@ -115,6 +125,13 @@ export default function TeamSetting({ group, user }: TeamSettingProps) {
           message={toastMessage}
           type={toastType}
           closeToast={closeToast}
+        />
+      )}
+      {toast2Visible && (
+        <Toast
+          message={toast2Message}
+          type={toast2Type}
+          closeToast={closeToast2}
         />
       )}
     </>
