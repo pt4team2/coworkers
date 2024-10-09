@@ -19,6 +19,7 @@ import { QueryClient } from '@tanstack/react-query';
 interface ReviseTeamModalProps {
   onClose: () => void;
   group: IGroup;
+  openToast2: (message: string, type: 'success' | 'error' | 'info') => void;
 }
 
 interface IFormData {
@@ -29,6 +30,7 @@ interface IFormData {
 export default function ReviseTeamModal({
   onClose,
   group,
+  openToast2,
 }: ReviseTeamModalProps) {
   const { closeModal } = useReviseTeamModalStore();
   const queryClient = useQueryClient();
@@ -57,9 +59,11 @@ export default function ReviseTeamModal({
       await queryClient.invalidateQueries({ queryKey: ['getUser'] });
 
       closeModal();
+      openToast2('팀 수정 성공!', 'success');
     },
     onError: () => (error: any) => {
       console.error('에러 발생', error);
+      openToast2('팀 수정 실패!', 'error');
     },
   });
 

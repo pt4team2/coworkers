@@ -1,16 +1,15 @@
-import { useState } from 'react';
 import Image from 'next/image';
 import DangerIcon from '@/assets/icons/ic_alert.svg';
 import ModalPortal from '../ModalPortal/ModalPortal';
 import { useModalDeleteStore } from '@/store/useModalDeleteStore';
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
-
+  onClose?: () => void;
+  onDelete: () => void;
   children?: React.ReactNode;
 }
 
-const ModalDanger = ({ isOpen, onClose }: ModalProps) => {
+const ModalDanger = ({ isOpen, onClose, onDelete }: ModalProps) => {
   if (!isOpen) return null;
   const { closeModal: closeDeleteModal } = useModalDeleteStore();
 
@@ -41,7 +40,7 @@ const ModalDanger = ({ isOpen, onClose }: ModalProps) => {
             </button>
             <button
               className="px-auto py-auto w-[136px] rounded-xl bg-red-500"
-              onClick={onClose}
+              onClick={onDelete}
             >
               회원 탈퇴
             </button>

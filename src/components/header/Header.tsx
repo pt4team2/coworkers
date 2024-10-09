@@ -11,8 +11,9 @@ import useUser from '@/hooks/useUser';
 import useSessionStore from '@/store/useSessionStore';
 import { IMembership } from '@/types/user';
 import IcClose from '@/assets/icons/ic_x2.svg';
-import AddTeamModal from '@/components/modal/AddTeamModal'
+import AddTeamModal from '@/components/modal/AddTeamModal';
 import { useAddTeamModalStore } from '@/store/useAddTeamModalStore';
+import { useAddTeamModalToastStore } from '@/store/useToastStore';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -22,7 +23,10 @@ export default function Header() {
     accessToken,
     accessTokenExpires,
   } = useSessionStore();
+
   const { userData, isLoading, error } = useUser(sessionUser?.id);
+  const {openToast} =
+    useAddTeamModalToastStore();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -132,7 +136,9 @@ export default function Header() {
           </div>
         </div>
       )}
-      {isModalOpen && <AddTeamModal onClose={closeModal} />}
+      {isModalOpen && (
+        <AddTeamModal openToast={openToast} onClose={closeModal} />
+      )}
     </div>
   );
 }
