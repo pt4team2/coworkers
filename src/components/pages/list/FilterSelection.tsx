@@ -17,7 +17,7 @@ function FilterSelection() {
             onClick={() => handleSelect(filter)}
             className={`duration-200 ${
               selectedFilter === filter
-                ? 'text-white-500 border-b-2 text-lg font-bold' // 선택된 필터 스타일
+                ? 'text-white-500 border-b-2 text-lg font-bold underline' // 선택된 필터 스타일
                 : 'border-b-0 text-base text-gray-700' // 선택되지 않은 필터 스타일
             }`}
           >

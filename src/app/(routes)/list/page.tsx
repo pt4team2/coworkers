@@ -14,6 +14,12 @@ import Calendar from '@/components/calendar/Calendar';
 import { useModalStore } from '@/store/useModalStore';
 import ModalPortal from '@/components/ModalPortal/ModalPortal';
 import ModalToDo from '@/components/modal/ModalToDo';
+import ModalNewList from '@/components/modal/ModalNewList';
+import { useQuery } from '@tanstack/react-query';
+import { useModalNewListStore } from '@/store/useModalNewListStore';
+import { useModalToDoStore } from '@/store/useModalToDoStore';
+import filters from '@/components/list/FilterSelection';
+// import { getTaskList } from '@/api/taskListApis';
 
 export default function List() {
   //날짜 및 캘린더 상태 관리
@@ -62,11 +68,32 @@ export default function List() {
     }));
   };
   //모달 상태 관리
-  const { openModal, closeModal, isModalOpen } = useModalStore();
+  const { closeModal: closeNewListModal, isModalOpen: isNewListOpen } =
+    useModalNewListStore();
+  const { closeModal: closeToDoModal, isModalOpen: isToDoOpen } =
+    useModalToDoStore();
+
+  if (!tasklistMockData) {
+    if (!filters) {
+      return (
+        <div className="text-md-medium text-center text-text-default">
+          아직 할 일 목록이 없습니다.
+          <br />
+          새로운 목록을 추가해주세요.
+        </div>
+      );
+    }
+    return (
+      <div className="text-md-medium text-center text-text-default">
+        아직 할 일이 없습니다.
+        <br />할 일을 추가해보세요.
+      </div>
+    );
+  }
   return (
     <div className="lg:w-300.25-custom">
       <span className="font-pretendard mb-27px lg: md-6 h-5.25-custom leading-5.25-custom mt-6 block w-9 text-center text-lg font-bold md:my-6 md:h-6 md:w-10 md:text-xl md:leading-6 lg:mb-6 lg:mt-10 lg:h-6 lg:w-12 lg:text-left">
-        할일
+        할 일
       </span>
       <div className="mb-4 flex justify-between md:mb-6 lg:mb-6">
         <div className="flex space-x-3">
@@ -105,15 +132,13 @@ export default function List() {
           </div>
         </div>
         <button
-          onClick={openModal}
+          onClick={() => useModalNewListStore.getState().openModal()}
           className="text-md-regular text-brand-primary"
         >
           + 새로운 목록 추가하기
         </button>
-        {isModalOpen && (
-          <ModalPortal onClose={closeModal}>
-            <ModalToDo isOpen={isModalOpen} onClose={closeModal} />
-          </ModalPortal>
+        {isNewListOpen && (
+          <ModalNewList isOpen={isNewListOpen} onClose={closeNewListModal} />
         )}
       </div>
       <FilterSelection />
@@ -132,9 +157,13 @@ export default function List() {
         )),
       )}
 
-      <button className="rounded-full bg-brand-primary px-5.25-custom py-3.5">
+      <button
+        className="fixed bottom-6 right-6 rounded-full bg-brand-primary px-5.25-custom py-3.5"
+        onClick={() => useModalToDoStore.getState().openModal()}
+      >
         + 할 일 추가
       </button>
+      {isToDoOpen && <ModalToDo isOpen={isToDoOpen} onClose={closeToDoModal} />}
     </div>
   );
 }

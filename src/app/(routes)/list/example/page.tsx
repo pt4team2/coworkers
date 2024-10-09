@@ -10,14 +10,24 @@ import ModalTwoButtonPassword from '@/components/modal/ModalTwoButtonPassword';
 import ModalToDo from '@/components/modal/ModalToDo';
 import ModalNewList from '@/components/modal/ModalNewList';
 import ListCardDropdown from '@/components/list/ListCardDropdown';
+import ModalToDoDef from '@/components/pages/list/ModalToDoDef';
 export default function Example() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const [selectedOption, setSelectedOption] = useState<string>('');
-  const handleSelectOption = (option: string) => {
-    setSelectedOption(option);
-    console.log(`선택된 옵션: ${option}`);
-    // 여기서 수정 또는 삭제 로직을 처리할 수 있음
+  const [isOpen, setIsOpen] = useState(false);
+
+  const close = () => {
+    setIsOpen(false);
   };
 
-  return <div className="bg-background-inverse"></div>;
+  const open = () => {
+    setIsOpen(true);
+  };
+
+  return (
+    <div className="bg-background-inverse">
+      <button onClick={open} className="btn-open-modal">
+        Open Modal
+      </button>
+      {isOpen && <ModalToDoDef onClose={close} />}
+    </div>
+  );
 }
