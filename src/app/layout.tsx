@@ -33,15 +33,25 @@ export default function RootLayout({
 // 세션을 가져와서 Zustand Store에 저장하는 컴포넌트
 const SessionStoreUpdater = () => {
   const { data: session } = useSession();
-  const setSession = useSessionStore((state) => state.setSession);
+  const { clearSession, setSession } = useSessionStore();
 
   useEffect(() => {
-    if (session) {
+    if (session && session.user) {
+      // 기존 세션 상태 초기화
+      clearSession();
+
+      // 새로운 세션 상태 설정
       setSession({
         user: session.user || null,
         accessToken: session.accessToken || null,
         accessTokenExpires: session.accessTokenExpires || null,
       });
+
+      // 상태 업데이트 후 상태 확인
+      console.log(
+        'Updated Zustand State after clearing:',
+        useSessionStore.getState(),
+      );
     }
   }, [session, setSession]);
 
