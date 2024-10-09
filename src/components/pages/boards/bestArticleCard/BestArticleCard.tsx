@@ -70,7 +70,7 @@ const BestArticleCard = ({ articleId }: BestArticleCardProps) => {
             <Image
               src={board.image}
               alt={board.title}
-              className="rounded-[8px]"
+              className="rounded-[8px] lg:w-[72px] lg:h-[72px] md:w-[72px] md:h-[72px]"
               width={64}
               height={64}
             />
@@ -87,7 +87,7 @@ const BestArticleCard = ({ articleId }: BestArticleCardProps) => {
             width={32}
             height={32}
           />
-          <span className="text-xs-medium ml-3 md:text-md-medium lg:text-md-medium">{board.writer.name}</span>
+          <span className="text-xs-medium ml-3 md:text-md-medium lg:text-md-medium">{board.writer.nickname}</span>
         </div>
 
         <div className="flex items-center">

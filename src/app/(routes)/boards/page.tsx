@@ -15,7 +15,9 @@ const BoardPage = () => {
   const [cardCount, setCardCount] = useState(1);
   const [bestArticles, setBestArticles] = useState<Article[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleResize = () => {
     if (window.innerWidth >= 1200) {
@@ -34,19 +36,28 @@ const BoardPage = () => {
         pageSize: 3,
         orderBy: 'like',
       });
-      setBestArticles(bestResponse.data.list);
+      setBestArticles(bestResponse.list);
 
       const articleResponse = await getArticles({
         page: 1,
         pageSize: 4,
-        orderBy: 'createdAt',
+        orderBy: 'recent',
       });
-      setArticles(articleResponse.data.list);
+      setArticles(articleResponse.list);
+      setFilteredArticles(articleResponse.list);
     } catch (error) {
       console.error('Failed to fetch articles:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    const filtered = articles.filter((article) =>
+      article.title.toLowerCase().includes(term.toLowerCase())
+    );
+    setFilteredArticles(filtered);
   };
 
   useEffect(() => {
@@ -66,7 +77,7 @@ const BoardPage = () => {
     <div className="px-4 lg:px-0 py-8 bg-[#0F172A] min-h-screen md:px-6 md:py-10 lg:py-10">
       <h1 className="text-2lg-bold mb-6">자유게시판</h1>
       
-      <SearchForm onSearch={(term) => console.log(term)} placeholder="검색어를 입력해주세요" />
+      <SearchForm onSearch={handleSearch} placeholder="검색어를 입력해주세요" />
 
       <div className="mt-6">
         <div className="flex justify-between items-center mb-6">
@@ -95,9 +106,13 @@ const BoardPage = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 z-0">
-          {articles.map((article) => (
-            <ArticleCard key={article.id} articleId={article.id} />
-          ))}
+          {filteredArticles.length > 0 ? (
+            filteredArticles.map((article) => (
+              <ArticleCard key={article.id} articleId={article.id} />
+            ))
+          ) : (
+            <div className="text-white">검색 결과가 없습니다.</div>
+          )}
         </div>
       </div>
       <FloatingButton />

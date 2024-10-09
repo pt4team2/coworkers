@@ -1,26 +1,26 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { getArticleById, getArticleComments, postComment, deleteComment } from '@/services/api/article';
 import { Article, Comment } from '@/types/article';
+import { useParams } from 'next/navigation';
 
 const ArticleDetailPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const articleId = Number(id);
-
+  const { id } = useParams();
+  const articleId = Array.isArray(id) ? id[0] : id;
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
 
   const fetchArticle = async () => {
+    if (!articleId) return;
+
     try {
-      const response = await getArticleById(articleId);
+      const response = await getArticleById(Number(articleId));
       setArticle(response.data);
     } catch (error) {
-      console.error('Failed to fetch article', error);
+      console.error('게시글을 가져오는데 실패했습니다.', error);
       alert('게시글을 불러오는데 실패했습니다.');
     } finally {
       setLoading(false);
@@ -28,11 +28,13 @@ const ArticleDetailPage = () => {
   };
 
   const fetchComments = async () => {
+    if (!articleId) return;
+
     try {
-      const response = await getArticleComments(articleId);
+      const response = await getArticleComments(Number(articleId));
       setComments(response.data.list);
     } catch (error) {
-      console.error('Failed to fetch comments', error);
+      console.error('댓글을 가져오는데 실패했습니다.', error);
       alert('댓글을 불러오는데 실패했습니다.');
     }
   };
@@ -41,11 +43,11 @@ const ArticleDetailPage = () => {
     if (newComment.trim() === '') return;
 
     try {
-      await postComment(articleId, newComment);
+      await postComment(Number(articleId), newComment);
       setNewComment('');
       await fetchComments();
     } catch (error) {
-      console.error('Failed to post comment', error);
+      console.error('댓글 등록에 실패했습니다.', error);
       alert('댓글 등록에 실패했습니다.');
     }
   };
@@ -55,7 +57,7 @@ const ArticleDetailPage = () => {
       await deleteComment(commentId);
       await fetchComments();
     } catch (error) {
-      console.error('Failed to delete comment', error);
+      console.error('댓글 삭제에 실패했습니다.', error);
       alert('댓글 삭제에 실패했습니다.');
     }
   };
@@ -82,7 +84,7 @@ const ArticleDetailPage = () => {
         <div className="border-t border-[#F8FAFC1A] my-8"></div>
         <div className="flex justify-between items-center text-gray-400 mb-6">
           <div className="flex items-center space-x-2">
-            <span>{article.writer.name}</span>
+            <span>{article.writer.nickname}</span>
             <span>|</span>
             <span>{new Date(article.createdAt).toLocaleDateString()}</span>
           </div>
@@ -121,7 +123,7 @@ const ArticleDetailPage = () => {
               {comments.map((comment) => (
                 <li key={comment.id} className="mb-4">
                   <div className="flex justify-between items-center">
-                    <span>{comment.writer.name}</span>
+                    <span>{comment.writer.nickname}</span>
                     <button
                       onClick={() => handleDeleteComment(comment.id)}
                       className="text-red-500"

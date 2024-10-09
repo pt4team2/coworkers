@@ -1,25 +1,29 @@
-import axios from 'axios';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { Article, Comment } from '@/types/article';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getArticles = async (params: { page: number; pageSize: number; orderBy: string }) => {
-    const response = await axios.get('/api/articles', { params });
-    return response.data;
-  };
+  const response = await authAxiosInstance.get('/articles', { params });
+  return response.data;
+};
 
 export const getArticleById = async (articleId: number) => {
-  return axios.get<Article>(`${API_BASE_URL}/articles/${articleId}`);
+  return authAxiosInstance.get<Article>(`/articles/${articleId}`);
+};
+
+export const deleteArticleById = async (articleId: number) => {
+  return authAxiosInstance.delete(`/articles/${articleId}`);
 };
 
 export const getArticleComments = async (articleId: number) => {
-  return axios.get<{ list: Comment[] }>(`${API_BASE_URL}/articles/${articleId}/comments`);
+  return authAxiosInstance.get<{ list: Comment[] }>(`/articles/${articleId}/comments`);
 };
 
 export const postComment = async (articleId: number, content: string) => {
-  return axios.post<Comment>(`${API_BASE_URL}/articles/${articleId}/comments`, { content });
+  return authAxiosInstance.post<Comment>(`/articles/${articleId}/comments`, { content });
 };
 
 export const deleteComment = async (commentId: number) => {
-  return axios.delete<void>(`${API_BASE_URL}/comments/${commentId}`);
+  return authAxiosInstance.delete<void>(`/comments/${commentId}`);
 };
