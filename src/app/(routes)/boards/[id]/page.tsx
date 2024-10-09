@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { getArticleById, getArticleComments, postComment, deleteComment } from '@/services/api/article';
+import { getArticleById, getArticleComments, postComment, deleteComment, patchComment } from '@/services/api/article';
 import { Article, Comment } from '@/types/article';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import MemberIcon from '@/assets/icons/ic_member.svg';
+import LikeIcon from '@/assets/icons/ic_heart.svg';
+import CommentIcon from '@/assets/icons/ic_comment.svg';
 
 const ArticleDetailPage = () => {
   const { id } = useParams();
@@ -11,6 +15,8 @@ const ArticleDetailPage = () => {
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editingCommentContent, setEditingCommentContent] = useState('');
   const [loading, setLoading] = useState(true);
 
   const fetchArticle = async () => {
@@ -29,10 +35,10 @@ const ArticleDetailPage = () => {
 
   const fetchComments = async () => {
     if (!articleId) return;
-
+  
     try {
       const response = await getArticleComments(Number(articleId));
-      setComments(response.data.list);
+      setComments(response.list);
     } catch (error) {
       console.error('댓글을 가져오는데 실패했습니다.', error);
       alert('댓글을 불러오는데 실패했습니다.');
@@ -62,6 +68,18 @@ const ArticleDetailPage = () => {
     }
   };
 
+  const handleEditComment = async (commentId: number, newContent: string) => {
+    try {
+      await patchComment(commentId, newContent);
+      setEditingCommentId(null);
+      setEditingCommentContent('');
+      await fetchComments();
+    } catch (error) {
+      console.error('댓글 수정에 실패했습니다.', error);
+      alert('댓글 수정에 실패했습니다.');
+    }
+  };
+
   useEffect(() => {
     if (articleId) {
       fetchArticle();
@@ -81,21 +99,44 @@ const ArticleDetailPage = () => {
     <div className="px-4 py-8 min-h-screen">
       <div className="mt-8 mx-auto">
         <h1 className="text-lg-medium mb-4">{article.title}</h1>
-        <div className="border-t border-[#F8FAFC1A] my-8"></div>
+        <div className="border-t border-[#F8FAFC1A] my-4"></div>
         <div className="flex justify-between items-center text-gray-400 mb-6">
           <div className="flex items-center space-x-2">
-            <span>{article.writer.nickname}</span>
+            {article.writer.image ? (
+              <Image
+                src={article.writer.image}
+                alt="작성자 이미지"
+                className="rounded-full"
+                width={32}
+                height={32}
+              />
+            ) : (
+              <Image
+                src={MemberIcon}
+                alt="작성자 이미지"
+                className="rounded-full"
+                width={32}
+                height={32}
+              />
+            )}
+            <span className="text-xs-medium text-white">{article.writer.nickname}</span>
             <span>|</span>
-            <span>{new Date(article.createdAt).toLocaleDateString()}</span>
+            <span className="text-xs-medium">{new Date(article.createdAt).toLocaleDateString()}</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <span>{article.likeCount} Likes</span>
-            <span>{comments.length} 댓글</span>
+          <div className="flex items-center">
+            <div className="flex items-center mr-2">
+              <Image src={CommentIcon} alt="댓글" width={16} height={16} className="mr-1" />
+              <span className="text-xs-regular">{comments.length}</span>
+            </div>
+            <div className="flex items-center">
+              <Image src={LikeIcon} alt="좋아요" width={16} height={16} className="mr-1" />
+              <span className="text-xs-regular">{article.likeCount}</span>
+            </div>
           </div>
         </div>
 
-        <div className="p-6 rounded-lg mb-8">
-          <p>{article.content}</p>
+        <div className="mb-20">
+          <p className="text-md-medium-alt">{article.content}</p>
         </div>
 
         <div className="mb-6">
@@ -131,8 +172,47 @@ const ArticleDetailPage = () => {
                       삭제
                     </button>
                   </div>
-                  <p>{comment.content}</p>
-                  <span className="text-gray-400">{new Date(comment.createdAt).toLocaleString()}</span>
+                  {editingCommentId === comment.id ? (
+                    <div className="flex">
+                      <input
+                        type="text"
+                        value={editingCommentContent}
+                        onChange={(e) => setEditingCommentContent(e.target.value)}
+                        className="w-full h-10 p-2 bg-[#2C3E50] rounded-lg mb-2"
+                      />
+                      <button
+                        onClick={() => {
+                          handleEditComment(comment.id, editingCommentContent);
+                        }}
+                        className="bg-blue-500 px-4 py-2 rounded-lg ml-2"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingCommentId(null);
+                          setEditingCommentContent('');
+                        }}
+                        className="bg-gray-500 px-4 py-2 rounded-lg ml-2"
+                      >
+                        취소
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>{comment.content}</p>
+                      <span className="text-gray-400">{new Date(comment.createdAt).toLocaleString()}</span>
+                      <button
+                        onClick={() => {
+                          setEditingCommentId(comment.id);
+                          setEditingCommentContent(comment.content);
+                        }}
+                        className="text-blue-500 ml-2"
+                      >
+                        수정
+                      </button>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

@@ -17,7 +17,8 @@ export const deleteArticleById = async (articleId: number) => {
 };
 
 export const getArticleComments = async (articleId: number) => {
-  return authAxiosInstance.get<{ list: Comment[] }>(`/articles/${articleId}/comments`);
+  const response = await authAxiosInstance.get<{ list: Comment[] }>(`/articles/${articleId}/comments`);
+  return response.data;
 };
 
 export const postComment = async (articleId: number, content: string) => {
@@ -26,4 +27,8 @@ export const postComment = async (articleId: number, content: string) => {
 
 export const deleteComment = async (commentId: number) => {
   return authAxiosInstance.delete<void>(`/comments/${commentId}`);
+};
+
+export const patchComment = async (commentId: number, content: string) => {
+  return authAxiosInstance.patch<Comment>(`/comments/${commentId}`, { content });
 };
