@@ -4,7 +4,7 @@ import Image from 'next/image';
 import LeftArrow from '@/assets/icons/ic_arrow_left.svg';
 import RightArrow from '@/assets/icons/ic_arrow_right.svg';
 import BtnCalendar from '@/assets/icons/btn_calendar.svg';
-import ListCard from '@/components/list/ListCard';
+import ListCard from '@/components/pages/list/ListCard';
 import FilterSelection from '@/components/pages/list/FilterSelection';
 import { teamMockData, tasklistMockData } from '@/data/mockData';
 import TasksList from '@/components/pages/teampage/taskList/TasksList';
@@ -18,7 +18,7 @@ import ModalNewList from '@/components/modal/ModalNewList';
 import { useQuery } from '@tanstack/react-query';
 import { useModalNewListStore } from '@/store/useModalNewListStore';
 import { useModalToDoStore } from '@/store/useModalToDoStore';
-import filters from '@/components/list/FilterSelection';
+import filters from '@/components/pages/list/FilterSelection';
 // import { getTaskList } from '@/api/taskListApis';
 
 export default function List() {

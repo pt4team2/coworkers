@@ -9,7 +9,7 @@ import ModalOneButton from '@/components/modal/ModalOneButton';
 import ModalTwoButtonPassword from '@/components/modal/ModalTwoButtonPassword';
 import ModalToDo from '@/components/modal/ModalToDo';
 import ModalNewList from '@/components/modal/ModalNewList';
-import ListCardDropdown from '@/components/list/ListCardDropdown';
+import ListCardDropdown from '@/components/pages/list/ListCardDropdown';
 import ModalToDoDef from '@/components/pages/list/ModalToDoDef';
 export default function Example() {
   const [isOpen, setIsOpen] = useState(false);

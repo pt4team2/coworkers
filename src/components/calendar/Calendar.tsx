@@ -49,10 +49,7 @@ const Calendar = ({ startDate, setStartDate }: CalendarProps) => {
   };
 
   return (
-    <div
-      id="calendar"
-      className="rounded-xl border border-interaction-hover p-4"
-    >
+    <div className="rounded-xl border border-interaction-hover p-4">
       <div className="flex h-[34px] items-center justify-between">
         <button onClick={handlePrevMonth} className="p-1">
           <Image src={ArrowLeft} alt="이전" width={24} height={24} />
