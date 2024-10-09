@@ -107,7 +107,7 @@ const ModalTwoButtonPassword = ({
           className="px-auto py-auto w-[136px] rounded-xl border border-brand-primary bg-brand-primary"
           onClick={handleSubmit(handleChangePwd)}
         >
-          링크 보내기
+          변경하기
         </button>
       </div>
     </div>
