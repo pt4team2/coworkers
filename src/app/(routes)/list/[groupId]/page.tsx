@@ -19,9 +19,20 @@ import { useQuery } from '@tanstack/react-query';
 import { useModalNewListStore } from '@/store/useModalNewListStore';
 import { useModalToDoStore } from '@/store/useModalToDoStore';
 import filters from '@/components/pages/list/FilterSelection';
+import { useParams } from 'next/navigation';
+import useSessionStore from '@/store/useSessionStore';
+import useUser from '@/hooks/useUser';
+import useGroup from '@/hooks/useGroup';
+import { TaskList } from '@/types/Group';
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 // import { getTaskList } from '@/api/taskListApis';
 
 export default function List() {
+  const { groupId } = useParams();
+  const { user } = useSessionStore();
+  const { userData } = useUser(user?.id);
+  const { group, isLoading, error } = useGroup(groupId);
+
   //날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -29,6 +40,31 @@ export default function List() {
   const getDayOfWeek = (date: Date) => {
     return new Intl.DateTimeFormat('ko-KR', { weekday: 'short' }).format(date);
   };
+
+  // 선택된 taskList
+  const [selectedTaskList, setSelectedTaskList] = useState<
+    TaskList | undefined
+  >(undefined);
+
+  const { data: tasksResponse } = useQuery({
+    queryKey: [groupId, selectedTaskList, startDate],
+    queryFn: async () => {
+      const response = await authAxiosInstance.get(
+        `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks`,
+        {
+          params: {
+            date: startDate?.toISOString(),
+          },
+        },
+      );
+
+      return response.data;
+    },
+    enabled: !!selectedTaskList && !!groupId,
+  });
+
+  console.log('tasksResponse', groupId, selectedTaskList, tasksResponse);
+
   const handlePrevDay = () => {
     if (startDate) {
       setStartDate(subDays(startDate, 1)); // 하루 전으로 이동
@@ -53,6 +89,7 @@ export default function List() {
       document.removeEventListener('mousedown', handleClickOutsideCalendar);
     };
   }, []);
+
   //리스트 카드 드롭다운 상태 관리
   const [selectedOption, setSelectedOption] = useState<string>('');
   const handleSelectOption = (option: string) => {
@@ -143,6 +180,33 @@ export default function List() {
       </div>
       <FilterSelection />
 
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          justifyContent: 'start',
+          alignContent: 'center',
+          marginBottom: '16px',
+        }}
+      >
+        {group?.taskLists.map((taskList) => {
+          return (
+            <button
+              key={taskList.id}
+              onClick={() => {
+                setSelectedTaskList(taskList);
+              }}
+              style={{
+                background:
+                  selectedTaskList?.id === taskList.id ? 'red' : 'gray',
+              }}
+            >
+              {taskList.name}
+            </button>
+          );
+        })}
+      </div>
+
       {tasklistMockData.flatMap((group) =>
         group.tasks.map((task) => (
           <ListCard
@@ -163,7 +227,14 @@ export default function List() {
       >
         + 할 일 추가
       </button>
-      {isToDoOpen && <ModalToDo isOpen={isToDoOpen} onClose={closeToDoModal} />}
+      {isToDoOpen && selectedTaskList && (
+        <ModalToDo
+          isOpen={isToDoOpen}
+          onClose={closeToDoModal}
+          groupId={groupId.toString()}
+          taskListId={selectedTaskList?.id}
+        />
+      )}
     </div>
   );
 }
