@@ -6,6 +6,7 @@ const nextConfig = {
       'k.kakaocdn.net',
       'example.com',
       'lh3.googleusercontent.com',
+      "hips.hearstapps.com",
     ],
   },
 };
