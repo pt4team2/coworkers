@@ -120,7 +120,7 @@ const ArticleDetailPage = () => {
               />
             )}
             <span className="text-xs-medium text-white">{article.writer.nickname}</span>
-            <span>|</span>
+            <div className="border-r border border-[#334155] h-3 mx-2 md:mx-4 lg:mx-4"></div>
             <span className="text-xs-medium">{new Date(article.createdAt).toLocaleDateString()}</span>
           </div>
           <div className="flex items-center">
@@ -140,7 +140,7 @@ const ArticleDetailPage = () => {
         </div>
 
         <div className="mb-6">
-          <p className="mb-2 text-lg font-semibold">댓글달기</p>
+          <p className="mb-4 text-lg-medium">댓글달기</p>
           <div className="flex flex-col">
             <textarea
               value={newComment}
