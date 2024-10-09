@@ -23,6 +23,7 @@ export default function Header() {
     accessToken,
     accessTokenExpires,
   } = useSessionStore();
+
   const { userData, isLoading, error } = useUser(sessionUser?.id);
   const {openToast} =
     useAddTeamModalToastStore();
