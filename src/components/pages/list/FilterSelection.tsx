@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 function FilterSelection() {
-  const filters: string[] = ['법인 섭립', '법인 동기', '정기 주총', '기타'];
+  const filters: string[] = [];
   const [selectedFilter, setSelectedFilter] = useState<string>('');
   const handleSelect = (filter: string) => {
     setSelectedFilter(filter);

@@ -15,7 +15,7 @@ const ModalNewList = ({ isOpen, onClose }: ModalProps) => {
 
   return (
     <ModalPortal onClose={closeNewListModal}>
-      <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center lg:items-center">
+      <div className="flex items-end justify-center md:items-center lg:items-center">
         <div className="relative flex h-[304px] w-[375px] rounded-b-[0px] rounded-t-xl bg-background-secondary md:w-96 md:rounded-xl lg:w-96 lg:rounded-xl">
           <div className="mx-auto mb-8 mt-12 flex w-[280px] flex-col items-center justify-between">
             <div className="flex h-[152px] w-full flex-col justify-between">

@@ -76,7 +76,7 @@ const ModalToDo = ({ isOpen, onClose }: ModalProps) => {
 
   return (
     <ModalPortal onClose={closeToDoModal}>
-      <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center lg:items-center">
+      <div className="flex items-end justify-center md:items-center lg:items-center">
         <div className="relative flex w-[375px] rounded-b-[0px] rounded-t-xl bg-background-secondary py-8 md:w-96 md:rounded-xl lg:w-96 lg:rounded-xl">
           <div className="mx-auto flex w-[336px] flex-col items-center justify-center gap-6">
             {/* 모달 헤더 */}
