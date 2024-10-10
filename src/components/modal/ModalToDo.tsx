@@ -59,6 +59,30 @@ const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
     },
   });
 
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+
+  const { mutate: createTask } = useMutation({
+    mutationKey: [name, description, startDate, groupId, taskListId],
+    mutationFn: async () => {
+      const response = await authAxiosInstance.post(
+        `/groups/${groupId}/task-lists/${taskListId}/tasks`,
+        {
+          name,
+          description,
+          startDate: startDate?.toISOString(),
+          // TODO: 반복 일정인 경우 데이터 처리
+          frequencyType: 'MONTHLY',
+          monthDay: 1,
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      onClose();
+    },
+  });
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutsideCalendar);
     return () => {
