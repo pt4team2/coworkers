@@ -7,7 +7,8 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { useRouter } from 'next/navigation';
 import useUser from '@/hooks/useUser';
-
+import Toast from '@/components/toast/Toast';
+import { useCreateTeamToastStore } from '@/store/useToastStore';
 import useSessionStore from '@/store/useSessionStore';
 
 interface IFormData {
@@ -26,7 +27,8 @@ export default function Page() {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<IFormData>();
-
+  const { toastVisible, toastMessage, toastType, openToast, closeToast } =
+    useCreateTeamToastStore();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
@@ -36,6 +38,7 @@ export default function Page() {
     },
     onSuccess: async (data) => {
       console.log('팀 생성 완료');
+      openToast('팀이 성공적으로 생성되었습니다!', 'success');
       reset();
       setImageUrl(null);
 
@@ -109,6 +112,13 @@ export default function Page() {
           팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요.
         </p>
       </form>
+            {toastVisible && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          closeToast={closeToast}
+        />
+      )}
     </div>
   );
 }

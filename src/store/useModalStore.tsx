@@ -8,4 +8,7 @@ export const useModalStore = create<ModalState>((set) => ({
   isSecondModalOpen: false,
   openSecondModal: () => set({ isSecondModalOpen: true }),
   closeSecondModal: () => set({ isSecondModalOpen: false }),
+  isThirdModalOpen: false,
+  openThirdModal: () => set({ isThirdModalOpen: true }),
+  closeThirdModal: () => set({ isThirdModalOpen: false }),
 }));

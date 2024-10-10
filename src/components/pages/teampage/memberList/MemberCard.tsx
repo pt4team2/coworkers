@@ -10,9 +10,10 @@ import { TeamMember } from '@/types/Group';
 
 interface MemberCardProps {
   member: TeamMember;
+  openToast2: (message: string, type: 'success' | 'error' | 'info') => void;
 }
 
-export default function MemberCard({ member }: MemberCardProps) {
+export default function MemberCard({ member, openToast2 }: MemberCardProps) {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   const openModal = () => setModalOpen(true);
@@ -52,7 +53,13 @@ export default function MemberCard({ member }: MemberCardProps) {
         <button onClick={() => openModal()}>
           <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
         </button>
-        {isModalOpen && <ProfileModal onClose={closeModal} member={member} />}
+        {isModalOpen && (
+          <ProfileModal
+            openToast2={openToast2}
+            onClose={closeModal}
+            member={member}
+          />
+        )}
       </div>
 
       {/* 태블릿, 데스크탑 */}
@@ -86,7 +93,13 @@ export default function MemberCard({ member }: MemberCardProps) {
         <button onClick={() => openModal()}>
           <Image width={16} height={16} src={IcKebeb} alt="케밥 아이콘" />
         </button>
-        {isModalOpen && <ProfileModal onClose={closeModal} member={member} />}
+        {isModalOpen && (
+          <ProfileModal
+            onClose={closeModal}
+            member={member}
+            openToast2={openToast2}
+          />
+        )}
       </div>
     </div>
   );

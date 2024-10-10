@@ -10,13 +10,15 @@ import { useParams } from 'next/navigation';
 interface ModalProps {
   onClose: () => void;
   member: TeamMember;
+  openToast2: (message: string, type: 'success' | 'error' | 'info') => void;
 }
 
-const ModalProfile = ({ onClose, member }: ModalProps) => {
+const ModalProfile = ({ onClose, member, openToast2 }: ModalProps) => {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('클립보드에 복사되었습니다.');
+      onClose();
+      openToast2('이메일 주소가 복사되었습니다', 'info');
     } catch (error) {
       console.error(error);
     }

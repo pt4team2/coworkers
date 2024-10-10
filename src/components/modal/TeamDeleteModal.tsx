@@ -6,17 +6,20 @@ import ModalPortal from '../ModalPortal/ModalPortal';
 import { useDeleteTeamModalStore } from '@/store/useDeleteTeamModalStore';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
-import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
 import { IMembership, IUser } from '@/types/user';
 import useMemberships from '@/hooks/useMemberships';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ModalProps {
   onClose: () => void;
   groupId: number | undefined;
   user: IUser;
+  openToast: (message: string, type: 'success' | 'error') => void;
 }
 
 export default function TeamDeleteModal({
+  openToast,
   onClose,
   groupId,
   user,
@@ -28,7 +31,7 @@ export default function TeamDeleteModal({
   const joinGroups = membership.memberships?.map(
     (membership: IMembership) => membership.group.id,
   );
-
+  const queryClient = useQueryClient();
   //가입한 팀 중에 랜덤으로 Id 값 가져오기
 
   const randomGroupId =
@@ -48,17 +51,27 @@ export default function TeamDeleteModal({
         return Promise.reject('Group ID is undefined');
       }
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       console.log('팀 삭제 성공');
-      if (randomGroupId) {
-        router.push(`/teampage/${randomGroupId}`);
-      } else {
-        router.push('/new-team');
-      }
+      openToast('팀 삭제 성공!', 'success');
+
       closeDeleteModal();
+
+      await queryClient.invalidateQueries({ queryKey: ['getUser'] });
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1500);
+      setTimeout(() => {
+        if (joinGroups && joinGroups.length > 0) {
+          router.push(`/teampage/${joinGroups[0]}`);
+        } else {
+          router.push('/no-team');
+        }
+      }, 1500);
     },
     onError: (error: any) => {
       console.error('팀 삭제 실패', error);
+      openToast('팀 삭제 실패', 'error');
     },
   });
 

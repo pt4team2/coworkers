@@ -26,18 +26,25 @@ const useSessionStore = create<SessionState>((set) => ({
   user: null,
   accessToken: null,
   accessTokenExpires: null,
-  setSession: (session) =>
-    set({
+  // 세션 데이터 업데이트
+  setSession: (session) => {
+    // console.log('Setting session data:', session);
+    set((state) => ({
+      ...state,
       user: session.user,
       accessToken: session.accessToken,
       accessTokenExpires: session.accessTokenExpires,
-    }),
-  clearSession: () =>
+    }));
+  },
+  // 세션을 명시적으로 초기화
+  clearSession: () => {
+    // console.log('Clearing session data');
     set({
       user: null,
       accessToken: null,
       accessTokenExpires: null,
-    }),
+    });
+  },
 }));
 
 export default useSessionStore;

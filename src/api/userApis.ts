@@ -1,7 +1,7 @@
-// import { authAxiosInstance } from "@/app/api/auth/axiosInstance";
-// import { TeamList } from "@/types/user";
+import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { IMembership } from '@/types/user';
 
-// export const getUserGroups = async () => {
-//   const response = await authAxiosInstance.get<TeamList>(`/user/groups`);
-//   return response.data;
-// }
+export const getUserGroups = async () => {
+  const response = await authAxiosInstance.get<IMembership>(`/user/groups`);
+  return response.data;
+};
