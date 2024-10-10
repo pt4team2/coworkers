@@ -1,23 +1,37 @@
-"use client";
+'use client'
 
 import { useEffect, useState } from 'react';
-import { getArticleById, getArticleComments, postComment, deleteComment, patchComment } from '@/services/api/article';
+import { useParams, useRouter } from 'next/navigation';
+import {
+  getArticleById,
+  getArticleComments,
+  postComment,
+  deleteArticleById,
+} from '@/services/api/article';
 import { Article, Comment } from '@/types/article';
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import MemberIcon from '@/assets/icons/ic_member.svg';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import CommentIcon from '@/assets/icons/ic_comment.svg';
+import CommentCard from '@/components/pages/boards/commentCard/CommentCard';
+import IcKebab from '@/assets/icons/ic_kebab.svg';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+import ModalDeleteArticle from '@/components/modal/ModalDeleteArticle';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import { useModalStore } from '@/store/useModalStore';
 
 const ArticleDetailPage = () => {
   const { id } = useParams();
   const articleId = Array.isArray(id) ? id[0] : id;
   const [article, setArticle] = useState<Article | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState('');
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [editingCommentContent, setEditingCommentContent] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { isModalOpen, openModal, closeModal } = useModalStore();
+  
+  const { register, handleSubmit, reset } = useForm();
+  const router = useRouter();
 
   const fetchArticle = async () => {
     if (!articleId) return;
@@ -35,7 +49,7 @@ const ArticleDetailPage = () => {
 
   const fetchComments = async () => {
     if (!articleId) return;
-  
+
     try {
       const response = await getArticleComments(Number(articleId));
       setComments(response.list);
@@ -45,12 +59,12 @@ const ArticleDetailPage = () => {
     }
   };
 
-  const handleCommentSubmit = async () => {
-    if (newComment.trim() === '') return;
+  const onCommentSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (!data.comment.trim()) return;
 
     try {
-      await postComment(Number(articleId), newComment);
-      setNewComment('');
+      await postComment(Number(articleId), data.comment);
+      reset();
       await fetchComments();
     } catch (error) {
       console.error('댓글 등록에 실패했습니다.', error);
@@ -58,25 +72,26 @@ const ArticleDetailPage = () => {
     }
   };
 
-  const handleDeleteComment = async (commentId: number) => {
-    try {
-      await deleteComment(commentId);
-      await fetchComments();
-    } catch (error) {
-      console.error('댓글 삭제에 실패했습니다.', error);
-      alert('댓글 삭제에 실패했습니다.');
-    }
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
-  const handleEditComment = async (commentId: number, newContent: string) => {
+  const handleSelect = async (option: string) => {
+    if (option === '삭제하기') {
+      openModal();
+    }
+    setIsDropdownOpen(false);
+  };
+
+  const handleDeleteArticle = async () => {
     try {
-      await patchComment(commentId, newContent);
-      setEditingCommentId(null);
-      setEditingCommentContent('');
-      await fetchComments();
+      await deleteArticleById(Number(articleId));
+      router.push('/boards');
     } catch (error) {
-      console.error('댓글 수정에 실패했습니다.', error);
-      alert('댓글 수정에 실패했습니다.');
+      console.error('게시글 삭제에 실패했습니다.', error);
+      alert('게시글 삭제에 실패했습니다.');
+    } finally {
+      closeModal();
     }
   };
 
@@ -98,7 +113,38 @@ const ArticleDetailPage = () => {
   return (
     <div className="px-4 py-8 min-h-screen">
       <div className="mt-8 mx-auto">
-        <h1 className="text-lg-medium mb-4">{article.title}</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-lg-medium mb-4">{article.title}</h1>
+          <div className="relative">
+            <Image
+              src={IcKebab}
+              alt="kebab icon"
+              width={16}
+              height={16}
+              className="lg:ml-4 md:ml-4 lg:w-6 lg:h-6 md:w-6 md:h-6 cursor-pointer"
+              onClick={toggleDropdown}
+            />
+            {isDropdownOpen && (
+              <div className="origin-top-right absolute right-0 mt-[6px] md:mt-2 lg:mt-2 w-[120px] rounded-lg shadow-lg bg-[#1E293B] border border-[#334155] focus:outline-none z-10">
+                <div role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                  <button
+                    onClick={() => handleSelect('수정하기')}
+                    className="block h-[40px] w-full px-[8px] py-[11px] text-md-regular hover:bg-gray-700 rounded-t-3 text-center"
+                    role="menuitem">
+                    수정하기
+                  </button>
+                  <button
+                    onClick={() => handleSelect('삭제하기')}
+                    className="block h-[40px] w-full px-[8px] py-[11px] text-md-regular hover:bg-gray-700 rounded-b-3 text-center"
+                    role="menuitem">
+                    삭제하기
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="border-t border-[#F8FAFC1A] my-4"></div>
         <div className="flex justify-between items-center text-gray-400 mb-6">
           <div className="flex items-center space-x-2">
@@ -141,84 +187,41 @@ const ArticleDetailPage = () => {
 
         <div className="mb-6">
           <p className="mb-4 text-lg-medium">댓글달기</p>
-          <div className="flex flex-col">
+          <form onSubmit={handleSubmit(onCommentSubmit)} className="flex flex-col">
             <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
+              {...register('comment', { required: true })}
               placeholder="댓글을 입력해주세요."
-              className="w-full h-[104px] p-4 bg-[#2C3E50] rounded-lg mb-4 resize-none"
+              className="w-full h-[104px] p-4 bg-background-secondary rounded-lg mb-4 resize-none"
             ></textarea>
             <div className="flex justify-end">
-              <button onClick={handleCommentSubmit} className="bg-green-500 px-6 py-2 rounded-lg">
+              <button
+                type="submit"
+                className="bg-status-brand text-md-semibold md:text-lg-semibold lg:text-lg-semibold
+                rounded-[12px] w-[74px] h-[32px] md:w-[184px] md:h-[48px] lg:w-[184px] lg:h-[48px]">
                 등록
               </button>
             </div>
-          </div>
+          </form>
         </div>
 
-        <div className="p-6 rounded-lg">
+        <div>
           {comments.length === 0 ? (
-            <p className="text-gray-400">아직 작성된 댓글이 없습니다.</p>
+            <p className="text-md-medium text-gray-400">아직 작성된 댓글이 없습니다.</p>
           ) : (
-            <ul>
-              {comments.map((comment) => (
-                <li key={comment.id} className="mb-4">
-                  <div className="flex justify-between items-center">
-                    <span>{comment.writer.nickname}</span>
-                    <button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      className="text-red-500"
-                    >
-                      삭제
-                    </button>
-                  </div>
-                  {editingCommentId === comment.id ? (
-                    <div className="flex">
-                      <input
-                        type="text"
-                        value={editingCommentContent}
-                        onChange={(e) => setEditingCommentContent(e.target.value)}
-                        className="w-full h-10 p-2 bg-[#2C3E50] rounded-lg mb-2"
-                      />
-                      <button
-                        onClick={() => {
-                          handleEditComment(comment.id, editingCommentContent);
-                        }}
-                        className="bg-blue-500 px-4 py-2 rounded-lg ml-2"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingCommentId(null);
-                          setEditingCommentContent('');
-                        }}
-                        className="bg-gray-500 px-4 py-2 rounded-lg ml-2"
-                      >
-                        취소
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <p>{comment.content}</p>
-                      <span className="text-gray-400">{new Date(comment.createdAt).toLocaleString()}</span>
-                      <button
-                        onClick={() => {
-                          setEditingCommentId(comment.id);
-                          setEditingCommentContent(comment.content);
-                        }}
-                        className="text-blue-500 ml-2"
-                      >
-                        수정
-                      </button>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <CommentCard articleId={Number(articleId)} />
           )}
         </div>
       </div>
+
+      {isModalOpen && (
+        <ModalWrapper>
+          <ModalDeleteArticle
+            isOpen={true}
+            onClose={closeModal}
+            handleDeleteArticle={handleDeleteArticle}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 };
