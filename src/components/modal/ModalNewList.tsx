@@ -15,6 +15,7 @@ const ModalNewList = ({ isOpen, onClose, onSubmit }: ModalProps) => {
 
   const handleCreate = () => {
     onSubmit(name); // onSubmit으로 name 전달
+    setName('');
     onClose(); // 모달 닫기
   };
 
@@ -48,7 +49,7 @@ const ModalNewList = ({ isOpen, onClose, onSubmit }: ModalProps) => {
             </div>
             <button
               className="px-auto py-auto h-12 w-full rounded-xl bg-brand-primary text-text-inverse"
-              onClick={onClose}
+              onClick={handleCreate}
             >
               만들기
             </button>
@@ -58,5 +59,4 @@ const ModalNewList = ({ isOpen, onClose, onSubmit }: ModalProps) => {
     </ModalPortal>
   );
 };
-
 export default ModalNewList;

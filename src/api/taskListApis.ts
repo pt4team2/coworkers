@@ -6,7 +6,7 @@ import { IGroup } from '@/types/Group';
 // /{teamId}/groups/{groupId}/task-lists/{id}
 export const getTaskList = async (id: string) => {
   const response = await authAxiosInstance.get<IGroup>(
-    `/groups/4/task-lists/${id}`,
+    `/groups/{groupId}/task-lists/${id}`,
   );
   return response.data;
 };

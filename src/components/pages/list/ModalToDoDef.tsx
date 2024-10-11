@@ -25,6 +25,7 @@ export default function ModalToDoDef({ onClose, title }: ModalProps) {
           <Image src={Kebab} alt="케밥" width={24} height={24} />
         </div>
         <div></div>
+
         <button className="text-lg-semibold h-10 w-[111px] rounded-[40px] bg-brand-primary text-center">
           <Image src={Check} alt="체크" width={16} height={16} />
           완료하기
