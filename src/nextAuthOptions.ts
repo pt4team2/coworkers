@@ -108,7 +108,7 @@ export const getOptions = (req?: Request): NextAuthOptions => ({
               {
                 state: state,
                 redirectUri:
-                  'https:///coworkers_team2.vercel.app/api/auth/callback/google',
+                  'https://coworkers-team-2.vercel.app/api/auth/callback/google',
                 token: idToken,
               },
             );
