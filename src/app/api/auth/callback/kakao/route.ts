@@ -9,12 +9,14 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
+  console.log('@@@code', code);
+  console.log('@@@state', state);
+
   if (code) {
     try {
       const response = await publicAxiosInstance.post('/auth/signIn/KAKAO', {
         state: state,
-        redirectUri:
-          'https://coworkers-team-2.vercel.app/api/auth/callback/kakao',
+        redirectUri: process.env.KAKAO_REDIRECT_URI,
         token: code,
       });
 
