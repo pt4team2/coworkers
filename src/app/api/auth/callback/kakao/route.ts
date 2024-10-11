@@ -9,13 +9,6 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  // CORS 설정 추가
-  const headers = new Headers({
-    'Access-Control-Allow-Origin': '*', // 모든 도메인 허용
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', // 허용할 메소드
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization', // 허용할 헤더
-  });
-
   if (code) {
     try {
       const response = await publicAxiosInstance.post('/auth/signIn/KAKAO', {
@@ -50,9 +43,6 @@ export async function GET(request: NextRequest) {
 
         // 리다이렉트 응답 생성
         const nextResponse = NextResponse.redirect(new URL('/', request.url));
-
-        // CORS 헤더 추가
-        headers.forEach((value, key) => nextResponse.headers.set(key, value));
 
         // 생성된 JWT 토큰을 쿠키에 저장
         nextResponse.cookies.set('next-auth.session-token', encodedToken, {
