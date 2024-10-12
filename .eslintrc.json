@@ -30,10 +30,10 @@
     "@typescript-eslint/camelcase": "off",
     "no-console": "error",
     "react/function-component-definition": [
-      "error",
+      2,
       {
-        "namedComponents": "function-declaration",
-        "unnamedComponents": "function-declaration"
+        "namedComponents": ["function-declaration", "function-expression"],
+        "unnamedComponents": ["function-declaration", "function-expression"]
       }
     ]
   }
