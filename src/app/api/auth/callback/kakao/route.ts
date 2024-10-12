@@ -1,6 +1,6 @@
-import { publicAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { NextResponse, NextRequest } from 'next/server';
 import { encode } from 'next-auth/jwt';
+import { Session } from 'next-auth';
 
 const secret = process.env.NEXTAUTH_SECRET as string;
 
@@ -9,16 +9,36 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
+  console.log('@@@KAKAO_REDIRECT_URI:', process.env.KAKAO_REDIRECT_URI);
+  console.log('@@@code', code);
+  console.log('@@@state', state);
+
   if (code) {
     try {
-      const response = await publicAxiosInstance.post('/auth/signIn/KAKAO', {
-        state: state,
-        redirectUri:
-          'https://coworkers-team2.vercel.app/api/auth/callback/kakao',
-        token: code,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}//auth/signIn/KAKAO`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            state: state,
+            redirectUri: process.env.KAKAO_REDIRECT_URI,
+            token: code,
+          }),
+        },
+      );
 
-      const userData = response.data;
+      if (!response.ok) {
+        throw new Error(`API 호출 실패: ${response.status}`);
+      }
+
+      const userData: Session['user'] & {
+        accessToken: string;
+        refreshToken: string;
+      } = await response.json();
+      console.log('@@@userData', userData);
 
       // 쿠키에 JWT 토큰 존재여부 확인
       const existingCookie = request.cookies.get('next-auth.session-token');
@@ -31,7 +51,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
       } else {
         const token = {
-          user: userData.user,
+          user: userData,
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
           accessTokenExpires: accessTokenExpires,
@@ -47,7 +67,7 @@ export async function GET(request: NextRequest) {
         // 생성된 JWT 토큰을 쿠키에 저장
         nextResponse.cookies.set('next-auth.session-token', encodedToken, {
           httpOnly: true,
-          secure: false,
+          secure: true, // HTTPS에서만 동작하도록 설정
           sameSite: 'strict',
           path: '/',
         });

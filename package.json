@@ -16,6 +16,7 @@
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.5",
     "date-fns": "^4.1.0",
+    "eslint-config-next": "^14.2.15",
     "jose": "^5.9.3",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
