@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
+  console.log('@@@KAKAO_REDIRECT_URI:', process.env.KAKAO_REDIRECT_URI);
   console.log('@@@code', code);
   console.log('@@@state', state);
 
@@ -21,6 +22,7 @@ export async function GET(request: NextRequest) {
       });
 
       const userData = response.data;
+      console.log('@@@userData', userData);
 
       // 쿠키에 JWT 토큰 존재여부 확인
       const existingCookie = request.cookies.get('next-auth.session-token');
@@ -49,7 +51,7 @@ export async function GET(request: NextRequest) {
         // 생성된 JWT 토큰을 쿠키에 저장
         nextResponse.cookies.set('next-auth.session-token', encodedToken, {
           httpOnly: true,
-          secure: false,
+          secure: true, // HTTPS에서만 동작하도록 설정
           sameSite: 'strict',
           path: '/',
         });
