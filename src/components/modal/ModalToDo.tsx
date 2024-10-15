@@ -48,8 +48,6 @@ const ModalToDo = ({
 
   const getFrequency = () => {
     switch (selectedOption) {
-      case '반복 안함':
-        return null;
       case '한 번':
         return 'ONCE';
       case '매일':
@@ -121,7 +119,9 @@ const ModalToDo = ({
           name,
           description,
           startDate: startDate?.toISOString(),
-          frequency: frequency,
+          frequencyType: frequency,
+          monthDay: startDate ? startDate.getDate() : null,
+
           // TODO: 주 반복일 경우 요일 처리 (selectedDays 등 추가 가능)
         },
       );
