@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import LikeIcon from '@/assets/icons/ic_heart.svg';
 import MemberIcon from '@/assets/icons/ic_member.svg';
-import IcKebeb from '@/assets/icons/ic_kebab.svg';
+import IcKebab from '@/assets/icons/ic_kebab.svg';
 import { getArticleById, deleteArticleById } from '@/services/api/article';
 import { Article } from '@/types/article';
 
@@ -91,7 +91,7 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
           )}
           <div className="relative">
             <Image
-              src={IcKebeb}
+              src={IcKebab}
               alt="kebab icon"
               width={16}
               height={16}
@@ -159,7 +159,7 @@ const ArticleCard = ({ articleId }: ArticleCardProps) => {
               {board.likeCount}
             </span>
             <Image
-              src={IcKebeb}
+              src={IcKebab}
               alt="kebab icon"
               width={16}
               height={16}

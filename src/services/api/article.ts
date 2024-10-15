@@ -12,12 +12,23 @@ export const getArticleById = async (articleId: number) => {
   return authAxiosInstance.get<Article>(`/articles/${articleId}`);
 };
 
+export const patchArticle = async (articleId: number, updatedArticle: { title: string; content: string }) => {
+  return authAxiosInstance.patch<Article>(`/articles/${articleId}`, updatedArticle);
+};
+
 export const deleteArticleById = async (articleId: number) => {
   return authAxiosInstance.delete(`/articles/${articleId}`);
 };
 
 export const getArticleComments = async (articleId: number) => {
-  const response = await authAxiosInstance.get<{ list: Comment[] }>(`/articles/${articleId}/comments`);
+  const response = await authAxiosInstance.get<{ list: Comment[] }>(
+    `/articles/${articleId}/comments`,
+    {
+      params: {
+        limit: 10,
+      },
+    },
+  );
   return response.data;
 };
 
