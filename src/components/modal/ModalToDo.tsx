@@ -9,18 +9,26 @@ import ModalPortal from '../ModalPortal/ModalPortal';
 import { useModalToDoStore } from '@/store/useModalToDoStore';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
+import { Task } from '@/types/Group';
 
 interface ModalProps {
   isOpen: boolean;
   groupId: string;
-  taskListId: number;
+  taskListId: number | undefined;
   onClose: () => void;
   children?: React.ReactNode;
+  onCreate: (data: Task) => void;
 }
 
 const WeekDays = ['일', '월', '화', '수', '목', '금', '토']; //주 반복에서의 요일
 
-const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
+const ModalToDo = ({
+  isOpen,
+  onClose,
+  groupId,
+  taskListId,
+  onCreate,
+}: ModalProps) => {
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
@@ -38,26 +46,22 @@ const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
-  const { mutate: createTask } = useMutation({
-    mutationKey: [name, description, startDate, groupId, taskListId],
-    mutationFn: async () => {
-      const response = await authAxiosInstance.post(
-        `/groups/${groupId}/task-lists/${taskListId}/tasks`,
-        {
-          name,
-          description,
-          startDate: startDate?.toISOString(),
-          // TODO: 반복 일정인 경우 데이터 처리
-          frequencyType: 'MONTHLY',
-          monthDay: 1,
-        },
-      );
-      return response.data;
-    },
-    onSuccess: () => {
-      onClose();
-    },
-  });
+  const getFrequency = () => {
+    switch (selectedOption) {
+      case '반복 안함':
+        return null;
+      case '한 번':
+        return 'ONCE';
+      case '매일':
+        return 'DAILY';
+      case '주 반복':
+        return 'WEEKLY';
+      case '월 반복':
+        return 'MONTHLY';
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutsideCalendar);
@@ -98,6 +102,38 @@ const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
         : [...prevSelectedDays, day],
     );
   };
+
+  const { mutate: createTask } = useMutation({
+    mutationKey: [
+      name,
+      description,
+      startDate,
+      groupId,
+      taskListId,
+      selectedOption,
+    ],
+    mutationFn: async () => {
+      const frequency = getFrequency();
+
+      const response = await authAxiosInstance.post(
+        `/groups/${groupId}/task-lists/${taskListId}/tasks`,
+        {
+          name,
+          description,
+          startDate: startDate?.toISOString(),
+          frequency: frequency,
+          // TODO: 주 반복일 경우 요일 처리 (selectedDays 등 추가 가능)
+        },
+      );
+      console.log(`응답 데이터 확인 : ${response.data}`); // 응답 데이터 확인
+      return response.data;
+    },
+    onSuccess: (data: Task) => {
+      onCreate(data);
+      onClose();
+    },
+  });
+
   console.log(selectedDays);
   if (!isOpen) return null;
 
@@ -235,6 +271,7 @@ const ModalToDo = ({ isOpen, onClose, groupId, taskListId }: ModalProps) => {
               onClick={() => {
                 // TODO: 데이터 생성 API 호출
                 createTask();
+                onClose();
               }}
             >
               만들기
