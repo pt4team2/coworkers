@@ -6,9 +6,6 @@ import RightArrow from '@/assets/icons/ic_arrow_right.svg';
 import BtnCalendar from '@/assets/icons/btn_calendar.svg';
 import ListCard from '@/components/pages/list/ListCard';
 import FilterSelection from '@/components/pages/list/FilterSelection';
-import { teamMockData, tasklistMockData } from '@/data/mockData';
-import TasksList from '@/components/pages/teampage/taskList/TasksList';
-import PopupOneButton from '@/components/modal/PopupOneButton';
 import { format, addDays, subDays } from 'date-fns';
 import Calendar from '@/components/calendar/Calendar';
 import { useModalStore } from '@/store/useModalStore';
@@ -18,7 +15,6 @@ import ModalNewList from '@/components/modal/ModalNewList';
 import { useQuery } from '@tanstack/react-query';
 import { useModalNewListStore } from '@/store/useModalNewListStore';
 import { useModalToDoStore } from '@/store/useModalToDoStore';
-import filters from '@/components/pages/list/FilterSelection';
 import { useParams } from 'next/navigation';
 import useSessionStore from '@/store/useSessionStore';
 import useUser from '@/hooks/useUser';
@@ -36,6 +32,7 @@ export default function List() {
 
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [selectDate, setSelectDate] = useState<Date | null>(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -44,14 +41,14 @@ export default function List() {
   };
 
   const handlePrevDay = () => {
-    if (startDate) {
-      setStartDate(subDays(startDate, 1)); // 하루 전으로 이동
+    if (selectDate) {
+      setSelectDate(subDays(selectDate, 1)); // 하루 전으로 이동
     }
   };
 
   const handleNextDay = () => {
-    if (startDate) {
-      setStartDate(addDays(startDate, 1)); // 하루 앞으로 이동
+    if (selectDate) {
+      setSelectDate(addDays(selectDate, 1)); // 하루 앞으로 이동
     }
   };
 
@@ -150,10 +147,13 @@ export default function List() {
           params: { date: startDate?.toISOString() },
         },
       );
+      console.log('서버로부터 받아온 tasks 데이터:', response.data);
+      console.log('startDate 파라미터:', startDate?.toISOString());
       return response.data;
     },
     enabled: !!selectedTaskList && !!groupId,
   });
+
   //할일 상태 관리
   const [tasks, setTasks] = useState<Task[]>([]);
   const handleCreateTask = (newTask: Task) => {
@@ -174,8 +174,8 @@ export default function List() {
       <div className="mb-4 flex justify-between md:mb-6 lg:mb-6">
         <div className="flex space-x-3">
           <div>
-            {startDate
-              ? `${format(startDate, 'MM월 dd일')} (${getDayOfWeek(startDate)})`
+            {selectDate
+              ? `${format(selectDate, 'MM월 dd일')} (${getDayOfWeek(selectDate)})`
               : '날짜 선택'}
           </div>
           <div className="flex">
@@ -196,9 +196,9 @@ export default function List() {
                 className="absolute left-0 top-full z-50 mt-2 w-[336px] rounded-xl bg-background-secondary shadow-lg"
               >
                 <Calendar
-                  startDate={startDate}
+                  startDate={selectDate}
                   setStartDate={(date: Date | null) => {
-                    setStartDate(date);
+                    setSelectDate(date);
                     setIsCalendarOpen(false);
                   }}
                 />
@@ -264,6 +264,7 @@ export default function List() {
           onCreate={handleCreateTask}
           groupId={groupId}
           taskListId={selectedTaskList?.id}
+          refetch={refetch}
         />
       )}
     </div>

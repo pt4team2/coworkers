@@ -10,6 +10,7 @@ import { useModalToDoStore } from '@/store/useModalToDoStore';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { Task } from '@/types/Group';
+// import {createTask} from '@/api/taskListApis'
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,9 +19,21 @@ interface ModalProps {
   onClose: () => void;
   children?: React.ReactNode;
   onCreate: (data: Task) => void;
+  refetch: () => void;
 }
 
-const WeekDays = ['일', '월', '화', '수', '목', '금', '토']; //주 반복에서의 요일
+const WeekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
+type WeekDay = (typeof WeekDays)[number]; // '일' | '월' | '화' | '수' | '목' | '금' | '토'
+
+const dayMapping: Record<WeekDay, string> = {
+  일: 'Sunday',
+  월: 'Monday',
+  화: 'Tuesday',
+  수: 'Wednesday',
+  목: 'Thursday',
+  금: 'Friday',
+  토: 'Saturday',
+};
 
 const ModalToDo = ({
   isOpen,
@@ -28,6 +41,7 @@ const ModalToDo = ({
   groupId,
   taskListId,
   onCreate,
+  refetch,
 }: ModalProps) => {
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -48,6 +62,8 @@ const ModalToDo = ({
 
   const getFrequency = () => {
     switch (selectedOption) {
+      case '반복 없음':
+        return undefined;
       case '한 번':
         return 'ONCE';
       case '매일':
@@ -57,7 +73,7 @@ const ModalToDo = ({
       case '월 반복':
         return 'MONTHLY';
       default:
-        return null;
+        return undefined;
     }
   };
 
@@ -100,6 +116,9 @@ const ModalToDo = ({
         : [...prevSelectedDays, day],
     );
   };
+  const selectedDaysInEnglish = selectedDays.map(
+    (day) => dayMapping[day as WeekDay],
+  );
 
   const { mutate: createTask } = useMutation({
     mutationKey: [
@@ -111,29 +130,56 @@ const ModalToDo = ({
       selectedOption,
     ],
     mutationFn: async () => {
-      const frequency = getFrequency();
+      const frequencyType = getFrequency(); // 올바른 frequencyType 반환
+
+      // taskListId가 유효한지 확인
+      if (!taskListId) {
+        throw new Error('Task List ID is required');
+      }
+
+      // 요청 데이터 초기화
+      const requestData = {
+        name: name || '',
+        description: description || '',
+        startDate: startDate ? startDate.toISOString() : undefined,
+        frequencyType, // 주기 유형
+        ...(frequencyType === 'MONTHLY' && {
+          monthDay: startDate ? startDate.getDate() : undefined, // 월의 날 추가
+        }),
+        ...(frequencyType === 'WEEKLY' && {
+          weekDays:
+            selectedDaysInEnglish.length > 0 ? selectedDaysInEnglish : [], // 주간 요일 추가
+        }),
+      };
+
+      // 필수 필드 검증
+      if (frequencyType === 'MONTHLY' && requestData.monthDay === undefined) {
+        throw new Error('monthDay is required for MONTHLY frequency');
+      }
+
+      if (frequencyType === 'WEEKLY' && requestData.weekDays?.length === 0) {
+        throw new Error('weekDays is required for WEEKLY frequency');
+      }
+
+      console.log('요청 데이터:', JSON.stringify(requestData, null, 2));
 
       const response = await authAxiosInstance.post(
         `/groups/${groupId}/task-lists/${taskListId}/tasks`,
-        {
-          name,
-          description,
-          startDate: startDate?.toISOString(),
-          frequencyType: frequency,
-          monthDay: startDate ? startDate.getDate() : null,
-
-          // TODO: 주 반복일 경우 요일 처리 (selectedDays 등 추가 가능)
-        },
+        requestData,
       );
-      console.log(`응답 데이터 확인 : ${response.data}`); // 응답 데이터 확인
+
+      console.log('서버 응답:', JSON.stringify(response.data, null, 2));
+
       return response.data;
     },
     onSuccess: (data: Task) => {
+      console.log('할 일 생성 성공:', data);
       onCreate(data);
       onClose();
+      refetch();
     },
   });
-
+  console.log('모달에서 startDate 파라미터 :', startDate?.toISOString());
   console.log(selectedDays);
   if (!isOpen) return null;
 
