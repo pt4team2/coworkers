@@ -139,20 +139,50 @@ export default function List() {
 
   // task 불러오기 쿼리
   const { data: tasksResponse, refetch } = useQuery({
-    queryKey: [groupId, selectedTaskList, startDate],
+    queryKey: [groupId, selectedTaskList, selectDate],
     queryFn: async () => {
       const response = await authAxiosInstance.get(
         `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks`,
         {
-          params: { date: startDate?.toISOString() },
+          params: { date: selectDate?.toISOString() },
         },
       );
       console.log('서버로부터 받아온 tasks 데이터:', response.data);
-      console.log('startDate 파라미터:', startDate?.toISOString());
+      console.log('startDate 파라미터:', selectDate?.toISOString());
       return response.data;
     },
     enabled: !!selectedTaskList && !!groupId,
   });
+  // // task 불러오기 쿼리
+  // const { data: tasksResponse, refetch } = useQuery({
+  //   queryKey: [groupId, selectedTaskList, selectDate],
+  //   queryFn: async () => {
+  //     const response = await authAxiosInstance.get(
+  //       `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks`,
+  //       {
+  //         params: { date: selectDate?.toISOString() },
+  //       },
+  //     );
+  //     console.log('서버로부터 받아온 tasks 데이터:', response.data);
+  //     console.log('selectDate 파라미터:', selectDate?.toISOString());
+  //     return response.data;
+  //   },
+  //   enabled: !!selectedTaskList && !!groupId,
+  // });
+  // Task List 선택 후 task 데이터 받아오기
+  useEffect(() => {
+    if (tasksResponse) {
+      setSelectedTaskList((prevList) => {
+        if (prevList) {
+          return {
+            ...prevList,
+            tasks: tasksResponse,
+          };
+        }
+        return prevList;
+      });
+    }
+  }, [tasksResponse]);
 
   //할일 상태 관리
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -238,13 +268,13 @@ export default function List() {
           <br />할 일을 추가해보세요
         </div>
       ) : (
-        selectedTaskList.tasks.map((task) => (
+        selectedTaskList.tasks.map((tasksResponse) => (
           <ListCard
-            key={task.id}
-            task={task}
-            checked={taskStates[task.id] || false}
+            key={tasksResponse.id}
+            task={tasksResponse}
+            checked={taskStates[tasksResponse.id] || false}
             onCheckboxChange={(checked) =>
-              handleCheckboxChange(task.id, checked)
+              handleCheckboxChange(tasksResponse.id, checked)
             }
             onSelectOption={handleSelectOption}
           />

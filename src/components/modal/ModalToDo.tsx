@@ -10,7 +10,6 @@ import { useModalToDoStore } from '@/store/useModalToDoStore';
 import { useMutation } from '@tanstack/react-query';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { Task } from '@/types/Group';
-// import {createTask} from '@/api/taskListApis'
 
 interface ModalProps {
   isOpen: boolean;
@@ -22,19 +21,34 @@ interface ModalProps {
   refetch: () => void;
 }
 
-const WeekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
-type WeekDay = (typeof WeekDays)[number]; // '일' | '월' | '화' | '수' | '목' | '금' | '토'
+const WeekDays: Array<'일' | '월' | '화' | '수' | '목' | '금' | '토'> = [
+  '일',
+  '월',
+  '화',
+  '수',
+  '목',
+  '금',
+  '토',
+];
 
-const dayMapping: Record<WeekDay, string> = {
-  일: 'Sunday',
-  월: 'Monday',
-  화: 'Tuesday',
-  수: 'Wednesday',
-  목: 'Thursday',
-  금: 'Friday',
-  토: 'Saturday',
+// 요일을 숫자로 변환하는 함수
+const convertToNumber = (
+  days: Array<'일' | '월' | '화' | '수' | '목' | '금' | '토'>,
+): number[] => {
+  const dayMap: Record<'일' | '월' | '화' | '수' | '목' | '금' | '토', number> =
+    {
+      일: 0, // Sunday
+      월: 1, // Monday
+      화: 2, // Tuesday
+      수: 3, // Wednesday
+      목: 4, // Thursday
+      금: 5, // Friday
+      토: 6, // Saturday
+    };
+
+  return days.map((day) => dayMap[day]);
 };
-
+const weekDaysNumbers: number[] = convertToNumber(WeekDays);
 const ModalToDo = ({
   isOpen,
   onClose,
@@ -116,9 +130,6 @@ const ModalToDo = ({
         : [...prevSelectedDays, day],
     );
   };
-  const selectedDaysInEnglish = selectedDays.map(
-    (day) => dayMapping[day as WeekDay],
-  );
 
   const { mutate: createTask } = useMutation({
     mutationKey: [
@@ -137,7 +148,6 @@ const ModalToDo = ({
         throw new Error('Task List ID is required');
       }
 
-      // 요청 데이터 초기화
       const requestData = {
         name: name || '',
         description: description || '',
@@ -146,10 +156,10 @@ const ModalToDo = ({
         ...(frequencyType === 'MONTHLY' && {
           monthDay: startDate ? startDate.getDate() : undefined, // 월의 날 추가
         }),
-        ...(frequencyType === 'WEEKLY' && {
-          weekDays:
-            selectedDaysInEnglish.length > 0 ? selectedDaysInEnglish : [], // 주간 요일 추가
-        }),
+        ...(frequencyType === 'WEEKLY' &&
+          weekDaysNumbers.length > 0 && {
+            weekDays: weekDaysNumbers, // 주간 요일 추가
+          }),
       };
 
       // 필수 필드 검증
