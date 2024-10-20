@@ -22,6 +22,8 @@ import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
 import { getTaskList } from '@/api/taskListApis';
 import { createTaskList, updateTask } from '@/api/taskListApis';
 import { number } from 'yup';
+import { useModalToDoDefStore } from '@/store/useModalToDoDefStore';
+import ModalToDoDef from '@/components/pages/list/ModalToDoDef';
 
 interface ExtendedTask extends Task {
   weekDays?: number[]; // Optional로 추가
@@ -34,9 +36,12 @@ export default function List() {
   const { group, isLoading, error } = useGroup(groupId);
 
   // ADMIN 권한이 있는지 확인
-  const isAdmin = group?.members.some(
-    (member) => member.role === 'ADMIN' && member.userId === user?.id,
-  );
+  const isAdmin: boolean =
+    group?.members.some(
+      (member) => member.role === 'ADMIN' && member.userId === user?.id,
+    ) ?? false; // undefined일 경우 false로 처리
+
+  const { isModalOpen, closeModal } = useModalToDoDefStore();
 
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -327,6 +332,7 @@ export default function List() {
             onSelectOption={handleSelectOption}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            isAdmin={isAdmin}
           />
         ))
       )}
@@ -351,6 +357,10 @@ export default function List() {
           existingTask={editingTask}
           isEditMode={isEditMode}
         />
+      )}
+      {/* ModalToDoDef 모달 */}
+      {isModalOpen && (
+        <ModalToDoDef isOpen={isModalOpen} onClose={closeModal} />
       )}
     </div>
   );

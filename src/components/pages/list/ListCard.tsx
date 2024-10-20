@@ -10,6 +10,7 @@ import { Task } from '@/types/Group';
 import ListCardDropdown from './ListCardDropdown';
 import ModalToDoDef from './ModalToDoDef';
 import { format, parseISO } from 'date-fns';
+import { useModalToDoDefStore } from '@/store/useModalToDoDefStore';
 
 interface ListCardProps {
   task: Task;
@@ -17,6 +18,7 @@ interface ListCardProps {
   onEdit: (taskId: number) => void;
   onSelectOption: (option: string) => void; // 타입 수정
   onCheckboxChange: (checked: boolean) => void;
+  isAdmin: boolean;
   checked: boolean;
 }
 
@@ -25,6 +27,7 @@ export default function ListCard({
   onEdit,
   onDelete,
   onSelectOption,
+  isAdmin,
   onCheckboxChange,
   checked,
 }: ListCardProps) {
@@ -32,13 +35,24 @@ export default function ListCard({
     const date = parseISO(dateString); // ISO 8601 문자열을 Date 객체로 변환
     return format(date, 'yyyy년 MM월 dd일');
   }
+  const { openModal: openModalToDoDef } = useModalToDoDefStore();
+  const handleClick = () => {
+    if (isAdmin) {
+      openModalToDoDef(); // 관리자일 때만 Modal 열기
+    } else {
+      console.log('권한이 없습니다.'); // 비관리자일 경우 아무런 동작을 하지 않음
+    }
+  };
 
   if (!task) {
     return null;
   }
 
   return (
-    <div className="h-18.5-custom relative mb-4 rounded-lg bg-background-secondary px-3.5 py-3">
+    <div
+      className="h-18.5-custom relative mb-4 rounded-lg bg-background-secondary px-3.5 py-3"
+      onClick={handleClick}
+    >
       <div className="mb-2.5 flex justify-between">
         <div className="flex">
           <Checkbox onChange={onCheckboxChange} checked={checked} />

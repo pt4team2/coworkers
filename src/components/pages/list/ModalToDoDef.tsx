@@ -14,10 +14,11 @@ import MyAnswerCard from './MyAnswerCard';
 
 interface ModalProps {
   onClose: () => void;
+  isOpen: boolean;
   title?: string;
 }
 
-export default function ModalToDoDef({ onClose, title }: ModalProps) {
+export default function ModalToDoDef({ isOpen, onClose, title }: ModalProps) {
   const { closeModal: closeToDoDefModal } = useModalToDoDefStore();
 
   // 완료 상태 관리
