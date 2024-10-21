@@ -6,8 +6,9 @@ import { useModalToDoStore } from '@/store/useModalToDoStore';
 interface ListCardDropdownProps {
   onEdit: (taskId: number) => void; // 수정할 작업 ID를 받도록 변경
   onDelete: (taskId: number) => void;
-  onSelectOption: (option: string) => void; // 타입 수정
+  onSelectOption: (option: string) => void;
   taskId: number; // 추가: 작업 ID를 props로 받음
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export default function ListCardDropdown({
@@ -15,6 +16,7 @@ export default function ListCardDropdown({
   onEdit,
   onDelete,
   taskId,
+  onClick,
 }: ListCardDropdownProps) {
   const [isListCardDropdownOpen, setIsListCardDropdownOpen] = useState(false);
   const ListCardRef = useRef<HTMLDivElement>(null);
@@ -51,7 +53,7 @@ export default function ListCardDropdown({
   };
 
   return (
-    <div className="relative" ref={ListCardRef}>
+    <div className="relative" ref={ListCardRef} onClick={onClick}>
       <button
         onClick={() => {
           setIsListCardDropdownOpen((prev) => !prev);

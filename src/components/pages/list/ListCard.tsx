@@ -16,7 +16,7 @@ interface ListCardProps {
   task: Task;
   onDelete: (taskId: number) => void;
   onEdit: (taskId: number) => void;
-  onSelectOption: (option: string) => void; // 타입 수정
+  onSelectOption: (option: string) => void;
   onCheckboxChange: (checked: boolean) => void;
   isAdmin: boolean;
   checked: boolean;
@@ -82,6 +82,7 @@ export default function ListCard({
             onEdit={onEdit}
             taskId={task.id}
             onDelete={onDelete}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
           />
         </div>
       </div>

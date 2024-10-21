@@ -34,7 +34,7 @@ export default function ModalToDoDef({ isOpen, onClose, title }: ModalProps) {
   };
 
   return (
-    <div className="border-1 flex h-[752px] w-[375px] flex-col items-center border border-border-primary bg-background-secondary p-4 md:h-[1073px] md:w-[435px] md:p-6 lg:h-[1019px] lg:w-[779px] lg:p-10">
+    <div className="border-1 fixed right-0 top-0 z-50 flex h-screen w-[375px] flex-col items-center border border-border-primary bg-background-secondary p-4 md:w-[435px] md:p-6 lg:w-[779px] lg:p-10">
       <button onClick={closeToDoDefModal} className="mb-2 ml-auto">
         <Image src={CloseIcon} alt="CloseIcon" width={24} height={24} />
       </button>
@@ -75,7 +75,7 @@ export default function ModalToDoDef({ isOpen, onClose, title }: ModalProps) {
 
       <button
         onClick={handleToggleComplete}
-        className={`text-lg-semibold h- 10 w-[111px] rounded-[40px] shadow-xl ${isCompleted ? 'border-1 border border-brand-primary bg-background-inverse' : 'bg-brand-primary'} flex items-center justify-center space-x-2 text-center`}
+        className={`z-25 text-lg-semibold h- 10 fixed bottom-6 right-4 w-[111px] rounded-[40px] shadow-xl md:bottom-5 md:right-6 lg:bottom-10 lg:right-10 ${isCompleted ? 'border-1 border border-brand-primary bg-background-inverse' : 'bg-brand-primary'} flex items-center justify-center space-x-2 text-center`}
       >
         <Image
           src={isCompleted ? UnCheck : Check}
