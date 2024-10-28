@@ -20,6 +20,7 @@ interface ListCardProps {
   onCheckboxChange: (checked: boolean) => void;
   isAdmin: boolean;
   checked: boolean;
+  onSelectTask: () => void;
 }
 
 export default function ListCard({
@@ -30,15 +31,27 @@ export default function ListCard({
   isAdmin,
   onCheckboxChange,
   checked,
+  onSelectTask,
 }: ListCardProps) {
   function formatDate(dateString: string) {
     const date = parseISO(dateString); // ISO 8601 문자열을 Date 객체로 변환
     return format(date, 'yyyy년 MM월 dd일');
   }
-  const { openModal: openModalToDoDef } = useModalToDoDefStore();
+  const {
+    openModal: openModalToDoDef,
+    setCompleted,
+    setTaskId,
+  } = useModalToDoDefStore();
+  const handleCheckboxChange = (checked: boolean) => {
+    onCheckboxChange(checked); // 기존의 onCheckboxChange 호출
+    setCompleted(checked); // 상태 업데이트
+  };
   const handleClick = () => {
+    setTaskId(task.id); // 선택된 task의 id 설정
+    onSelectTask();
     if (isAdmin) {
       openModalToDoDef(); // 관리자일 때만 Modal 열기
+      setCompleted(checked); // 현재 체크 상태 전달
     } else {
       console.log('권한이 없습니다.'); // 비관리자일 경우 아무런 동작을 하지 않음
     }
@@ -55,7 +68,10 @@ export default function ListCard({
     >
       <div className="mb-2.5 flex justify-between">
         <div className="flex">
-          <Checkbox onChange={onCheckboxChange} checked={checked} />
+          <div onClick={(e) => e.stopPropagation()}>
+            <Checkbox onChange={handleCheckboxChange} checked={checked} />
+          </div>
+
           <div
             className={`text-md-regular ${checked ? 'line-through' : ''} my-auto ml-2 mr-3 text-text-primary`}
           >

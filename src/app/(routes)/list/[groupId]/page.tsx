@@ -19,7 +19,6 @@ import useUser from '@/hooks/useUser';
 import useGroup from '@/hooks/useGroup';
 import { Task, TaskList } from '@/types/Group';
 import { authAxiosInstance } from '@/app/api/auth/axiosInstance';
-import { getTaskList } from '@/api/taskListApis';
 import { createTaskList, updateTask } from '@/api/taskListApis';
 import { number } from 'yup';
 import { useModalToDoDefStore } from '@/store/useModalToDoDefStore';
@@ -41,7 +40,7 @@ export default function List() {
       (member) => member.role === 'ADMIN' && member.userId === user?.id,
     ) ?? false; // undefined일 경우 false로 처리
 
-  const { isModalOpen, closeModal } = useModalToDoDefStore();
+  const { isModalOpen, closeModal, openModal } = useModalToDoDefStore();
 
   // 날짜 및 캘린더 상태 관리
   const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -88,15 +87,6 @@ export default function List() {
     if (option === '수정하기') {
       setIsEditMode(true);
     }
-  };
-
-  // 체크박스 상태 관리
-  const [taskStates, setTaskStates] = useState<Record<number, boolean>>({});
-  const handleCheckboxChange = (taskId: number, checked: boolean) => {
-    setTaskStates((prevState) => ({
-      ...prevState,
-      [taskId]: checked,
-    }));
   };
 
   // 모달 상태 관리
@@ -183,6 +173,26 @@ export default function List() {
     }
   }, [tasksResponse]);
 
+  // 체크박스 상태 관리
+  const [taskStates, setTaskStates] = useState<Record<number, boolean>>({});
+  const handleCheckboxChange = async (taskId: number, checked: boolean) => {
+    try {
+      // PATCH 요청으로 체크박스 상태 업데이트
+      const response = await authAxiosInstance.patch(
+        `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks/${taskId}`,
+        { done: checked },
+      );
+      console.log('수정된 task:', response.data);
+      // 체크박스 상태 업데이트
+      setTaskStates((prevStates) => ({
+        ...prevStates,
+        [taskId]: checked,
+      }));
+    } catch (error) {
+      console.error('체크박스 상태 업데이트 실패:', error);
+    }
+  };
+
   //할일 상태 관리
   const [tasks, setTasks] = useState<Task[]>([]);
   const handleCreateTask = (newTask: Task) => {
@@ -205,12 +215,6 @@ export default function List() {
     } else {
       console.error(`Task with ID ${taskId} not found`);
     }
-  };
-
-  const deleteTaskFn = async (taskId: number) => {
-    await authAxiosInstance.delete(
-      `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks/${taskId}`,
-    );
   };
 
   // 할일 삭제 mutation
@@ -248,6 +252,18 @@ export default function List() {
   };
   console.log('isEditMode', isEditMode);
   console.log('existingTask:', editingTask);
+
+  const [selectedTask, setSelectedTask] = useState<Task | undefined>(undefined);
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
+  // 특정 Task를 선택했을 때 모달 열기 및 선택된 Task 설정
+  const handleSelectTask = (task: Task) => {
+    setSelectedTaskId(task.id);
+    setIsCompleted(!!task.doneBy); // 선택된 task의 완료 상태 초기화
+    setSelectedTask(task); // 선택된 task 설정
+    openModal(); // 모달 열기
+  };
   return (
     <div className="lg:w-300.25-custom">
       <span className="font-pretendard mb-27px lg: md-6 h-5.25-custom leading-5.25-custom mt-6 block w-9 whitespace-nowrap text-center text-lg font-bold md:my-6 md:h-6 md:w-10 md:text-xl md:leading-6 lg:mb-6 lg:mt-10 lg:h-6 lg:w-12 lg:text-left">
@@ -333,6 +349,7 @@ export default function List() {
             onEdit={handleEdit}
             onDelete={handleDelete}
             isAdmin={isAdmin}
+            onSelectTask={() => handleSelectTask(tasksResponse)}
           />
         ))
       )}
@@ -359,8 +376,13 @@ export default function List() {
         />
       )}
       {/* ModalToDoDef 모달 */}
-      {isModalOpen && (
-        <ModalToDoDef isOpen={isModalOpen} onClose={closeModal} />
+      {isModalOpen && selectedTask && (
+        <ModalToDoDef
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          description={selectedTask.description}
+          title={selectedTask.name}
+        />
       )}
     </div>
   );
