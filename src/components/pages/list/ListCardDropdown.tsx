@@ -1,22 +1,28 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Kebab from '@/assets/icons/ic_kebab.svg';
-import { useModalDeleteStore } from '@/store/useModalDeleteStore';
-import { useModalToDoDefStore } from '@/store/useModalToDoDefStore';
+import { useModalToDoStore } from '@/store/useModalToDoStore';
 
 interface ListCardDropdownProps {
+  onEdit: (taskId: number) => void; // 수정할 작업 ID를 받도록 변경
+  onDelete: (taskId: number) => void;
   onSelectOption: (option: string) => void;
+  taskId: number; // 추가: 작업 ID를 props로 받음
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export default function ListCardDropdown({
   onSelectOption,
+  onEdit,
+  onDelete,
+  taskId,
+  onClick,
 }: ListCardDropdownProps) {
   const [isListCardDropdownOpen, setIsListCardDropdownOpen] = useState(false);
   const ListCardRef = useRef<HTMLDivElement>(null);
   const options = ['수정하기', '삭제하기'];
 
-  const { openModal: openDeleteModal } = useModalDeleteStore();
-  const { openModal: openToDoDefModal } = useModalToDoDefStore();
+  const { openModal: openToDoModal } = useModalToDoStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -36,15 +42,18 @@ export default function ListCardDropdown({
 
   const handleOptionClick = (option: string) => {
     setIsListCardDropdownOpen(false);
-    if (option === '삭제하기') {
-      openDeleteModal();
-    } else if (option === '수정하기') {
-      openToDoDefModal();
+
+    onSelectOption(option); // 수정할 작업의 옵션을 전달
+    if (option === '수정하기') {
+      openToDoModal(); // 모달 열기
+      onEdit(taskId); // 수정할 작업 ID를 전달
+    } else {
+      onDelete(taskId);
     }
   };
 
   return (
-    <div className="relative" ref={ListCardRef}>
+    <div className="relative" ref={ListCardRef} onClick={onClick}>
       <button
         onClick={() => {
           setIsListCardDropdownOpen((prev) => !prev);

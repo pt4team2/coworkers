@@ -15,16 +15,17 @@ export default function CardProfile({
 }: CardProp) {
   return (
     <div className="mb-4 flex h-8 w-[343px] justify-between md:w-full lg:w-full">
-      <div className="gap-3">
+      <div className="flex items-center gap-3">
         <Image
           src={profileImage || MemberIcon}
           alt="프로필"
           width={24}
           height={24}
+          className="rounded-full"
         />
         <p className="text-md-medium text-text-primary">{name}</p>
       </div>
-      <p className="text-md-regular text-text-secondary">
+      <p className="text-md-regular flex items-center text-text-secondary">
         <TimeAgo date={updateAt} />
       </p>
     </div>

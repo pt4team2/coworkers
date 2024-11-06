@@ -10,41 +10,72 @@ import { Task } from '@/types/Group';
 import ListCardDropdown from './ListCardDropdown';
 import ModalToDoDef from './ModalToDoDef';
 import { format, parseISO } from 'date-fns';
+import { useModalToDoDefStore } from '@/store/useModalToDoDefStore';
 
 interface ListCardProps {
   task: Task;
+  onDelete: (taskId: number) => void;
+  onEdit: (taskId: number) => void;
   onSelectOption: (option: string) => void;
   onCheckboxChange: (checked: boolean) => void;
+  isAdmin: boolean;
   checked: boolean;
+  onSelectTask: () => void;
 }
 
 export default function ListCard({
   task,
+  onEdit,
+  onDelete,
   onSelectOption,
+  isAdmin,
   onCheckboxChange,
   checked,
+  onSelectTask,
 }: ListCardProps) {
   function formatDate(dateString: string) {
     const date = parseISO(dateString); // ISO 8601 문자열을 Date 객체로 변환
     return format(date, 'yyyy년 MM월 dd일');
   }
+  const {
+    openModal: openModalToDoDef,
+    setCompleted,
+    setTaskId,
+  } = useModalToDoDefStore();
+  const handleCheckboxChange = (checked: boolean) => {
+    console.log('Checkbox changed in ListCard:', checked);
+    onCheckboxChange(checked);
+    setCompleted(checked);
+  };
+  const handleClick = () => {
+    setTaskId(task.id);
+    onSelectTask();
+    if (isAdmin) {
+      openModalToDoDef();
+      setCompleted(checked);
+      console.log('권한이 없습니다.');
+    }
+  };
+
   if (!task) {
     return null;
   }
 
   return (
-    <div className="h-18.5-custom relative mb-4 rounded-lg bg-background-secondary px-3.5 py-3">
+    <div
+      className="h-18.5-custom relative mb-4 rounded-lg bg-background-secondary px-3.5 py-3"
+      onClick={handleClick}
+    >
       <div className="mb-2.5 flex justify-between">
         <div className="flex">
-          <Checkbox onChange={onCheckboxChange} checked={checked} />
+          <div onClick={(e) => e.stopPropagation()}>
+            <Checkbox onChange={handleCheckboxChange} checked={checked} />
+          </div>
+
           <div
-            className={
-              checked
-                ? 'text-md-regular my-auto ml-2 mr-3 text-text-primary line-through'
-                : 'text-md-regular my-auto ml-2 mr-3 text-text-primary'
-            }
+            className={`text-md-regular ${checked ? 'line-through' : ''} my-auto ml-2 mr-3 text-text-primary`}
           >
-            {task.description}
+            {task.name}
           </div>
           {/* 데스크탑, 태블릿일 때는 comment가 원래 위치 */}
           <div className="hidden md:flex md:items-center lg:flex lg:items-center">
@@ -62,7 +93,13 @@ export default function ListCard({
               {task.commentCount}
             </div>
           </div>
-          <ListCardDropdown onSelectOption={onSelectOption} />
+          <ListCardDropdown
+            onSelectOption={onSelectOption}
+            onEdit={onEdit}
+            taskId={task.id}
+            onDelete={onDelete}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          />
         </div>
       </div>
       <div className="flex gap-2.5">
