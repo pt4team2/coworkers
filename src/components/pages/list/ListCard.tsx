@@ -43,17 +43,17 @@ export default function ListCard({
     setTaskId,
   } = useModalToDoDefStore();
   const handleCheckboxChange = (checked: boolean) => {
-    onCheckboxChange(checked); // 기존의 onCheckboxChange 호출
-    setCompleted(checked); // 상태 업데이트
+    console.log('Checkbox changed in ListCard:', checked);
+    onCheckboxChange(checked);
+    setCompleted(checked);
   };
   const handleClick = () => {
-    setTaskId(task.id); // 선택된 task의 id 설정
+    setTaskId(task.id);
     onSelectTask();
     if (isAdmin) {
-      openModalToDoDef(); // 관리자일 때만 Modal 열기
-      setCompleted(checked); // 현재 체크 상태 전달
-    } else {
-      console.log('권한이 없습니다.'); // 비관리자일 경우 아무런 동작을 하지 않음
+      openModalToDoDef();
+      setCompleted(checked);
+      console.log('권한이 없습니다.');
     }
   };
 

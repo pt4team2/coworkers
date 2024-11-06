@@ -172,18 +172,34 @@ export default function List() {
       });
     }
   }, [tasksResponse]);
-
-  // 체크박스 상태 관리
   const [taskStates, setTaskStates] = useState<Record<number, boolean>>({});
+  // 초기 로드 시 doneAt을 기반으로 체크박스 상태 설정
+  useEffect(() => {
+    if (selectedTaskList?.tasks) {
+      const initialTaskStates = selectedTaskList.tasks.reduce(
+        (acc, task) => {
+          acc[task.id] = !!task.doneAt; // doneAt이 존재하면 true, 없으면 false
+          return acc;
+        },
+        {} as Record<number, boolean>,
+      );
+      setTaskStates(initialTaskStates);
+    }
+  }, [selectedTaskList]);
+
+  // 체크박스 상태 업데이트
   const handleCheckboxChange = async (taskId: number, checked: boolean) => {
+    console.log(
+      `handleCheckboxChange called with taskId: ${taskId}, checked: ${checked}`,
+    );
     try {
-      // PATCH 요청으로 체크박스 상태 업데이트
+      // 서버에 체크박스 상태 업데이트 요청 (done 필드만 사용)
       const response = await authAxiosInstance.patch(
         `/groups/${groupId}/task-lists/${selectedTaskList?.id}/tasks/${taskId}`,
-        { done: checked },
+        { done: checked }, // 서버가 허용하는 필드로 요청
       );
-      console.log('수정된 task:', response.data);
-      // 체크박스 상태 업데이트
+      console.log('서버에 저장된 task 상태:', response.data);
+      // 로컬 상태 업데이트
       setTaskStates((prevStates) => ({
         ...prevStates,
         [taskId]: checked,
@@ -192,7 +208,6 @@ export default function List() {
       console.error('체크박스 상태 업데이트 실패:', error);
     }
   };
-
   //할일 상태 관리
   const [tasks, setTasks] = useState<Task[]>([]);
   const handleCreateTask = (newTask: Task) => {
@@ -380,8 +395,12 @@ export default function List() {
         <ModalToDoDef
           isOpen={isModalOpen}
           onClose={closeModal}
-          description={selectedTask.description}
           title={selectedTask.name}
+          description={selectedTask.description}
+          onCheckboxChange={(checked) =>
+            handleCheckboxChange(selectedTask.id, checked)
+          }
+          isCompleted={taskStates[selectedTask.id] || false}
         />
       )}
     </div>
